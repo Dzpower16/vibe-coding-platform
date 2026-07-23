@@ -1,0 +1,334 @@
+<template>
+  <style>
+    #root[data-composition-id="04-suivi"] {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      overflow: hidden;
+      container-type: size;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      --primary: #5B3DF5;
+      --text: #1A1A2E;
+      --text-light: #9A9A9A;
+      --on-primary: #FFFFFF;
+      --accent-light: rgba(91, 61, 245, 0.08);
+      --accent-medium: rgba(91, 61, 245, 0.15);
+      --border: rgba(91, 61, 245, 0.2);
+      --card-bg: rgba(91, 61, 245, 0.04);
+      --positive: #059669;
+    }
+
+    .fr04suivi-bg {
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+    }
+
+    /* ---------- carried-over checkmark badge ---------- */
+    .fr04suivi-badge-wrap {
+      position: absolute;
+      top: 64px;
+      right: 96px;
+      width: 64px;
+      height: 64px;
+      will-change: transform;
+    }
+    .fr04suivi-badge-circle {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: rgba(5, 150, 105, 0.12);
+      border: 1.5px solid rgba(5, 150, 105, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .fr04suivi-badge-circle svg { width: 30px; height: 30px; }
+
+    /* ---------- shared card shell ---------- */
+    .fr04suivi-card {
+      position: absolute;
+      left: 50%;
+      width: 44cqw;
+      margin-left: -22cqw;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      padding: 2.1cqw 2.5cqw 2.3cqw;
+      box-sizing: border-box;
+    }
+    .fr04suivi-card-email { top: 17cqh; }
+    .fr04suivi-card-review { top: 50cqh; }
+
+    .fr04suivi-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .fr04suivi-tag-pill {
+      background: var(--accent-light);
+      color: var(--primary);
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      white-space: nowrap;
+    }
+
+    /* ---------- email card content ---------- */
+    .fr04suivi-sender-row { display: flex; align-items: center; gap: 0.9cqw; }
+    .fr04suivi-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: var(--on-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 18px;
+      flex: 0 0 auto;
+    }
+    .fr04suivi-sender-meta { display: flex; flex-direction: column; gap: 2px; }
+    .fr04suivi-sender-name {
+      font-size: 1.0cqw;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .fr04suivi-timestamp {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text-light);
+    }
+
+    .fr04suivi-subject {
+      margin-top: 1.5cqw;
+      font-size: 1.35cqw;
+      font-weight: 500;
+      line-height: 1.3;
+      letter-spacing: -0.01em;
+      color: var(--text);
+    }
+    .fr04suivi-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.15cqw;
+      background: var(--primary);
+      margin-left: 3px;
+      vertical-align: -0.15cqw;
+    }
+
+    .fr04suivi-preview {
+      margin-top: 1.1cqw;
+      font-size: 0.9cqw;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--text-light);
+    }
+
+    .fr04suivi-footer {
+      margin-top: 1.3cqw;
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      opacity: 0.85;
+    }
+
+    /* ---------- review card content ---------- */
+    .fr04suivi-eyebrow {
+      font-size: 0.8cqw;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+
+    .fr04suivi-stars {
+      margin-top: 1.6cqw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.7cqw;
+    }
+    .fr04suivi-star { position: relative; width: 34px; height: 34px; }
+    .fr04suivi-star svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .fr04suivi-star-base path { fill: none; stroke: rgba(154,154,154,0.35); stroke-width: 1.5px; }
+    .fr04suivi-star-fill path { fill: var(--primary); }
+
+    .fr04suivi-review-cta {
+      margin: 1.6cqw auto 0;
+      width: max-content;
+      background: var(--accent-light);
+      color: var(--primary);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.95cqw;
+      font-weight: 600;
+      padding: 0.7cqw 1.8cqw;
+      text-align: center;
+    }
+    .fr04suivi-review-sub {
+      margin-top: 0.9cqw;
+      text-align: center;
+      font-size: 0.85cqw;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="04-suivi"
+  >
+    <div class="fr04suivi-bg clip" data-start="0" data-duration="6.677" data-track-index="0"></div>
+
+    <div class="fr04suivi-badge-wrap clip" data-start="0" data-duration="6.677" data-track-index="1">
+      <div class="fr04suivi-badge-circle">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M4 12.5L9.5 18L20 6" stroke="#059669" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="fr04suivi-card fr04suivi-card-email clip" data-start="0.2" data-duration="6.477" data-track-index="2">
+      <div class="fr04suivi-row">
+        <div class="fr04suivi-sender-row">
+          <div class="fr04suivi-avatar">S</div>
+          <div class="fr04suivi-sender-meta">
+            <div class="fr04suivi-sender-name">SmileFlow</div>
+            <div class="fr04suivi-timestamp">à l'instant</div>
+          </div>
+        </div>
+        <div class="fr04suivi-tag-pill">Suivi patient</div>
+      </div>
+
+      <div class="fr04suivi-subject">
+        <span class="fr04suivi-ch">M</span><span class="fr04suivi-ch">e</span><span class="fr04suivi-ch">r</span><span class="fr04suivi-ch">c</span><span class="fr04suivi-ch">i</span> <span class="fr04suivi-ch">p</span><span class="fr04suivi-ch">o</span><span class="fr04suivi-ch">u</span><span class="fr04suivi-ch">r</span> <span class="fr04suivi-ch">v</span><span class="fr04suivi-ch">o</span><span class="fr04suivi-ch">t</span><span class="fr04suivi-ch">r</span><span class="fr04suivi-ch">e</span> <span class="fr04suivi-ch">v</span><span class="fr04suivi-ch">i</span><span class="fr04suivi-ch">s</span><span class="fr04suivi-ch">i</span><span class="fr04suivi-ch">t</span><span class="fr04suivi-ch">e</span><span class="fr04suivi-cursor"></span>
+      </div>
+
+      <div class="fr04suivi-preview">Votre note de suivi est prête à consulter.</div>
+      <div class="fr04suivi-footer">Envoyé automatiquement</div>
+    </div>
+
+    <div class="fr04suivi-card fr04suivi-card-review clip" data-start="3.5" data-duration="3.177" data-track-index="3">
+      <div class="fr04suivi-row">
+        <div class="fr04suivi-eyebrow">SmileFlow vous remercie</div>
+        <div class="fr04suivi-tag-pill">Avis Google</div>
+      </div>
+
+      <div class="fr04suivi-stars">
+        <div class="fr04suivi-star">
+          <svg class="fr04suivi-star-base" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+          <svg class="fr04suivi-star-fill" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+        </div>
+        <div class="fr04suivi-star">
+          <svg class="fr04suivi-star-base" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+          <svg class="fr04suivi-star-fill" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+        </div>
+        <div class="fr04suivi-star">
+          <svg class="fr04suivi-star-base" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+          <svg class="fr04suivi-star-fill" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+        </div>
+        <div class="fr04suivi-star">
+          <svg class="fr04suivi-star-base" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+          <svg class="fr04suivi-star-fill" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+        </div>
+        <div class="fr04suivi-star">
+          <svg class="fr04suivi-star-base" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+          <svg class="fr04suivi-star-fill" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.3 6.9.7-5.2 4.7 1.5 6.8-6.1-3.6-6.1 3.6 1.5-6.8-5.2-4.7 6.9-.7z"/></svg>
+        </div>
+      </div>
+
+      <div class="fr04suivi-review-cta">Laisser un avis</div>
+      <div class="fr04suivi-review-sub">Un avis prend 30 secondes</div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var tl = gsap.timeline({ paused: true });
+
+      // ---- initial states ----
+      tl.set(".fr04suivi-card-email", { opacity: 0, y: 42 }, 0);
+      tl.set(".fr04suivi-card-review", { opacity: 0, y: 52 }, 0);
+      tl.set(".fr04suivi-ch", { opacity: 0 }, 0);
+      tl.set(".fr04suivi-cursor", { opacity: 0 }, 0);
+      tl.set(".fr04suivi-preview", { opacity: 0, y: 8 }, 0);
+      tl.set(".fr04suivi-footer", { opacity: 0, y: 8 }, 0);
+      tl.set(".fr04suivi-star-fill", { opacity: 0, scale: 0.55, transformOrigin: "50% 50%" }, 0);
+      tl.set(".fr04suivi-review-cta", { opacity: 0, y: 8 }, 0);
+      tl.set(".fr04suivi-review-sub", { opacity: 0, y: 8 }, 0);
+
+      // ---- Scene 1 (0.0-1.0s): frame 3's checkmark shrinks + docks to the corner badge ----
+      tl.fromTo(
+        ".fr04suivi-badge-wrap",
+        { x: -832, y: 78, scale: 2.4 },
+        { x: 0, y: 0, scale: 1, duration: 0.85, ease: "power3.out" },
+        0.05
+      );
+
+      // ---- Scene 2 (1.0-3.6s): email card slides + fades into slot, subject types on ----
+      // (entrance begins a beat early, at 0.2s, continuing the badge's dock motion so the
+      // hero mockup is already resolving on screen well before 0.5s)
+      tl.fromTo(
+        ".fr04suivi-card-email",
+        { opacity: 0, y: 42 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+        0.2
+      );
+      tl.to(".fr04suivi-cursor", { opacity: 1, duration: 0.01 }, 1.15);
+      tl.to(
+        ".fr04suivi-ch",
+        { opacity: 1, duration: 0.02, stagger: 0.035 },
+        1.15
+      );
+      tl.to(".fr04suivi-cursor", { opacity: 0, duration: 0.3 }, 1.95);
+      tl.fromTo(
+        ".fr04suivi-preview",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.4 },
+        2.05
+      );
+      tl.fromTo(
+        ".fr04suivi-footer",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.4 },
+        2.2
+      );
+
+      // ---- Scene 3 (3.6-6.677s): Google review card cascades in, stars fill left-to-right ----
+      tl.fromTo(
+        ".fr04suivi-card-review",
+        { opacity: 0, y: 52 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+        3.5
+      );
+      tl.fromTo(
+        ".fr04suivi-star-fill",
+        { opacity: 0, scale: 0.55 },
+        { opacity: 1, scale: 1, duration: 0.14, stagger: 0.09, ease: "back.out(2.2)" },
+        4.1
+      );
+      tl.fromTo(
+        ".fr04suivi-review-cta",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.35 },
+        4.75
+      );
+      tl.fromTo(
+        ".fr04suivi-review-sub",
+        { opacity: 0, y: 8 },
+        { opacity: 1, y: 0, duration: 0.35 },
+        4.9
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["04-suivi"] = tl;
+    })();
+  </script>
+</template>

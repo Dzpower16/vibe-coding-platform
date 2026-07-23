@@ -1,0 +1,274 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: #ffffff;
+      container-type: size;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    /* full-bleed ground — lives on a class="clip" layer, never on #root itself */
+    .f05cta-bg {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+    }
+
+    /* faint concentric closing rings (frame.md: Closing/CTA atmosphere) */
+    .f05cta-rings {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .f05cta-ring {
+      position: absolute;
+      top: 470px;
+      left: 960px;
+      border-radius: 50%;
+      border: 1px solid rgba(91, 61, 245, 0.1);
+    }
+    .f05cta-ring--1 { width: 560px; height: 560px; margin: -280px 0 0 -280px; }
+    .f05cta-ring--2 { width: 820px; height: 820px; margin: -410px 0 0 -410px; border-color: rgba(91, 61, 245, 0.07); }
+    .f05cta-ring--3 { width: 1080px; height: 1080px; margin: -540px 0 0 -540px; border-color: rgba(91, 61, 245, 0.05); }
+
+    /* wordmark + underline lockup */
+    .f05cta-lockup {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 360px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .f05cta-wordmark {
+      font-size: 9.2cqw;
+      font-weight: 800;
+      color: #5b3df5;
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .f05cta-underline {
+      width: 150px;
+      height: 4px;
+      border-radius: 2px;
+      background: #5b3df5;
+      margin-top: 30px;
+      transform-origin: left center;
+    }
+
+    /* tagline — assembles word by word on the VO */
+    .f05cta-tagline {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 630px;
+      text-align: center;
+      padding: 0 260px;
+    }
+    .f05cta-word {
+      display: inline-block;
+      font-size: 1.72cqw;
+      font-weight: 500;
+      line-height: 1.55;
+      color: #1a1a2e;
+      margin: 0 7px;
+    }
+
+    /* CTA pill */
+    .f05cta-cta-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 780px;
+      text-align: center;
+    }
+    .f05cta-cta-pill {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 620px;
+      height: 78px;
+      border-radius: 39px;
+    }
+    .f05cta-cta-text {
+      position: relative;
+      z-index: 2;
+      font-size: 27px;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: #5b3df5;
+      white-space: nowrap;
+    }
+    .f05cta-cta-glow,
+    .f05cta-cta-draw {
+      position: absolute;
+      inset: 0;
+      width: 620px;
+      height: 78px;
+      z-index: 1;
+      overflow: visible;
+    }
+    .f05cta-cta-glow {
+      filter: blur(9px);
+    }
+  </style>
+
+  <div
+    id="root"
+    data-composition-id="05-cta"
+    data-start="0"
+    data-duration="6.741"
+    data-width="1920"
+    data-height="1080"
+  >
+    <div class="f05cta-bg clip" data-start="0" data-duration="6.741" data-track-index="0"></div>
+
+    <div class="f05cta-rings clip" data-start="0" data-duration="6.741" data-track-index="1">
+      <div class="f05cta-ring f05cta-ring--1"></div>
+      <div class="f05cta-ring f05cta-ring--2"></div>
+      <div class="f05cta-ring f05cta-ring--3"></div>
+    </div>
+
+    <div class="f05cta-lockup clip" data-start="0" data-duration="6.741" data-track-index="2">
+      <div class="f05cta-wordmark">SmileFlow</div>
+      <div class="f05cta-underline"></div>
+    </div>
+
+    <div class="f05cta-tagline clip" data-start="1.8" data-duration="4.941" data-track-index="3">
+      <span class="f05cta-word">Récupérez</span>
+      <span class="f05cta-word">les</span>
+      <span class="f05cta-word">plages</span>
+      <span class="f05cta-word">perdues</span>
+      <span class="f05cta-word">de</span>
+      <span class="f05cta-word">votre</span>
+      <span class="f05cta-word">agenda</span>
+      <span class="f05cta-word">—</span>
+      <span class="f05cta-word">et</span>
+      <span class="f05cta-word">vos</span>
+      <span class="f05cta-word">fins</span>
+      <span class="f05cta-word">de</span>
+      <span class="f05cta-word">journée.</span>
+    </div>
+
+    <div class="f05cta-cta-wrap clip" data-start="4.4" data-duration="2.341" data-track-index="4">
+      <div class="f05cta-cta-pill">
+        <svg class="f05cta-cta-glow"><rect class="f05cta-cta-glow-rect" fill="none" stroke="#5b3df5"></rect></svg>
+        <svg class="f05cta-cta-draw"><rect class="f05cta-cta-draw-rect" fill="none" stroke="#5b3df5"></rect></svg>
+        <span class="f05cta-cta-text">Essai gratuit — smileflow.ca</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.currentScript.closest ? document.currentScript.closest('template') : null;
+    })();
+  </script>
+
+  <script>
+    (function () {
+      var tpl = document.querySelector('template');
+      var scope = tpl && tpl.content ? tpl.content : document;
+
+      var root = scope.querySelector('#root');
+      var wordmark = scope.querySelector('.f05cta-wordmark');
+      var underline = scope.querySelector('.f05cta-underline');
+      var lockup = scope.querySelector('.f05cta-lockup');
+      var words = scope.querySelectorAll('.f05cta-word');
+      var ctaWrap = scope.querySelector('.f05cta-cta-wrap');
+      var drawRect = scope.querySelector('.f05cta-cta-draw-rect');
+      var glowSvg = scope.querySelector('.f05cta-cta-glow');
+      var rings = scope.querySelectorAll('.f05cta-ring');
+
+      /* deterministic pill-stroke geometry — matches the fixed CSS pill box,
+         computed arithmetically (no live layout read, since this element
+         sits behind a future data-start clip gate). */
+      var PILL_W = 620,
+        PILL_H = 78,
+        STROKE_INSET = 1.5,
+        w = PILL_W - STROKE_INSET * 2,
+        h = PILL_H - STROKE_INSET * 2,
+        rx = h / 2,
+        perimeter = 2 * (w - h) + Math.PI * h;
+
+      [drawRect, scope.querySelector('.f05cta-cta-glow-rect')].forEach(function (rect) {
+        rect.setAttribute('x', STROKE_INSET);
+        rect.setAttribute('y', STROKE_INSET);
+        rect.setAttribute('width', w);
+        rect.setAttribute('height', h);
+        rect.setAttribute('rx', rx);
+        rect.setAttribute('ry', rx);
+      });
+      drawRect.setAttribute('stroke-width', 2.5);
+      drawRect.style.strokeDasharray = perimeter;
+      drawRect.style.strokeDashoffset = perimeter;
+      scope.querySelector('.f05cta-cta-glow-rect').setAttribute('stroke-width', 7);
+
+      var tl = gsap.timeline({ paused: true });
+
+      /* Scene 1 (0.0–1.8s) — wordmark spring-blooms dead-center, controlled
+         settle (no overshoot); rings breathe in behind it; a thin accent
+         underline sweeps left→right beneath. */
+      tl.fromTo(rings, { opacity: 0 }, { opacity: 1, duration: 0.9, ease: 'power1.out' }, 0);
+      tl.fromTo(
+        wordmark,
+        { opacity: 0, scale: 0.35 },
+        { opacity: 1, scale: 1, duration: 0.6, ease: 'power3.out' },
+        0.05
+      );
+      tl.fromTo(
+        underline,
+        { scaleX: 0 },
+        { scaleX: 1, duration: 0.45, ease: 'power2.out' },
+        0.85
+      );
+
+      /* Scene 2 (1.8–4.4s) — lockup slides up slightly to make room; the
+         tagline assembles word by word as the VO speaks it. */
+      tl.fromTo(
+        lockup,
+        { y: 0 },
+        { y: -85, duration: 0.5, ease: 'power2.inOut' },
+        1.8
+      );
+      tl.fromTo(
+        words,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out', stagger: 0.16 },
+        2.0
+      );
+
+      /* Scene 3 (4.4–6.741s) — CTA pill rises into place; its border draws
+         on as a glowing violet outline stroke; everything then holds fully
+         static to the end (mandatory last-frame hold for a muted read). */
+      tl.fromTo(
+        ctaWrap,
+        { opacity: 0, y: 26 },
+        { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
+        4.4
+      );
+      tl.fromTo(
+        drawRect,
+        { strokeDashoffset: perimeter },
+        { strokeDashoffset: 0, duration: 1.0, ease: 'power2.out' },
+        4.6
+      );
+      tl.fromTo(
+        glowSvg,
+        { opacity: 0 },
+        { opacity: 0.85, duration: 1.0, ease: 'power2.out' },
+        4.6
+      );
+      /* nothing scheduled after ~5.6s — holds static through 6.741s */
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines['05-cta'] = tl;
+    })();
+  </script>
+</template>

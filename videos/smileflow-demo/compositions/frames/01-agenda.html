@@ -1,0 +1,304 @@
+<template>
+  <style>
+    #root {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      container-type: size;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      color: #1a1a2e;
+    }
+
+    #root .01-agenda-camera {
+      position: absolute;
+      inset: 0;
+      transform-origin: 50% 50%;
+    }
+
+    /* ---- full-bleed ground (never on #root) ---- */
+    #root .01-agenda-bg {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+    }
+
+    /* ---- deep-background waiting room (blurred, dim) ---- */
+    #root .01-agenda-chairs {
+      position: absolute;
+      inset: 0;
+      opacity: 0.16;
+      filter: blur(11px);
+      pointer-events: none;
+    }
+    #root .01-agenda-chair {
+      position: absolute;
+      bottom: 190px;
+      width: 108px;
+    }
+    #root .01-agenda-chair .seat {
+      width: 100%;
+      height: 20px;
+      border-radius: 8px;
+      background: #9a9a9a;
+    }
+    #root .01-agenda-chair .back {
+      width: 100%;
+      height: 84px;
+      margin-bottom: 8px;
+      border-radius: 10px;
+      background: #9a9a9a;
+    }
+    #root .01-agenda-chair.c1 { left: 240px; }
+    #root .01-agenda-chair.c2 { left: 900px; transform: scale(1.1); }
+    #root .01-agenda-chair.c3 { left: 1560px; }
+
+    /* ---- agenda column ---- */
+    #root .01-agenda-card {
+      position: absolute;
+      left: 660px;
+      top: 108px;
+      width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    #root .01-agenda-row {
+      height: 62px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      padding: 0 22px;
+      gap: 16px;
+      box-sizing: border-box;
+    }
+    #root .01-agenda-row.filled {
+      background: rgba(91, 61, 245, 0.04);
+      border: 1.5px solid rgba(91, 61, 245, 0.2);
+    }
+    #root .01-agenda-row.empty {
+      background: transparent;
+      border: 1.5px dashed rgba(91, 61, 245, 0.38);
+    }
+    #root .01-agenda-time {
+      width: 66px;
+      flex-shrink: 0;
+      font-size: 16px;
+      font-weight: 500;
+      color: #9a9a9a;
+      letter-spacing: 0.01em;
+    }
+    #root .01-agenda-bar {
+      flex: 1;
+      height: 15px;
+      border-radius: 7px;
+      background: rgba(91, 61, 245, 0.16);
+    }
+
+    /* ---- glow behind the stat ---- */
+    #root .01-agenda-glow-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    #root .01-agenda-glow {
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(91, 61, 245, 0.22) 0%,
+        rgba(91, 61, 245, 0.08) 45%,
+        rgba(91, 61, 245, 0) 72%
+      );
+    }
+
+    /* ---- the hero stat ---- */
+    #root .01-agenda-stat-wrap {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #root .01-agenda-stat {
+      font-size: 12.2cqw;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #5b3df5;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    /* ---- ink label beneath the stat ---- */
+    #root .01-agenda-label-wrap {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 706px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #root .01-agenda-label {
+      font-size: 29px;
+      font-weight: 500;
+      color: #1a1a2e;
+      letter-spacing: -0.005em;
+    }
+
+    /* ---- discreet subtitle, bottom-left ---- */
+    #root .01-agenda-subtitle {
+      position: absolute;
+      left: 80px;
+      top: 852px;
+      font-size: 21px;
+      font-weight: 500;
+      color: #9a9a9a;
+      letter-spacing: 0.01em;
+    }
+  </style>
+
+  <div id="root" data-composition-id="01-agenda">
+    <div class="01-agenda-camera">
+      <div class="01-agenda-bg clip" data-start="0" data-duration="4.395" data-track-index="0"></div>
+
+      <div class="01-agenda-chairs clip" data-start="0" data-duration="4.395" data-track-index="1">
+        <div class="01-agenda-chair c1"><div class="back"></div><div class="seat"></div></div>
+        <div class="01-agenda-chair c2"><div class="back"></div><div class="seat"></div></div>
+        <div class="01-agenda-chair c3"><div class="back"></div><div class="seat"></div></div>
+      </div>
+
+      <div class="01-agenda-card clip" data-start="0" data-duration="4.395" data-track-index="2">
+        <div class="01-agenda-row filled">
+          <span class="01-agenda-time">9:00</span>
+          <span class="01-agenda-bar"></span>
+        </div>
+        <div class="01-agenda-row filled">
+          <span class="01-agenda-time">9:30</span>
+          <span class="01-agenda-bar"></span>
+        </div>
+        <div class="01-agenda-row empty">
+          <span class="01-agenda-time">10:00</span>
+        </div>
+        <div class="01-agenda-row filled">
+          <span class="01-agenda-time">10:30</span>
+          <span class="01-agenda-bar"></span>
+        </div>
+      </div>
+
+      <div class="01-agenda-glow-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="3">
+        <div class="01-agenda-glow"></div>
+      </div>
+
+      <div class="01-agenda-stat-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="4">
+        <div class="01-agenda-stat">0 $</div>
+      </div>
+
+      <div class="01-agenda-label-wrap clip" data-start="3.0" data-duration="1.395" data-track-index="5">
+        <div class="01-agenda-label">plage d&rsquo;hygi&egrave;ne perdue</div>
+      </div>
+
+      <div class="01-agenda-subtitle clip" data-start="3.4" data-duration="0.995" data-track-index="6">
+        Fonctionne avec Progident et Dentitek
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script>
+    (function () {
+      var root = document.currentScript.closest('[data-composition-id="01-agenda"]');
+      var q = function (sel) { return root.querySelector(sel); };
+
+      var camera = q(".01-agenda-camera");
+      var card = q(".01-agenda-card");
+      var glow = q(".01-agenda-glow");
+      var statWrap = q(".01-agenda-stat-wrap");
+      var statEl = q(".01-agenda-stat");
+      var labelWrap = q(".01-agenda-label-wrap");
+      var subtitle = q(".01-agenda-subtitle");
+
+      var tl = gsap.timeline({ paused: true });
+
+      // Scene 1 (0.0-1.6s): quiet hold — agenda settles in, nothing else yet.
+      tl.fromTo(
+        card,
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.55, ease: "power2.out" },
+        0
+      );
+
+      // Scene 1 -> 2: agenda dims as the cost takes over.
+      tl.to(card, { opacity: 0.32, duration: 0.6, ease: "power1.out" }, 1.6);
+
+      // Scene 2 (1.6-3.0s): "325 $" counts up, scale-grows with the value;
+      // a soft violet glow blooms behind it on the same ease.
+      tl.fromTo(
+        statWrap,
+        { scale: 0.24 },
+        { scale: 1, duration: 1.4, ease: "power2.out", transformOrigin: "50% 50%" },
+        1.6
+      );
+      tl.fromTo(
+        glow,
+        { scale: 0.35, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.4, ease: "power2.out", transformOrigin: "50% 50%" },
+        1.6
+      );
+      var counter = { val: 0 };
+      tl.to(
+        counter,
+        {
+          val: 325,
+          duration: 1.4,
+          ease: "power2.out",
+          onUpdate: function () {
+            statEl.textContent = Math.round(counter.val) + " $";
+          },
+        },
+        1.6
+      );
+
+      // Scene 3 (3.0-4.395s): settle, label fades up, gentle camera lean-in,
+      // discreet PMS sub-title fades up last.
+      tl.fromTo(
+        statWrap,
+        { scale: 1 },
+        { scale: 1.025, duration: 0.22, ease: "power1.out", transformOrigin: "50% 50%" },
+        3.0
+      ).to(
+        statWrap,
+        { scale: 1, duration: 0.3, ease: "power1.inOut", transformOrigin: "50% 50%" },
+        3.22
+      );
+
+      tl.fromTo(
+        labelWrap,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        3.0
+      );
+
+      tl.fromTo(
+        camera,
+        { scale: 1 },
+        { scale: 1.03, duration: 1.395, ease: "sine.inOut", transformOrigin: "50% 50%" },
+        3.0
+      );
+
+      tl.fromTo(
+        subtitle,
+        { opacity: 0, y: 10 },
+        { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
+        3.4
+      );
+
+      window.__timelines = window.__timelines || {};
+      window.__timelines["01-agenda"] = tl;
+    })();
+  </script>
+</template>
