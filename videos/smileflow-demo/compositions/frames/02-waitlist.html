@@ -30,19 +30,19 @@
       width: 1920px;
       height: 1080px;
       overflow: hidden;
-      background: #ffffff;
       font-family: "Inter02", sans-serif;
+      font-size: 16px;
       container-type: size;
     }
 
-    .02-waitlist-scene {
+    .w02-scene {
       position: absolute;
       inset: 0;
       overflow: hidden; /* required for the coordinate-target-zoom camera */
     }
 
     /* ---------- background ---------- */
-    #02-waitlist-bg {
+    #w02-bg {
       position: absolute;
       inset: 0;
       background:
@@ -56,20 +56,20 @@
     }
 
     /* ---------- zoom rig (coordinate-target-zoom) ---------- */
-    .02-waitlist-zoom-outer {
+    .w02-zoom-outer {
       position: absolute;
       inset: 0;
       transform-origin: 50% 50%;
       will-change: transform;
     }
-    .02-waitlist-zoom-inner {
+    .w02-zoom-inner {
       position: absolute;
       inset: 0;
       will-change: transform;
     }
 
     /* ---------- phone mockup ---------- */
-    #02-waitlist-phone {
+    #w02-phone {
       position: absolute;
       left: 760px;
       top: 50px;
@@ -81,7 +81,7 @@
       box-shadow: none;
       transform-origin: 50% 50%;
     }
-    .02-waitlist-statusbar {
+    .w02-statusbar {
       position: absolute;
       left: 0;
       top: 0;
@@ -93,25 +93,25 @@
       padding: 0 26px;
       box-sizing: border-box;
     }
-    .02-waitlist-statusbar-time {
+    .w02-statusbar-time {
       font-family: "Inter02", sans-serif;
       font-weight: 600;
       font-size: 15px;
-      color: #9a9a9a;
+      color: #767676;
       letter-spacing: 0.01em;
     }
-    .02-waitlist-statusbar-icons {
+    .w02-statusbar-icons {
       display: flex;
       align-items: center;
       gap: 5px;
     }
-    .02-waitlist-sig-bar {
+    .w02-sig-bar {
       display: inline-block;
       width: 3px;
       background: #9a9a9a;
       border-radius: 1px;
     }
-    .02-waitlist-batt {
+    .w02-batt {
       width: 20px;
       height: 10px;
       border: 1.4px solid #9a9a9a;
@@ -119,7 +119,7 @@
       position: relative;
       margin-left: 4px;
     }
-    .02-waitlist-batt::after {
+    .w02-batt::after {
       content: "";
       position: absolute;
       right: -3px;
@@ -129,7 +129,7 @@
       background: #9a9a9a;
       border-radius: 0 1px 1px 0;
     }
-    .02-waitlist-batt::before {
+    .w02-batt::before {
       content: "";
       position: absolute;
       left: 1.5px;
@@ -140,7 +140,7 @@
       border-radius: 1px;
     }
 
-    .02-waitlist-screen {
+    .w02-screen {
       position: absolute;
       left: 20px;
       top: 66px;
@@ -149,22 +149,22 @@
     }
 
     /* ---------- agenda backdrop ---------- */
-    #02-waitlist-agenda-bg {
+    #w02-agenda-bg {
       position: absolute;
       left: 0;
       top: 0;
       width: 100%;
     }
-    .02-waitlist-agenda-eyebrow {
+    .w02-agenda-eyebrow {
       font-family: "SG02", sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 13px;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: #5b3df5;
       margin-bottom: 12px;
     }
-    .02-waitlist-agenda-row {
+    .w02-agenda-row {
       display: flex;
       align-items: center;
       gap: 10px;
@@ -174,21 +174,21 @@
       width: 100%;
       box-sizing: border-box;
     }
-    .02-waitlist-agenda-dot {
+    .w02-agenda-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
       background: rgba(26, 26, 46, 0.18);
       flex: 0 0 auto;
     }
-    .02-waitlist-agenda-label {
+    .w02-agenda-label {
       font-size: 14px;
-      color: #9a9a9a;
+      color: #767676;
       text-decoration: line-through;
     }
 
     /* ---------- alert pill ---------- */
-    #02-waitlist-alert {
+    #w02-alert {
       position: absolute;
       left: 50%;
       top: -20px;
@@ -204,14 +204,14 @@
       box-sizing: border-box;
       transform-origin: 50% 50%;
     }
-    .02-waitlist-alert-dot {
+    .w02-alert-dot {
       flex: 0 0 auto;
       width: 10px;
       height: 10px;
       border-radius: 50%;
       background: #5b3df5;
     }
-    .02-waitlist-alert-text {
+    .w02-alert-text {
       font-family: "Inter02", sans-serif;
       font-weight: 600;
       font-size: 16px;
@@ -219,7 +219,7 @@
     }
 
     /* ---------- thread ---------- */
-    #02-waitlist-thread {
+    #w02-thread {
       position: absolute;
       left: 0;
       top: 200px;
@@ -227,7 +227,7 @@
       transform-origin: 50% 0%;
     }
 
-    #02-waitlist-bubble-out {
+    #w02-bubble-out {
       position: absolute;
       right: 0;
       top: 10px;
@@ -240,7 +240,7 @@
       border-radius: 14px 14px 4px 14px;
       transform-origin: 100% 100%;
     }
-    #02-waitlist-bubble-out-text {
+    #w02-bubble-out-text {
       font-family: "Inter02", sans-serif;
       font-weight: 400;
       font-size: 16px;
@@ -248,7 +248,7 @@
       color: #1a1a2e;
     }
 
-    #02-waitlist-dots {
+    #w02-dots {
       position: absolute;
       right: 0;
       top: 100px;
@@ -261,7 +261,7 @@
       border-radius: 100px;
       transform-origin: 100% 50%;
     }
-    .02-waitlist-dot {
+    .w02-dot {
       width: 7px;
       height: 7px;
       border-radius: 50%;
@@ -269,7 +269,7 @@
       display: block;
     }
 
-    #02-waitlist-bubble-in {
+    #w02-bubble-in {
       position: absolute;
       left: 0;
       top: 155px;
@@ -279,7 +279,7 @@
       gap: 10px;
       transform-origin: 0% 0%;
     }
-    #02-waitlist-avatar {
+    #w02-avatar {
       flex: 0 0 auto;
       width: 36px;
       height: 36px;
@@ -289,12 +289,12 @@
       align-items: center;
       justify-content: center;
       font-family: "SG02", sans-serif;
-      font-weight: 600;
+      font-weight: 700;
       font-size: 13px;
       color: #5b3df5;
       transform-origin: 50% 50%;
     }
-    #02-waitlist-bubble-in-inner {
+    #w02-bubble-in-inner {
       flex: 1 1 auto;
       padding: 14px 16px;
       box-sizing: border-box;
@@ -306,20 +306,20 @@
       gap: 8px;
       transform-origin: 0% 50%;
     }
-    .02-waitlist-bubble-in-text {
+    .w02-bubble-in-text {
       font-family: "Inter02", sans-serif;
       font-weight: 600;
       font-size: 16px;
       color: #1a1a2e;
     }
-    .02-waitlist-thumb {
+    .w02-thumb {
       flex: 0 0 auto;
       width: 18px;
       height: 18px;
     }
 
     /* ---------- confirmation card ---------- */
-    #02-waitlist-confirm {
+    #w02-confirm {
       position: absolute;
       left: 0;
       top: 230px;
@@ -331,60 +331,55 @@
       border-radius: 14px;
       transform-origin: 50% 0%;
     }
-    .02-waitlist-confirm-line {
-      font-family: "Inter02", sans-serif;
-      font-weight: 400;
-      font-size: 18px;
-      color: #1a1a2e;
-      margin-bottom: 4px;
-    }
-    .02-waitlist-confirm-num {
+    .w02-confirm-line {
       font-family: "SG02", sans-serif;
       font-weight: 700;
+      font-size: 30px;
+      line-height: 1.15;
       color: #5b3df5;
     }
-    .02-waitlist-confirm-row {
+    .w02-confirm-row {
       display: flex;
       align-items: center;
       gap: 10px;
       margin-top: 16px;
     }
-    .02-waitlist-badge-wrap {
+    .w02-badge-wrap {
       position: relative;
       width: 28px;
       height: 28px;
       flex: 0 0 auto;
     }
-    #02-waitlist-badge-outline,
-    #02-waitlist-badge-solid {
+    #w02-badge-outline,
+    #w02-badge-solid {
       position: absolute;
       inset: 0;
       border-radius: 50%;
       transform-origin: 50% 50%;
     }
-    #02-waitlist-badge-outline {
+    #w02-badge-outline {
       border: 2px solid rgba(26, 26, 46, 0.25);
       background: transparent;
     }
-    #02-waitlist-badge-solid {
+    #w02-badge-solid {
       background: #059669;
       display: flex;
       align-items: center;
       justify-content: center;
       opacity: 0;
     }
-    #02-waitlist-badge-solid svg {
+    #w02-badge-solid svg {
       width: 16px;
       height: 16px;
     }
-    #02-waitlist-badge-solid path {
+    #w02-badge-solid path {
       fill: none;
       stroke: #ffffff;
       stroke-width: 2.6;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
-    .02-waitlist-confirm-sub {
+    .w02-confirm-sub {
       font-family: "Inter02", sans-serif;
       font-weight: 600;
       font-size: 17px;
@@ -395,104 +390,104 @@
   <div
     id="root"
     data-composition-id="02-waitlist"
-  >
+   data-width="1920" data-height="1080">
     <div
       class="clip"
-      id="02-waitlist-bg"
+      id="w02-bg"
       data-start="0"
       data-duration="9.088"
       data-track-index="0"
     ></div>
 
-    <div class="02-waitlist-scene">
-      <div class="02-waitlist-zoom-outer" id="02-waitlist-zoom-outer">
-        <div class="02-waitlist-zoom-inner" id="02-waitlist-zoom-inner">
+    <div class="w02-scene">
+      <div class="w02-zoom-outer" id="w02-zoom-outer">
+        <div class="w02-zoom-inner" id="w02-zoom-inner">
           <div
             class="clip"
-            id="02-waitlist-phone"
+            id="w02-phone"
             data-start="0"
             data-duration="9.088"
             data-track-index="1"
           >
-            <div class="02-waitlist-statusbar">
-              <span class="02-waitlist-statusbar-time">9:41</span>
-              <div class="02-waitlist-statusbar-icons">
-                <span class="02-waitlist-sig-bar" style="height: 5px"></span>
-                <span class="02-waitlist-sig-bar" style="height: 7px"></span>
-                <span class="02-waitlist-sig-bar" style="height: 9px"></span>
-                <span class="02-waitlist-batt"></span>
+            <div class="w02-statusbar">
+              <span class="w02-statusbar-time">9:41</span>
+              <div class="w02-statusbar-icons">
+                <span class="w02-sig-bar" style="height: 5px"></span>
+                <span class="w02-sig-bar" style="height: 7px"></span>
+                <span class="w02-sig-bar" style="height: 9px"></span>
+                <span class="w02-batt"></span>
               </div>
             </div>
 
-            <div class="02-waitlist-screen">
+            <div class="w02-screen">
               <div
                 class="clip"
-                id="02-waitlist-agenda-bg"
+                id="w02-agenda-bg"
                 data-start="0"
                 data-duration="2.4"
                 data-track-index="2"
               >
-                <div class="02-waitlist-agenda-eyebrow">Agenda</div>
-                <div class="02-waitlist-agenda-row">
-                  <span class="02-waitlist-agenda-dot"></span>
-                  <span class="02-waitlist-agenda-label">10:30 — Hygiène</span>
+                <div class="w02-agenda-eyebrow">Agenda</div>
+                <div class="w02-agenda-row">
+                  <span class="w02-agenda-dot"></span>
+                  <span class="w02-agenda-label">10:30 — Hygiène</span>
                 </div>
               </div>
 
               <div
                 class="clip"
-                id="02-waitlist-alert"
+                id="w02-alert"
                 data-start="0"
                 data-duration="9.088"
                 data-track-index="3"
               >
-                <span class="02-waitlist-alert-dot"></span>
-                <span class="02-waitlist-alert-text">Annulation détectée</span>
+                <span class="w02-alert-dot"></span>
+                <span class="w02-alert-text">Annulation détectée</span>
               </div>
 
               <div
                 class="clip"
-                id="02-waitlist-thread"
+                id="w02-thread"
                 data-start="2.0"
                 data-duration="7.088"
                 data-track-index="4"
               >
                 <div
                   class="clip"
-                  id="02-waitlist-bubble-out"
+                  id="w02-bubble-out"
                   data-start="2.6"
                   data-duration="6.488"
                   data-track-index="5"
                 >
-                  <span id="02-waitlist-bubble-out-text"></span>
+                  <span id="w02-bubble-out-text"></span>
                 </div>
 
                 <div
                   class="clip"
-                  id="02-waitlist-dots"
+                  id="w02-dots"
                   data-start="4.5"
                   data-duration="0.5"
                   data-track-index="6"
                 >
-                  <span class="02-waitlist-dot" id="02-waitlist-dot-1"></span>
-                  <span class="02-waitlist-dot" id="02-waitlist-dot-2"></span>
-                  <span class="02-waitlist-dot" id="02-waitlist-dot-3"></span>
+                  <span class="w02-dot" id="w02-dot-1"></span>
+                  <span class="w02-dot" id="w02-dot-2"></span>
+                  <span class="w02-dot" id="w02-dot-3"></span>
                 </div>
 
                 <div
                   class="clip"
-                  id="02-waitlist-bubble-in"
+                  id="w02-bubble-in"
                   data-start="5.0"
                   data-duration="4.088"
                   data-track-index="7"
                 >
-                  <div id="02-waitlist-avatar">MT</div>
-                  <div id="02-waitlist-bubble-in-inner">
-                    <span class="02-waitlist-bubble-in-text"
+                  <div id="w02-avatar">MT</div>
+                  <div id="w02-bubble-in-inner">
+                    <span class="w02-bubble-in-text"
                       >Marie Tremblay — OUI</span
                     >
                     <svg
-                      class="02-waitlist-thumb"
+                      class="w02-thumb"
                       viewBox="0 0 24 24"
                       xmlns="http://www.w3.org/2000/svg"
                     >
@@ -510,24 +505,22 @@
 
                 <div
                   class="clip"
-                  id="02-waitlist-confirm"
+                  id="w02-confirm"
                   data-start="7.2"
                   data-duration="1.888"
                   data-track-index="8"
                 >
-                  <div class="02-waitlist-confirm-line">
-                    Comblé en <span class="02-waitlist-confirm-num">4 min</span>
-                  </div>
-                  <div class="02-waitlist-confirm-row">
-                    <span class="02-waitlist-badge-wrap">
-                      <span id="02-waitlist-badge-outline"></span>
-                      <span id="02-waitlist-badge-solid">
+                  <div class="w02-confirm-line">Comblé en 4 min</div>
+                  <div class="w02-confirm-row">
+                    <span class="w02-badge-wrap">
+                      <span id="w02-badge-outline"></span>
+                      <span id="w02-badge-solid">
                         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path id="02-waitlist-check-path" d="M5 13l4 4L19 7" />
+                          <path id="w02-check-path" d="M5 13l4 4L19 7" />
                         </svg>
                       </span>
                     </span>
-                    <span class="02-waitlist-confirm-sub">Sans appel</span>
+                    <span class="w02-confirm-sub">Sans appel</span>
                   </div>
                 </div>
               </div>
@@ -538,7 +531,7 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap.min.js"></script>
   <script>
     (function () {
       window.__timelines = window.__timelines || {};
@@ -548,14 +541,14 @@
 
       // Hero (phone) arrives fast so the subject is visible by t<=0.5s.
       tl.fromTo(
-        "#02-waitlist-phone",
+        "#w02-phone",
         { scale: 0.96, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.4, ease: "power3.out" },
         0,
       );
 
       tl.fromTo(
-        "#02-waitlist-agenda-bg",
+        "#w02-agenda-bg",
         { opacity: 0, y: 8 },
         { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
         0.15,
@@ -563,26 +556,26 @@
 
       // Alert pill — spring-pop entrance, controlled settle, no overshoot.
       tl.fromTo(
-        "#02-waitlist-alert",
+        "#w02-alert",
         { scale: 0, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out" },
         0.35,
       );
 
       // Agenda backdrop clears as the thread is about to take over.
-      tl.to("#02-waitlist-agenda-bg", { opacity: 0, duration: 0.3, ease: "power1.out" }, 2.0);
+      tl.to("#w02-agenda-bg", { opacity: 0, duration: 0.3, ease: "power1.out" }, 2.0);
 
       // ===== Scene 2 (2.0–5.0s): the SMS thread slides up, message types on, sends =====
 
       tl.fromTo(
-        "#02-waitlist-thread",
+        "#w02-thread",
         { y: 60, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.5, ease: "power3.out" },
         2.0,
       );
 
       tl.fromTo(
-        "#02-waitlist-bubble-out",
+        "#w02-bubble-out",
         { scale: 0, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.3, ease: "power3.out" },
         2.6,
@@ -591,7 +584,7 @@
       // Character-by-character type-on (smooth slice — discrete-text-sequence).
       (function () {
         var fullText = "Une place vient de se libérer — ça vous intéresse?";
-        var el = document.getElementById("02-waitlist-bubble-out-text");
+        var el = document.getElementById("w02-bubble-out-text");
         var len = { v: 0 };
         tl.to(
           len,
@@ -609,16 +602,16 @@
 
       // Sending indicator — three pulsing dots, phase-offset sine loop.
       tl.fromTo(
-        "#02-waitlist-dots",
+        "#w02-dots",
         { opacity: 0, scale: 0.9 },
         { opacity: 1, scale: 1, duration: 0.15, ease: "power2.out" },
         4.5,
       );
       (function () {
         var dots = [
-          document.getElementById("02-waitlist-dot-1"),
-          document.getElementById("02-waitlist-dot-2"),
-          document.getElementById("02-waitlist-dot-3"),
+          document.getElementById("w02-dot-1"),
+          document.getElementById("w02-dot-2"),
+          document.getElementById("w02-dot-3"),
         ];
         var phase = { p: 0 };
         tl.to(
@@ -644,7 +637,7 @@
       // ===== Scene 3 (5.0–7.2s): the reply lands =====
 
       tl.fromTo(
-        ["#02-waitlist-avatar", "#02-waitlist-bubble-in-inner"],
+        ["#w02-avatar", "#w02-bubble-in-inner"],
         { scale: 0, opacity: 0 },
         { scale: 1, opacity: 1, duration: 0.5, ease: "power3.out", stagger: 0.08 },
         5.0,
@@ -653,7 +646,7 @@
       // ===== Scene 4 (7.2–9.088s): confirmation cascades in, badge flips, camera pushes in =====
 
       tl.fromTo(
-        "#02-waitlist-confirm",
+        "#w02-confirm",
         { y: 40, opacity: 0 },
         { y: 0, opacity: 1, duration: 0.4, ease: "power3.out" },
         7.2,
@@ -668,12 +661,12 @@
       var BADGE_ENTER_START = BADGE_TRIGGER + BADGE_EXIT_DUR - BADGE_OVERLAP;
 
       tl.to(
-        "#02-waitlist-badge-outline",
+        "#w02-badge-outline",
         { scale: 0.7, opacity: 0, duration: BADGE_EXIT_DUR, ease: "power2.in" },
         BADGE_TRIGGER,
       );
       tl.fromTo(
-        "#02-waitlist-badge-solid",
+        "#w02-badge-solid",
         { scale: 0.7, opacity: 0 },
         { scale: 1, opacity: 1, duration: BADGE_ENTER_DUR, ease: "back.out(1.6)" },
         BADGE_ENTER_START,
@@ -681,7 +674,7 @@
 
       // Checkmark draw-in (svg-path-draw).
       (function () {
-        var path = document.getElementById("02-waitlist-check-path");
+        var path = document.getElementById("w02-check-path");
         var len = path.getTotalLength();
         path.style.strokeDasharray = String(len);
         path.style.strokeDashoffset = String(len);
@@ -693,22 +686,26 @@
       })();
 
       // Camera push-in tight on the confirmation (coordinate-target-zoom).
-      // The confirmation card is authored dead-center of the 1920x1080 canvas,
-      // so the measured target offset is (0,0) — baked directly, no runtime
-      // measurement needed, keeping timeline construction synchronous.
+      // Layout is authored in fixed px (phone 760,50 400x820 -> screen +20,66
+      // -> thread +0,200 -> confirm +0,230), so the target's canvas position
+      // is a fixed, known quantity — baked directly from that authored geometry
+      // rather than measured at runtime, keeping timeline construction
+      // synchronous. Confirm card: left 780 width 360 (=> center x 960, offset
+      // 0) top 546, authored height ~125 (22 pad + 30 line + 16 gap + 28 row +
+      // 24 pad) => center y ~608 (offset +68 below canvas center 540).
       var ZOOM_AT = 8.25;
       var ZOOM_DUR = 0.55;
       var ZOOM_SCALE = 2.2;
       var TARGET_OFFSET_X = 0;
-      var TARGET_OFFSET_Y = 0;
+      var TARGET_OFFSET_Y = 68;
 
       tl.to(
-        "#02-waitlist-zoom-outer",
+        "#w02-zoom-outer",
         { scale: ZOOM_SCALE, duration: ZOOM_DUR, ease: "power3.inOut" },
         ZOOM_AT,
       );
       tl.to(
-        "#02-waitlist-zoom-inner",
+        "#w02-zoom-inner",
         { x: -TARGET_OFFSET_X, y: -TARGET_OFFSET_Y, duration: ZOOM_DUR, ease: "power3.inOut" },
         ZOOM_AT,
       );

@@ -1,6 +1,6 @@
 ---
 format: 1920x1080
-duration: 40s
+duration: 35s
 message: "Récupérez les plages perdues de votre agenda — et vos fins de journée."
 arc: "PAS — hook (stat de douleur) → solution tease (Smart Waitlist) → preuve produit (Scribe, Suivi) → CTA"
 audience: "Propriétaires et gestionnaires de cliniques dentaires au Québec"
@@ -17,7 +17,7 @@ music: soft-corporate-underscore
 
 ## Frame 1 — Le trou dans l'agenda
 
-- status: outline
+- status: animated
 - src: compositions/frames/01-agenda.html
 - duration: 4.395s
 - transition_in: cut
@@ -54,7 +54,7 @@ to the cut, top ~83% respected throughout.
 
 ## Frame 2 — Smart Waitlist comble le trou
 
-- status: outline
+- status: animated
 - src: compositions/frames/02-waitlist.html
 - duration: 9.088s
 - transition_in: crossfade
@@ -94,7 +94,7 @@ the cut.
 
 ## Frame 3 — Le Scribe rédige la note
 
-- status: outline
+- status: animated
 - src: compositions/frames/03-scribe.html
 - duration: 8.533s
 - transition_in: crossfade
@@ -131,7 +131,7 @@ dentiste" fades in beside it and holds to the cut.
 
 ## Frame 4 — Le suivi se fait tout seul
 
-- status: outline
+- status: animated
 - src: compositions/frames/04-suivi.html
 - duration: 6.677s
 - transition_in: crossfade
@@ -162,7 +162,7 @@ l'invite à laisser un avis Google"); both cards hold, settled, to the cut.
 
 ## Frame 5 — SmileFlow
 
-- status: outline
+- status: animated
 - src: compositions/frames/05-cta.html
 - duration: 6.741s
 - transition_in: crossfade

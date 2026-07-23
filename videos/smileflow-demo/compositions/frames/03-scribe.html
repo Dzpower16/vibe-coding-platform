@@ -1,5 +1,18 @@
 <template>
   <style>
+    @font-face {
+      font-family: "Inter03";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Inter03";
+      src: url("assets/fonts/Inter-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+    }
+
     /* Root — styled by #root only (subcomposition_root_styled_by_class law) */
     #root {
       position: absolute;
@@ -8,7 +21,7 @@
       height: 1080px;
       overflow: hidden;
       container-type: size;
-      font-family: sans-serif;
+      font-family: "Inter03", sans-serif;
       color: #1a1a2e;
     }
 
@@ -144,7 +157,7 @@
 
     .scribe-pill {
       position: absolute;
-      top: 452px;
+      top: 222px;
       left: 50%;
       margin-left: -170px;
       width: 340px;
@@ -171,7 +184,7 @@
 
     .scribe-footer {
       position: absolute;
-      top: 650px;
+      top: 420px;
       left: 40px;
       right: 40px;
       display: flex;
@@ -217,7 +230,6 @@
       font-size: 14px;
       font-weight: 700;
       opacity: 0;
-      transform: scale(0);
       transform-origin: 50% 50%;
     }
     .scribe-microcopy {
@@ -228,7 +240,7 @@
     }
   </style>
 
-  <div id="root" data-composition-id="03-scribe">
+  <div id="root" data-composition-id="03-scribe" data-width="1920" data-height="1080">
     <div
       class="clip scribe-bg"
       data-start="0"
@@ -444,11 +456,16 @@
     // Single top-to-bottom highlight pass over the settled rows. No new content, no camera move.
     tl.fromTo(
       "#scribe-sweep",
-      { y: 0, opacity: 0 },
+      { opacity: 0 },
       { opacity: 1, duration: 0.2, ease: "power1.out" },
       5.6,
     );
-    tl.to("#scribe-sweep", { y: 244, duration: 1.15, ease: "power1.inOut" }, 5.6);
+    tl.fromTo(
+      "#scribe-sweep",
+      { y: 0 },
+      { y: 244, duration: 1.15, ease: "power1.inOut" },
+      5.6,
+    );
     tl.to("#scribe-sweep", { opacity: 0, duration: 0.2, ease: "power1.in" }, 6.75);
 
     // ================= Scene 4 (7.2–8.533s) — sign, one gesture =================

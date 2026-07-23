@@ -1,60 +1,79 @@
 <template>
   <style>
+    @font-face {
+      font-family: "Inter01";
+      src: url("assets/fonts/Inter-400.woff2") format("woff2");
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "Inter01";
+      src: url("assets/fonts/Inter-600.woff2") format("woff2");
+      font-weight: 600;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: "SG01";
+      src: url("assets/fonts/SpaceGrotesk-700.woff2") format("woff2");
+      font-weight: 700;
+      font-style: normal;
+    }
+
     #root {
       position: relative;
       width: 100%;
       height: 100%;
       container-type: size;
       overflow: hidden;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: "Inter01", sans-serif;
       color: #1a1a2e;
     }
 
-    #root .01-agenda-camera {
+    #root .f01-camera {
       position: absolute;
       inset: 0;
       transform-origin: 50% 50%;
     }
 
     /* ---- full-bleed ground (never on #root) ---- */
-    #root .01-agenda-bg {
+    #root .f01-bg {
       position: absolute;
       inset: 0;
       background: #ffffff;
     }
 
     /* ---- deep-background waiting room (blurred, dim) ---- */
-    #root .01-agenda-chairs {
+    #root .f01-chairs {
       position: absolute;
       inset: 0;
       opacity: 0.16;
       filter: blur(11px);
       pointer-events: none;
     }
-    #root .01-agenda-chair {
+    #root .f01-chair {
       position: absolute;
       bottom: 190px;
       width: 108px;
     }
-    #root .01-agenda-chair .seat {
+    #root .f01-chair .seat {
       width: 100%;
       height: 20px;
       border-radius: 8px;
       background: #9a9a9a;
     }
-    #root .01-agenda-chair .back {
+    #root .f01-chair .back {
       width: 100%;
       height: 84px;
       margin-bottom: 8px;
       border-radius: 10px;
       background: #9a9a9a;
     }
-    #root .01-agenda-chair.c1 { left: 240px; }
-    #root .01-agenda-chair.c2 { left: 900px; transform: scale(1.1); }
-    #root .01-agenda-chair.c3 { left: 1560px; }
+    #root .f01-chair.c1 { left: 240px; }
+    #root .f01-chair.c2 { left: 900px; transform: scale(1.1); }
+    #root .f01-chair.c3 { left: 1560px; }
 
     /* ---- agenda column ---- */
-    #root .01-agenda-card {
+    #root .f01-card {
       position: absolute;
       left: 660px;
       top: 108px;
@@ -63,7 +82,7 @@
       flex-direction: column;
       gap: 14px;
     }
-    #root .01-agenda-row {
+    #root .f01-row {
       height: 62px;
       border-radius: 12px;
       display: flex;
@@ -72,23 +91,23 @@
       gap: 16px;
       box-sizing: border-box;
     }
-    #root .01-agenda-row.filled {
+    #root .f01-row.filled {
       background: rgba(91, 61, 245, 0.04);
       border: 1.5px solid rgba(91, 61, 245, 0.2);
     }
-    #root .01-agenda-row.empty {
+    #root .f01-row.empty {
       background: transparent;
       border: 1.5px dashed rgba(91, 61, 245, 0.38);
     }
-    #root .01-agenda-time {
+    #root .f01-time {
       width: 66px;
       flex-shrink: 0;
       font-size: 16px;
       font-weight: 500;
-      color: #9a9a9a;
+      color: #6b6b6b;
       letter-spacing: 0.01em;
     }
-    #root .01-agenda-bar {
+    #root .f01-bar {
       flex: 1;
       height: 15px;
       border-radius: 7px;
@@ -96,7 +115,7 @@
     }
 
     /* ---- glow behind the stat ---- */
-    #root .01-agenda-glow-wrap {
+    #root .f01-glow-wrap {
       position: absolute;
       inset: 0;
       display: flex;
@@ -104,7 +123,7 @@
       justify-content: center;
       pointer-events: none;
     }
-    #root .01-agenda-glow {
+    #root .f01-glow {
       width: 620px;
       height: 620px;
       border-radius: 50%;
@@ -117,16 +136,17 @@
     }
 
     /* ---- the hero stat ---- */
-    #root .01-agenda-stat-wrap {
+    #root .f01-stat-wrap {
       position: absolute;
       inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    #root .01-agenda-stat {
+    #root .f01-stat {
+      font-family: "SG01", sans-serif;
       font-size: 12.2cqw;
-      font-weight: 800;
+      font-weight: 700;
       letter-spacing: -0.02em;
       color: #5b3df5;
       font-variant-numeric: tabular-nums;
@@ -134,7 +154,7 @@
     }
 
     /* ---- ink label beneath the stat ---- */
-    #root .01-agenda-label-wrap {
+    #root .f01-label-wrap {
       position: absolute;
       left: 0;
       right: 0;
@@ -143,7 +163,7 @@
       align-items: center;
       justify-content: center;
     }
-    #root .01-agenda-label {
+    #root .f01-label {
       font-size: 29px;
       font-weight: 500;
       color: #1a1a2e;
@@ -151,76 +171,76 @@
     }
 
     /* ---- discreet subtitle, bottom-left ---- */
-    #root .01-agenda-subtitle {
+    #root .f01-subtitle {
       position: absolute;
       left: 80px;
       top: 852px;
       font-size: 21px;
       font-weight: 500;
-      color: #9a9a9a;
+      color: #6b6b6b;
       letter-spacing: 0.01em;
     }
   </style>
 
-  <div id="root" data-composition-id="01-agenda">
-    <div class="01-agenda-camera">
-      <div class="01-agenda-bg clip" data-start="0" data-duration="4.395" data-track-index="0"></div>
+  <div id="root" data-composition-id="01-agenda" data-width="1920" data-height="1080">
+    <div class="f01-camera">
+      <div class="f01-bg clip" data-start="0" data-duration="4.395" data-track-index="0"></div>
 
-      <div class="01-agenda-chairs clip" data-start="0" data-duration="4.395" data-track-index="1">
-        <div class="01-agenda-chair c1"><div class="back"></div><div class="seat"></div></div>
-        <div class="01-agenda-chair c2"><div class="back"></div><div class="seat"></div></div>
-        <div class="01-agenda-chair c3"><div class="back"></div><div class="seat"></div></div>
+      <div class="f01-chairs clip" data-start="0" data-duration="4.395" data-track-index="1">
+        <div class="f01-chair c1"><div class="back"></div><div class="seat"></div></div>
+        <div class="f01-chair c2"><div class="back"></div><div class="seat"></div></div>
+        <div class="f01-chair c3"><div class="back"></div><div class="seat"></div></div>
       </div>
 
-      <div class="01-agenda-card clip" data-start="0" data-duration="4.395" data-track-index="2">
-        <div class="01-agenda-row filled">
-          <span class="01-agenda-time">9:00</span>
-          <span class="01-agenda-bar"></span>
+      <div class="f01-card clip" data-start="0" data-duration="4.395" data-track-index="2">
+        <div class="f01-row filled">
+          <span class="f01-time">9:00</span>
+          <span class="f01-bar"></span>
         </div>
-        <div class="01-agenda-row filled">
-          <span class="01-agenda-time">9:30</span>
-          <span class="01-agenda-bar"></span>
+        <div class="f01-row filled">
+          <span class="f01-time">9:30</span>
+          <span class="f01-bar"></span>
         </div>
-        <div class="01-agenda-row empty">
-          <span class="01-agenda-time">10:00</span>
+        <div class="f01-row empty">
+          <span class="f01-time">10:00</span>
         </div>
-        <div class="01-agenda-row filled">
-          <span class="01-agenda-time">10:30</span>
-          <span class="01-agenda-bar"></span>
+        <div class="f01-row filled">
+          <span class="f01-time">10:30</span>
+          <span class="f01-bar"></span>
         </div>
       </div>
 
-      <div class="01-agenda-glow-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="3">
-        <div class="01-agenda-glow"></div>
+      <div class="f01-glow-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="3">
+        <div class="f01-glow"></div>
       </div>
 
-      <div class="01-agenda-stat-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="4">
-        <div class="01-agenda-stat">0 $</div>
+      <div class="f01-stat-wrap clip" data-start="1.6" data-duration="2.795" data-track-index="4">
+        <div class="f01-stat">0 $</div>
       </div>
 
-      <div class="01-agenda-label-wrap clip" data-start="3.0" data-duration="1.395" data-track-index="5">
-        <div class="01-agenda-label">plage d&rsquo;hygi&egrave;ne perdue</div>
+      <div class="f01-label-wrap clip" data-start="3.0" data-duration="1.395" data-track-index="5">
+        <div class="f01-label">plage d&rsquo;hygi&egrave;ne perdue</div>
       </div>
 
-      <div class="01-agenda-subtitle clip" data-start="3.4" data-duration="0.995" data-track-index="6">
+      <div class="f01-subtitle clip" data-start="3.4" data-duration="0.995" data-track-index="6">
         Fonctionne avec Progident et Dentitek
       </div>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+  <script src="assets/vendor/gsap.min.js"></script>
   <script>
     (function () {
-      var root = document.currentScript.closest('[data-composition-id="01-agenda"]');
+      var root = document.currentScript.parentNode.querySelector('[data-composition-id="01-agenda"]');
       var q = function (sel) { return root.querySelector(sel); };
 
-      var camera = q(".01-agenda-camera");
-      var card = q(".01-agenda-card");
-      var glow = q(".01-agenda-glow");
-      var statWrap = q(".01-agenda-stat-wrap");
-      var statEl = q(".01-agenda-stat");
-      var labelWrap = q(".01-agenda-label-wrap");
-      var subtitle = q(".01-agenda-subtitle");
+      var camera = q(".f01-camera");
+      var card = q(".f01-card");
+      var glow = q(".f01-glow");
+      var statWrap = q(".f01-stat-wrap");
+      var statEl = q(".f01-stat");
+      var labelWrap = q(".f01-label-wrap");
+      var subtitle = q(".f01-subtitle");
 
       var tl = gsap.timeline({ paused: true });
 
