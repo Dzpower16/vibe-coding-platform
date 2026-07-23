@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "preferences": {
+    "destination": {
+      "value": "linkedin",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:09:17.746Z"
+    },
+    "aspect": {
+      "value": "1920x1080",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:09:17.880Z"
+    },
+    "language": {
+      "value": "fr-CA",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:09:17.946Z"
+    },
+    "flow": {
+      "value": "automation",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:09:18.014Z"
+    },
+    "storyboard": {
+      "value": "yes",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:09:18.081Z"
+    },
+    "style_preset.product-launch-video": {
+      "value": "blue-professional",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:13:04.713Z"
+    },
+    "voice": {
+      "value": "ff_siwis",
+      "confirmed_in": [
+        "smileflow-demo"
+      ],
+      "updated_at": "2026-07-23T05:13:04.784Z"
+    }
+  },
+  "sightings": {}
+}

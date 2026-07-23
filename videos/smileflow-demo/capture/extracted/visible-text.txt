@@ -1,0 +1,17 @@
+SmileFlow — SaaS pour cliniques dentaires du Québec
+
+Contexte produit :
+- SmileFlow se pose à côté du PMS de la clinique (Progident, Dentitek) sans rien changer à la facturation
+- Problème : les annulations de dernière minute créent des trous dans l'agenda (~325$/plage d'hygiène perdue)
+- Solution 1 — Smart Waitlist : dès qu'une plage se libère, SMS automatique aux bons patients en liste d'attente, confirmation en quelques minutes
+- Solution 2 — Scribe clinique : pendant/après la consultation, un brouillon de note SOAP (Subjectif/Objectif/Analyse/Plan) est généré, le dentiste relit et signe
+- Solution 3 — Suivi patient : message post-visite automatique, invitation à laisser un avis Google
+- Confiance : hébergement des données au Canada, conforme Loi 25, consentement patient explicite, note toujours validée par le dentiste
+
+Tagline : "Récupérez les plages perdues de votre agenda — et vos fins de journée."
+CTA : "Essai gratuit — smileflow.ca"
+
+Hook (ouverture) : "Une annulation de dernière minute, c'est 325$ qui partent."
+Smart Waitlist beats : "Annulation détectée" → SMS envoyé → "Marie Tremblay a répondu OUI" → créneau comblé en 4 min, sans appel.
+Scribe beats : dictée du dentiste → brouillon SOAP structuré → validation/signature en un clic.
+Suivi patient beats : note validée → courriel patient généré → invitation avis Google.
