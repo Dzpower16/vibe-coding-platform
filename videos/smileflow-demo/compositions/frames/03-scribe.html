@@ -1,0 +1,498 @@
+<template>
+  <style>
+    /* Root — styled by #root only (subcomposition_root_styled_by_class law) */
+    #root {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      container-type: size;
+      font-family: sans-serif;
+      color: #1a1a2e;
+    }
+
+    /* ---- tokens (from frame.md, verbatim) ---- */
+    #root {
+      --primary: #5b3df5;
+      --text: #1a1a2e;
+      --text-light: #9a9a9a;
+      --accent-light: rgba(91, 61, 245, 0.08);
+      --accent-medium: rgba(91, 61, 245, 0.15);
+      --border: rgba(91, 61, 245, 0.2);
+      --card-bg: rgba(91, 61, 245, 0.04);
+      --positive: #059669;
+    }
+
+    /* full-bleed ground — its own clip layer, never painted on #root */
+    .scribe-bg {
+      position: absolute;
+      inset: 0;
+      background: #ffffff;
+    }
+
+    .scribe-content {
+      position: absolute;
+      inset: 0;
+    }
+
+    .scribe-card {
+      position: absolute;
+      left: 510px;
+      top: 230px;
+      width: 900px;
+      height: 520px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      box-sizing: border-box;
+      opacity: 0;
+      transform-origin: 50% 50%;
+    }
+
+    .scribe-header {
+      position: absolute;
+      top: 32px;
+      left: 40px;
+      right: 40px;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .scribe-eyebrow {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary);
+    }
+    .scribe-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--accent-light);
+      border-radius: 100px;
+      padding: 6px 16px;
+    }
+
+    .scribe-rows {
+      position: absolute;
+      top: 100px;
+      left: 40px;
+      width: 820px;
+      height: 300px;
+    }
+    .scribe-row {
+      position: absolute;
+      left: 0;
+      width: 820px;
+      height: 61px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      opacity: 0;
+    }
+    .scribe-badge {
+      flex: 0 0 auto;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .scribe-row-body {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .scribe-row-label {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 6px;
+      min-height: 22px;
+    }
+    .scribe-row-content {
+      font-family: monospace;
+      font-size: 24px;
+      line-height: 1.4;
+      color: var(--text);
+      white-space: pre;
+      min-height: 34px;
+    }
+
+    .scribe-sweep {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 820px;
+      height: 56px;
+      background: linear-gradient(
+        to bottom,
+        rgba(91, 61, 245, 0) 0%,
+        var(--accent-medium) 50%,
+        rgba(91, 61, 245, 0) 100%
+      );
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .scribe-pill {
+      position: absolute;
+      top: 452px;
+      left: 50%;
+      margin-left: -170px;
+      width: 340px;
+      height: 56px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      opacity: 0;
+      transform-origin: 50% 50%;
+    }
+    .scribe-pill-label {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .scribe-spinner {
+      width: 22px;
+      height: 22px;
+    }
+
+    .scribe-footer {
+      position: absolute;
+      top: 650px;
+      left: 40px;
+      right: 40px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    .scribe-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 32px;
+      border-radius: 100px;
+      border: 2px solid var(--primary);
+      background: transparent;
+      color: var(--primary);
+      font-size: 18px;
+      font-weight: 600;
+      opacity: 0.55;
+      transform-origin: 50% 50%;
+    }
+    .scribe-btn-badge {
+      position: relative;
+      width: 24px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+    .scribe-btn-badge-outline {
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--primary);
+      border-radius: 50%;
+    }
+    .scribe-btn-badge-check {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--positive);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      opacity: 0;
+      transform: scale(0);
+      transform-origin: 50% 50%;
+    }
+    .scribe-microcopy {
+      font-size: 15px;
+      color: var(--text-light);
+      max-width: 400px;
+      opacity: 0;
+    }
+  </style>
+
+  <div id="root" data-composition-id="03-scribe">
+    <div
+      class="clip scribe-bg"
+      data-start="0"
+      data-duration="8.533"
+      data-track-index="0"
+    ></div>
+
+    <div
+      class="clip scribe-content"
+      data-start="0"
+      data-duration="8.533"
+      data-track-index="1"
+    >
+      <div class="scribe-card" id="scribe-card">
+        <div class="scribe-header">
+          <div class="scribe-eyebrow">Note de consultation</div>
+          <div class="scribe-tag">SOAP</div>
+        </div>
+
+        <div class="scribe-rows" id="scribe-rows">
+          <div class="scribe-sweep" id="scribe-sweep"></div>
+
+          <div class="scribe-row" id="scribe-row-s" style="top: 0px">
+            <div class="scribe-badge">S</div>
+            <div class="scribe-row-body">
+              <div class="scribe-row-label" id="scribe-label-s"></div>
+              <div class="scribe-row-content" id="scribe-content-s"></div>
+            </div>
+          </div>
+
+          <div class="scribe-row" id="scribe-row-o" style="top: 79px">
+            <div class="scribe-badge">O</div>
+            <div class="scribe-row-body">
+              <div class="scribe-row-label" id="scribe-label-o"></div>
+              <div class="scribe-row-content" id="scribe-content-o"></div>
+            </div>
+          </div>
+
+          <div class="scribe-row" id="scribe-row-a" style="top: 158px">
+            <div class="scribe-badge">A</div>
+            <div class="scribe-row-body">
+              <div class="scribe-row-label" id="scribe-label-a"></div>
+              <div class="scribe-row-content" id="scribe-content-a"></div>
+            </div>
+          </div>
+
+          <div class="scribe-row" id="scribe-row-p" style="top: 237px">
+            <div class="scribe-badge">P</div>
+            <div class="scribe-row-body">
+              <div class="scribe-row-label" id="scribe-label-p"></div>
+              <div class="scribe-row-content" id="scribe-content-p"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="scribe-pill" id="scribe-pill">
+          <svg class="scribe-spinner" id="scribe-spinner-svg" viewBox="0 0 44 44">
+            <circle
+              cx="22"
+              cy="22"
+              r="18"
+              fill="none"
+              stroke="#5b3df5"
+              stroke-width="4"
+              stroke-linecap="round"
+              stroke-dasharray="66 47"
+            />
+          </svg>
+          <div class="scribe-pill-label">SmileFlow rédige…</div>
+        </div>
+
+        <div class="scribe-footer">
+          <div class="scribe-btn" id="scribe-btn">
+            <div class="scribe-btn-badge">
+              <div class="scribe-btn-badge-outline" id="scribe-badge-outline"></div>
+              <div class="scribe-btn-badge-check" id="scribe-badge-check">&#10003;</div>
+            </div>
+            <span>Valider et signer</span>
+          </div>
+          <div class="scribe-microcopy" id="scribe-microcopy">
+            Toujours relu et signé par le dentiste
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    window.__timelines = window.__timelines || {};
+    const tl = gsap.timeline({ paused: true });
+
+    // ---- helper: smooth character-slice typewriter (discrete-text-sequence.md) ----
+    function scribeTypeIn(el, fullText, start, dur) {
+      const state = { n: 0 };
+      tl.to(
+        state,
+        {
+          n: fullText.length,
+          duration: dur,
+          ease: "power1.inOut",
+          onUpdate: () => {
+            el.textContent = fullText.slice(0, Math.floor(state.n));
+          },
+        },
+        start,
+      );
+    }
+
+    // ================= Scene 1 (0.0–1.3s) — working-state theater =================
+    // Hero: blank note card + working pill, visible well before t<=0.5s.
+    tl.fromTo(
+      "#scribe-card",
+      { opacity: 0, scale: 0.96 },
+      { opacity: 1, scale: 1, duration: 0.35, ease: "power3.out" },
+      0.02,
+    );
+    tl.fromTo(
+      "#scribe-pill",
+      { opacity: 0, scale: 0.85 },
+      { opacity: 1, scale: 1, duration: 0.3, ease: "power3.out" },
+      0.15,
+    );
+
+    // arc spinner rotation — svg-icon-enrichment (SVG transform attribute, explicit center)
+    (function () {
+      const hand = document.getElementById("scribe-spinner-svg").firstElementChild;
+      const spin = { deg: 0 };
+      tl.to(
+        spin,
+        {
+          deg: 540, // 1.5 revolutions, finite
+          duration: 1.15,
+          ease: "none",
+          onUpdate: () => hand.setAttribute("transform", `rotate(${spin.deg} 22 22)`),
+        },
+        0.15,
+      );
+    })();
+
+    // pill hands off to the note (fast shrink+fade) as Scene 2 opens
+    tl.to(
+      "#scribe-pill",
+      { opacity: 0, scale: 0.85, duration: 0.2, ease: "power2.in" },
+      1.3,
+    );
+
+    // ================= Scene 2 (1.3–5.5s) — rows cascade + write in =================
+    // Four rows, each: slide-up+fade entrance -> label types on -> content fills in,
+    // paced to the VO naming "Subjectif, Objectif, Analyse, Plan".
+    const ROWS = [
+      {
+        row: "#scribe-row-s",
+        label: "#scribe-label-s",
+        content: "#scribe-content-s",
+        labelText: "Subjectif",
+        contentText: "Sensibilité au froid, dent 36, depuis 3 jours.",
+        slideStart: 1.3,
+        labelStart: 1.6,
+        labelDur: 0.16,
+        contentStart: 1.78,
+        contentDur: 0.53,
+      },
+      {
+        row: "#scribe-row-o",
+        label: "#scribe-label-o",
+        content: "#scribe-content-o",
+        labelText: "Objectif",
+        contentText: "Carie occlusale visible, percussion négative.",
+        slideStart: 2.39,
+        labelStart: 2.69,
+        labelDur: 0.16,
+        contentStart: 2.87,
+        contentDur: 0.52,
+      },
+      {
+        row: "#scribe-row-a",
+        label: "#scribe-label-a",
+        content: "#scribe-content-a",
+        labelText: "Analyse",
+        contentText: "Pulpite réversible probable, dent 36.",
+        slideStart: 3.47,
+        labelStart: 3.77,
+        labelDur: 0.16,
+        contentStart: 3.95,
+        contentDur: 0.42,
+      },
+      {
+        row: "#scribe-row-p",
+        label: "#scribe-label-p",
+        content: "#scribe-content-p",
+        labelText: "Plan",
+        contentText: "Restauration composite, contrôle dans 2 semaines.",
+        slideStart: 4.45,
+        labelStart: 4.75,
+        labelDur: 0.16,
+        contentStart: 4.93,
+        contentDur: 0.56,
+      },
+    ];
+
+    ROWS.forEach((r) => {
+      tl.fromTo(
+        r.row,
+        { opacity: 0, y: 26 },
+        { opacity: 1, y: 0, duration: 0.3, ease: "power3.out" },
+        r.slideStart,
+      );
+      scribeTypeIn(document.querySelector(r.label), r.labelText, r.labelStart, r.labelDur);
+      scribeTypeIn(document.querySelector(r.content), r.contentText, r.contentStart, r.contentDur);
+    });
+
+    // ================= Scene 3 (5.5–7.2s) — read-through sweep =================
+    // Single top-to-bottom highlight pass over the settled rows. No new content, no camera move.
+    tl.fromTo(
+      "#scribe-sweep",
+      { y: 0, opacity: 0 },
+      { opacity: 1, duration: 0.2, ease: "power1.out" },
+      5.6,
+    );
+    tl.to("#scribe-sweep", { y: 244, duration: 1.15, ease: "power1.inOut" }, 5.6);
+    tl.to("#scribe-sweep", { opacity: 0, duration: 0.2, ease: "power1.in" }, 6.75);
+
+    // ================= Scene 4 (7.2–8.533s) — sign, one gesture =================
+    // Button wakes, presses (linear compression), releases with a spring, badge flips
+    // outline -> solid check, reassurance microcopy lands beside it, holds to the cut.
+    tl.to("#scribe-btn", { opacity: 1, duration: 0.15, ease: "power2.out" }, 7.2);
+
+    const PRESS_START = 7.35;
+    const PRESS_DUR = 0.12;
+    const RELEASE_START = PRESS_START + PRESS_DUR;
+    const RELEASE_DUR = 0.45;
+
+    tl.to(
+      "#scribe-btn",
+      { scale: 0.92, duration: PRESS_DUR, ease: "power1.in" },
+      PRESS_START,
+    );
+    tl.to(
+      "#scribe-btn",
+      { scale: 1, duration: RELEASE_DUR, ease: "back.out(1.6)" },
+      RELEASE_START,
+    );
+
+    // badge flip: outline -> solid check (scale-swap-transition + spring bounce)
+    tl.to(
+      "#scribe-badge-outline",
+      { opacity: 0, duration: 0.15, ease: "power2.in" },
+      RELEASE_START,
+    );
+    tl.fromTo(
+      "#scribe-badge-check",
+      { opacity: 0, scale: 0 },
+      { opacity: 1, scale: 1, duration: 0.35, ease: "back.out(1.8)" },
+      RELEASE_START,
+    );
+
+    // reassurance microcopy — small, text-light, never a legal block
+    tl.fromTo(
+      "#scribe-microcopy",
+      { opacity: 0, y: 8 },
+      { opacity: 1, y: 0, duration: 0.35, ease: "power3.out" },
+      7.75,
+    );
+
+    window.__timelines["03-scribe"] = tl;
+  </script>
+</template>
