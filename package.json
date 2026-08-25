@@ -7,7 +7,11 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "video:studio": "remotion studio remotion/index.ts",
+    "video:render": "remotion render remotion/index.ts SmileFlowPromo out/smileflow-promo-1920x1080.mp4",
+    "video:render:vertical": "remotion render remotion/index.ts SmileFlowPromoVertical out/smileflow-promo-1080x1920.mp4",
+    "video:still": "remotion still remotion/index.ts SmileFlowPromo out/still.png"
   },
   "dependencies": {
     "@ai-sdk/gateway": "3.0.59",
@@ -22,6 +26,9 @@
     "@radix-ui/react-scroll-area": "1.2.9",
     "@radix-ui/react-select": "2.2.5",
     "@radix-ui/react-slot": "1.2.3",
+    "@remotion/cli": "^4.0.516",
+    "@remotion/fonts": "^4.0.516",
+    "@remotion/transitions": "^4.0.516",
     "@vercel/sandbox": "0.0.17",
     "ai": "6.0.105",
     "arctic": "3.7.0",
@@ -40,6 +47,7 @@
     "react-resizable-panels": "3.0.4",
     "react-spinners": "0.17.0",
     "react-syntax-highlighter": "15.6.1",
+    "remotion": "^4.0.516",
     "sonner": "^2.0.6",
     "streamdown": "^1.6.6",
     "strip-ansi": "7.1.0",

@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .env*.local
+
+# remotion QA stills (the rendered .mp4 files are kept)
+out/*.png
