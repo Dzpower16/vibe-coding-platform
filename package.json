@@ -11,7 +11,8 @@
     "video:studio": "remotion studio remotion/index.ts",
     "video:render": "remotion render remotion/index.ts SmileFlowPromo videos/smileflow-promo/smileflow-promo-1920x1080.mp4",
     "video:render:vertical": "remotion render remotion/index.ts SmileFlowPromoVertical videos/smileflow-promo/smileflow-promo-1080x1920.mp4",
-    "video:still": "remotion still remotion/index.ts SmileFlowPromo out/still.png"
+    "video:still": "remotion still remotion/index.ts SmileFlowPromo out/still.png",
+    "video:render:brand": "remotion render remotion/index.ts SmileFlowBrandFilm videos/smileflow-promo/smileflow-brand-film-1920x1080.mp4"
   },
   "dependencies": {
     "@ai-sdk/gateway": "3.0.59",

@@ -88,3 +88,47 @@ canevas via `useLayout()` et se réorganisent (colonnes côte à côte → empil
 échelle typographique réduite) ; la version 9:16 n'est donc pas un recadrage
 avec bandes noires du master 16:9. La séquence 3 masque sa troisième colonne
 en portrait : à 1080 px de large, trois colonnes écraseraient les deux autres.
+
+---
+
+# Film de marque (`SmileFlowBrandFilm`)
+
+Deuxième montage, 56 s (1680 frames @ 30 fps), en **thème clair** — construit
+autour du sting 3D fourni par la marque.
+
+## Ce qui change par rapport au premier film
+
+- **Ouverture = votre clip 3D**, joué tel quel avec **son audio**. Sa piste
+  monte, frappe vers 6 s sur la révélation du logo, puis s'éteint d'elle-même à
+  10 s : la coupe vers le contenu n'a besoin d'aucun fondu audio.
+- **Le vrai logo.** Le premier film utilisait une marque inventée (tuile
+  arrondie à deux yeux) — fausse. `brand/LogoSmileFlow.tsx` reconstruit la
+  vraie : un point plein au-dessus d'un arc de sourire ouvert, en vectoriel
+  donc net à toute taille, et l'arc peut se tracer tout seul.
+- **Palette claire** (`brand/lightTheme.ts`) accordée au sting : cyclorama
+  gris très clair, cartes blanches en verre, violet #7C3AED comme seul
+  élément saturé de l'image.
+
+## Découpage
+
+| # | Séquence | Frames | Temps |
+|---|----------|--------|-------|
+| 0 | Sting 3D de marque (clip fourni + audio) | 0–300 | 0–10 s |
+| 1 | Scribe clinique IA | 300–660 | 10–22 s |
+| 2 | Smart Waitlist | 660–1020 | 22–34 s |
+| 3 | Réputation Google & dossiers | 1020–1350 | 34–45 s |
+| 4 | Loi 25 & appel à l'action | 1350–1680 | 45–56 s |
+
+## Commande
+
+```bash
+npm run video:render:brand
+```
+
+Le clip source vit dans `public/brand/smileflow-logo-sting.mp4` et est monté
+via `<OffthreadVideo>`, qui porte l'audio jusque dans le rendu final.
+
+## Ce qu'il reste à faire
+
+Le film est **muet après 10 s** — la piste du sting est le seul son. Une
+musique de fond ou une voix off sur les séquences de contenu reste à ajouter.
