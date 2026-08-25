@@ -41,14 +41,15 @@ comme un seul film plutôt que comme cinq arrière-plans successifs.
 
 ```bash
 npm run video:studio            # éditeur Remotion (prévisualisation, timeline)
-npm run video:render            # → out/smileflow-promo-1920x1080.mp4
-npm run video:render:vertical   # → out/smileflow-promo-1080x1920.mp4
+npm run video:render            # → videos/smileflow-promo/…-1920x1080.mp4
+npm run video:render:vertical   # → videos/smileflow-promo/…-1080x1920.mp4
 ```
 
 Commande de rendu complète :
 
 ```bash
-npx remotion render remotion/index.ts SmileFlowPromo out/smileflow-promo-1920x1080.mp4
+npx remotion render remotion/index.ts SmileFlowPromo \
+  videos/smileflow-promo/smileflow-promo-1920x1080.mp4
 ```
 
 ### Environnement sans accès au CDN de Remotion
@@ -57,7 +58,8 @@ Remotion télécharge son propre Chrome Headless Shell au premier rendu. Si cet
 hôte est bloqué par la politique réseau, pointer vers un binaire déjà présent :
 
 ```bash
-npx remotion render remotion/index.ts SmileFlowPromo out/smileflow-promo-1920x1080.mp4 \
+npx remotion render remotion/index.ts SmileFlowPromo \
+  videos/smileflow-promo/smileflow-promo-1920x1080.mp4 \
   --browser-executable=/opt/pw-browsers/chromium_headless_shell-1194/chrome-linux/headless_shell
 ```
 

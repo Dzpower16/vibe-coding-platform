@@ -9,8 +9,8 @@
     "lint": "next lint",
     "type-check": "tsc --noEmit",
     "video:studio": "remotion studio remotion/index.ts",
-    "video:render": "remotion render remotion/index.ts SmileFlowPromo out/smileflow-promo-1920x1080.mp4",
-    "video:render:vertical": "remotion render remotion/index.ts SmileFlowPromoVertical out/smileflow-promo-1080x1920.mp4",
+    "video:render": "remotion render remotion/index.ts SmileFlowPromo videos/smileflow-promo/smileflow-promo-1920x1080.mp4",
+    "video:render:vertical": "remotion render remotion/index.ts SmileFlowPromoVertical videos/smileflow-promo/smileflow-promo-1080x1920.mp4",
     "video:still": "remotion still remotion/index.ts SmileFlowPromo out/still.png"
   },
   "dependencies": {
