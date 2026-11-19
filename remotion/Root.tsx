@@ -5,6 +5,8 @@ import { SmileFlowBrandFilm } from '../components/video/SmileFlowBrandFilm'
 import { FPS, TOTAL_FRAMES } from '../components/video/theme'
 import { BRAND_FPS, BRAND_TOTAL_FRAMES } from '../components/video/brand/lightTheme'
 import { AdScribe, AD_SCRIBE_FPS, AD_SCRIBE_FRAMES } from '../components/video/ads/AdScribe'
+import { AdWaitlist, AD_WAITLIST_FPS, AD_WAITLIST_FRAMES } from '../components/video/ads/AdWaitlist'
+import { AdAvis, AD_AVIS_FPS, AD_AVIS_FRAMES } from '../components/video/ads/AdAvis'
 
 /**
  * Remotion's composition registry.
@@ -21,6 +23,22 @@ export const RemotionRoot: React.FC = () => (
       component={AdScribe}
       durationInFrames={AD_SCRIBE_FRAMES}
       fps={AD_SCRIBE_FPS}
+      width={1080}
+      height={1920}
+    />
+    <Composition
+      id="AdWaitlist"
+      component={AdWaitlist}
+      durationInFrames={AD_WAITLIST_FRAMES}
+      fps={AD_WAITLIST_FPS}
+      width={1080}
+      height={1920}
+    />
+    <Composition
+      id="AdAvis"
+      component={AdAvis}
+      durationInFrames={AD_AVIS_FRAMES}
+      fps={AD_AVIS_FPS}
       width={1080}
       height={1920}
     />
