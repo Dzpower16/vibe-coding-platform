@@ -73,11 +73,12 @@ export function makeMusicVolume(vo: VOClip[], frames: number) {
   }
 }
 
-export const AdAudio: React.FC<{ music: string; vo: VOClip[]; frames: number }> = ({ music, vo, frames }) => {
+/** `musicTrim` skips a slow intro (in frames) so the bed is audible from frame 0. */
+export const AdAudio: React.FC<{ music: string; vo: VOClip[]; frames: number; musicTrim?: number }> = ({ music, vo, frames, musicTrim = 0 }) => {
   const vol = React.useMemo(() => makeMusicVolume(vo, frames), [vo, frames])
   return (
     <>
-      <Audio src={staticFile(music)} volume={vol} />
+      <Audio src={staticFile(music)} volume={vol} trimBefore={musicTrim} />
       {vo.map((c) => (
         <Sequence key={c.file} from={sec(c.at)}>
           <Audio src={staticFile(c.file)} volume={1} />

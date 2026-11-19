@@ -58,17 +58,17 @@ const VO: VOClip[] = [
   },
   {
     file: 'ads/waitlist/vo3.mp3',
-    at: 11.0,
+    at: 10.9,
     phrases: [
-      { from: 0.0, to: 2.1, text: 'SmileFlow texte votre liste d’attente.' },
-      { from: 2.4, to: 3.6, text: 'Marie répond oui.' },
-      { from: 4.0, to: 5.9, text: 'Plage comblée en 4 minutes…' },
-      { from: 6.3, to: 8.2, text: 'pis personne a touché au téléphone.' },
+      { from: 0.0, to: 2.17, text: 'SmileFlow texte votre liste d’attente.' },
+      { from: 2.5, to: 3.58, text: 'Marie répond oui.' },
+      { from: 3.94, to: 5.55, text: 'Plage comblée en 4 minutes…' },
+      { from: 5.85, to: 7.48, text: 'pis personne a touché au téléphone.' },
     ],
   },
   {
     file: 'ads/waitlist/vo4.mp3',
-    at: 19.7,
+    at: 19.0,
     phrases: [
       { from: 0.0, to: 0.88, text: 'SmileFlow,' },
       { from: 1.13, to: 2.6, text: 'conforme à la Loi 25.' },
@@ -393,7 +393,7 @@ export const AdWaitlist: React.FC = () => {
       )}
       {demo > 0 && action < 1 && (
         <Sequence from={sec(DEMO_AT)}>
-          <AbsoluteFill style={{ opacity: demo * (1 - action) }}>
+          <AbsoluteFill style={{ opacity: demo }}>
             <DemoScene />
           </AbsoluteFill>
         </Sequence>

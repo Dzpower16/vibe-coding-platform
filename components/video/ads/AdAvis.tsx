@@ -42,13 +42,13 @@ const VO: VOClip[] = [
     file: 'ads/avis/vo1.mp3',
     at: 0.4,
     phrases: [
-      { from: 0.0, to: 1.6, text: 'Vos patients vous adorent…' },
-      { from: 2.0, to: 3.8, text: 'mais Google, lui, le sait pas.' },
+      { from: 0.0, to: 1.64, text: 'Vos patients vous adorent…' },
+      { from: 1.94, to: 4.2, text: 'mais Google, lui, le sait pas.' },
     ],
   },
   {
     file: 'ads/avis/vo2.mp3',
-    at: 4.7,
+    at: 5.0,
     phrases: [
       { from: 0.0, to: 1.11, text: 'Après la visite,' },
       { from: 1.21, to: 2.13, text: 'tout le monde est content…' },
@@ -57,17 +57,17 @@ const VO: VOClip[] = [
   },
   {
     file: 'ads/avis/vo3.mp3',
-    at: 10.3,
+    at: 10.5,
     phrases: [
-      { from: 0.0, to: 3.0, text: 'SmileFlow envoie un petit merci après chaque rendez-vous,' },
-      { from: 3.2, to: 5.0, text: 'avec le lien vers vos avis Google.' },
-      { from: 5.4, to: 6.0, text: 'Un clic…' },
-      { from: 6.4, to: 8.2, text: 'pis votre note monte toute seule.' },
+      { from: 0.0, to: 2.51, text: 'SmileFlow envoie un petit merci après chaque rendez-vous,' },
+      { from: 2.73, to: 4.34, text: 'avec le lien vers vos avis Google.' },
+      { from: 4.66, to: 5.16, text: 'Un clic…' },
+      { from: 5.45, to: 6.86, text: 'pis votre note monte toute seule.' },
     ],
   },
   {
     file: 'ads/avis/vo4.mp3',
-    at: 19.0,
+    at: 18.1,
     phrases: [
       { from: 0.0, to: 0.88, text: 'SmileFlow,' },
       { from: 1.13, to: 2.6, text: 'conforme à la Loi 25.' },
@@ -402,7 +402,7 @@ export const AdAvis: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: BRAND.deep }}>
-      <AdAudio music="ads/avis/music.mp3" vo={VO} frames={AD_AVIS_FRAMES} />
+      <AdAudio music="ads/avis/music.mp3" vo={VO} frames={AD_AVIS_FRAMES} musicTrim={sec(1.5)} />
 
       {demo < 1 && (
         <AbsoluteFill style={{ opacity: 1 - demo }}>
@@ -411,7 +411,7 @@ export const AdAvis: React.FC = () => {
       )}
       {demo > 0 && action < 1 && (
         <Sequence from={sec(DEMO_AT)}>
-          <AbsoluteFill style={{ opacity: demo * (1 - action) }}>
+          <AbsoluteFill style={{ opacity: demo }}>
             <DemoScene />
           </AbsoluteFill>
         </Sequence>
