@@ -4,6 +4,7 @@ import { SmileFlowPromoVideo } from '../components/video/SmileFlowPromoVideo'
 import { SmileFlowBrandFilm } from '../components/video/SmileFlowBrandFilm'
 import { FPS, TOTAL_FRAMES } from '../components/video/theme'
 import { BRAND_FPS, BRAND_TOTAL_FRAMES } from '../components/video/brand/lightTheme'
+import { AdScribe, AD_SCRIBE_FPS, AD_SCRIBE_FRAMES } from '../components/video/ads/AdScribe'
 
 /**
  * Remotion's composition registry.
@@ -14,6 +15,16 @@ import { BRAND_FPS, BRAND_TOTAL_FRAMES } from '../components/video/brand/lightTh
  */
 export const RemotionRoot: React.FC = () => (
   <>
+    {/* Meta Ads — 9:16 Reels/Stories, one per feature. */}
+    <Composition
+      id="AdScribe"
+      component={AdScribe}
+      durationInFrames={AD_SCRIBE_FRAMES}
+      fps={AD_SCRIBE_FPS}
+      width={1080}
+      height={1920}
+    />
+
     {/* Brand film — opens on the studio's own 3D logo sting (with its audio),
         then continues in that sting's light studio. */}
     <Composition
