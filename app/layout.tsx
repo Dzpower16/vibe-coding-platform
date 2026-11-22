@@ -14,6 +14,7 @@ export const viewport: Viewport = {
 }
 
 const liens = [
+  { href: '/parler', libelle: 'Signer → voix' },
   { href: '/direct', libelle: 'Direct' },
   { href: '/conversation', libelle: 'Conversation' },
   { href: '/tournage', libelle: 'Bibliothèque' },

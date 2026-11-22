@@ -2,6 +2,12 @@ import Link from 'next/link'
 
 const sections = [
   {
+    href: '/parler',
+    titre: 'Signer → voix',
+    texte: 'La caméra reconnaît un signe et le téléphone dit le mot à voix haute.',
+    etat: 'Prototype',
+  },
+  {
     href: '/direct',
     titre: 'Direct',
     texte: 'Une personne parle français : les signes LSQ filmés s’enchaînent à l’écran.',
@@ -34,7 +40,7 @@ export default function Accueil() {
           Outil d’aide à la communication — ne remplace pas un·e interprète professionnel·le.
         </p>
       </section>
-      <ul className="grid gap-4 sm:grid-cols-3">
+      <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {sections.map((s) => (
           <li key={s.href}>
             <Link

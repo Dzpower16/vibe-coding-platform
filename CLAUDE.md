@@ -37,6 +37,7 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
 | **1a** | Constitution (ce fichier), squelette Next.js, schéma Supabase, liste de départ (~500 signes + alphabet + chiffres) | ✅ |
 | **1b** | Page de tournage `/tournage` : consentement écrit, webcam, enregistrement vidéo + positions mains/visage/corps, envoi Supabase | ✅ |
 | 1b+ | Liens « Mon dictionnaire LSQ » par signe (migration `0002`), liste portée à 803 signes (nombres 11–1000, temps habituels…) | ✅ |
+| 2a | Prototype `/parler` : la caméra reconnaît des signes isolés (exemples filmés) et le téléphone dit le mot à voix haute | ✅ prototype |
 | 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin`) | à faire |
 | 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | à faire |
 | 1e | Mode conversation sur téléphone `/conversation` (écran partagé face à face) | à faire |
@@ -112,6 +113,7 @@ app/
   auth/callback/        échange du code de connexion
   tournage/             bibliothèque : choix du signe + studio de tournage
     consentement/       consentement écrit (obligatoire avant de filmer)
+  parler/               (2a) caméra → signe reconnu → voix (prototype)
   direct/               (1d) micro → gloses → vidéos
   conversation/         (1e) mode téléphone face à face
   admin/                (1c) validation des vidéos
@@ -120,6 +122,7 @@ components/             composants UI partagés
 lib/
   supabase/             clients Supabase
   mediapipe/            chargement du HolisticLandmarker, compactage des positions
+  reconnaissance/       empreintes de signes + comparaison DTW (code pur, partagé serveur/navigateur)
   consentement.ts       texte du consentement versionné (source de vérité)
   types.ts              types du domaine
 data/signes-depart.json liste de départ (source de vérité, éditée à la main)
@@ -224,6 +227,24 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
    de l'épellation : on ne fait jamais confiance aveuglément à la sortie du modèle.
 4. Latence : une phrase finale Gladia = un appel. Texte du lexique en tête du prompt pour profiter
    du cache de prompt.
+
+## 8bis. Reconnaissance LSQ → voix (`/parler`, prototype)
+
+- **Données :** seulement les prises dont le consentement est actif **et** a la portée
+  « reconnaissance » cochée ; prises validées, plus les prises de la personne connectée
+  (calibrage personnel). La route `/api/reconnaissance/modeles` ne renvoie que des empreintes
+  (poignets + forme des mains), jamais la vidéo ni le visage. Elle exige `SUPABASE_SECRET_KEY`.
+- **Méthode :** `lib/reconnaissance/caracteristiques.ts` — positions normalisées par rapport aux
+  épaules, insensibles à la main dominante (comparaison aussi en miroir), rééchantillonnées à
+  24 pas, comparées par DTW au plus proche exemple de chaque signe. Un signe commence quand une
+  main monte au-dessus de la taille et finit quand les mains redescendent.
+- **Ne jamais deviner :** si le meilleur signe n'est pas assez proche ou pas nettement meilleur
+  que le 2e, on affiche « ? » et **on ne dit rien**. L'exigence se règle dans la page.
+- **Limites connues :** signes isolés seulement (pas de phrases), meilleure précision pour les
+  personnes qui ont fourni les exemples, expressions du visage non utilisées. Ce n'est pas une
+  interprétation ; l'interface le dit.
+- **Suite :** plus d'exemples et de signeur·euse·s, puis un vrai modèle entraîné (partenariat
+  UQAR envisagé) quand les données le permettront.
 
 ---
 

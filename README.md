@@ -16,6 +16,7 @@ La constitution du projet (principes, architecture, conventions) est dans [`CLAU
 3. **Vercel** — importer le dépôt, ajouter les variables de `.env.example`
    (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`), déployer.
 4. Ouvrir `/tournage`, se connecter, remplir profil + consentement, filmer.
+5. `/parler` (signe → voix) : filmer chaque signe 5 fois en cochant la portée « reconnaissance » du consentement. Nécessite `SUPABASE_SECRET_KEY` dans Vercel.
 
 Pour donner le rôle de validateur·rice :
 `update public.signeurs set role = 'validateur' where id = '<uuid>';`
