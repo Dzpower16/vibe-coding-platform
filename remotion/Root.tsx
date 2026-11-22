@@ -7,6 +7,7 @@ import { BRAND_FPS, BRAND_TOTAL_FRAMES } from '../components/video/brand/lightTh
 import { AdScribe, AD_SCRIBE_FPS, AD_SCRIBE_FRAMES } from '../components/video/ads/AdScribe'
 import { AdWaitlist, AD_WAITLIST_FPS, AD_WAITLIST_FRAMES } from '../components/video/ads/AdWaitlist'
 import { AdAvis, AD_AVIS_FPS, AD_AVIS_FRAMES } from '../components/video/ads/AdAvis'
+import { AdRecap, AD_RECAP_FPS, AD_RECAP_FRAMES } from '../components/video/ads/AdRecap'
 
 /**
  * Remotion's composition registry.
@@ -39,6 +40,14 @@ export const RemotionRoot: React.FC = () => (
       component={AdAvis}
       durationInFrames={AD_AVIS_FRAMES}
       fps={AD_AVIS_FPS}
+      width={1080}
+      height={1920}
+    />
+    <Composition
+      id="AdRecap"
+      component={AdRecap}
+      durationInFrames={AD_RECAP_FRAMES}
+      fps={AD_RECAP_FPS}
       width={1080}
       height={1920}
     />

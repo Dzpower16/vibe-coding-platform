@@ -12,6 +12,7 @@ import '../fonts'
 import { LIGHT, FONT } from '../brand/lightTheme'
 import { SmileFlowLockup } from '../brand/LogoSmileFlow'
 import { enter, hashNoise, ramp, springAt, SMOOTH, SNAPPY, POP } from '../motion'
+import { BRAND, BrandBackdrop } from './shared'
 
 /**
  * Pub Meta n°1 — Scribe IA (9:16, 25 s).
@@ -104,13 +105,15 @@ function musicVolume(f: number) {
 }
 
 // ── Palettes ─────────────────────────────────────────────────────────────────
+// Evening beats now live in the SmileFlow brand violet (same hook world as
+// the Waitlist and Avis ads) instead of a neutral navy night.
 const NIGHT = {
-  bg: '#070A14',
-  bgLift: '#0E1428',
-  screen: '#111A30',
-  ink: '#E8ECF6',
-  dim: '#7D8AA8',
-  warm: '#F2B36B',
+  bg: BRAND.deep,
+  screen: '#2A1468',
+  card: '#2F1872',
+  ink: '#FFFFFF',
+  dim: '#C9B8F2',
+  warm: BRAND.lilac,
 }
 
 // Reels UI covers roughly the top 220 px and bottom 420 px; everything that
@@ -207,16 +210,11 @@ const NightScene: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ filter: `blur(${freeze * 10}px) brightness(${1 + freeze * 0.6})` }}>
-      {/* Room: dark, one warm desk lamp pool, cold screen glow. */}
-      <AbsoluteFill style={{ background: `linear-gradient(180deg, ${NIGHT.bg} 0%, ${NIGHT.bgLift} 60%, ${NIGHT.bg} 100%)` }} />
+      {/* Room: the brand's deep violet, with the screen's glow behind the laptop. */}
+      <BrandBackdrop />
       <AbsoluteFill
         style={{
-          background: `radial-gradient(ellipse 70% 40% at 18% 78%, rgba(242,179,107,0.20), transparent 70%)`,
-        }}
-      />
-      <AbsoluteFill
-        style={{
-          background: `radial-gradient(ellipse 60% 36% at 50% 62%, rgba(110,140,255,0.16), transparent 72%)`,
+          background: `radial-gradient(ellipse 60% 36% at 50% 62%, rgba(196,160,255,0.22), transparent 72%)`,
           opacity: 0.6 + 0.4 * Number(laptopIn.opacity ?? 1),
         }}
       />
@@ -281,8 +279,8 @@ const NightScene: React.FC = () => {
               width: 560,
               height: 200,
               borderRadius: 18,
-              background: '#1A2440',
-              border: '1px solid rgba(232,236,246,0.10)',
+              background: NIGHT.card,
+              border: '1px solid rgba(255,255,255,0.14)',
               transform: `rotate(${rot}deg) scale(${0.7 + appear * 0.3})`,
               opacity: appear * 0.9,
               padding: 26,
@@ -293,7 +291,7 @@ const NightScene: React.FC = () => {
               Note clinique #{i + 1} — à compléter
             </div>
             {[0.8, 0.65, 0.9].map((w, j) => (
-              <div key={j} style={{ marginTop: 18, height: 12, width: `${w * 100}%`, borderRadius: 6, background: 'rgba(232,236,246,0.08)' }} />
+              <div key={j} style={{ marginTop: 18, height: 12, width: `${w * 100}%`, borderRadius: 6, background: 'rgba(255,255,255,0.12)' }} />
             ))}
           </div>
         )
@@ -305,7 +303,7 @@ const NightScene: React.FC = () => {
           style={{
             borderRadius: 26,
             background: NIGHT.screen,
-            border: '1px solid rgba(232,236,246,0.12)',
+            border: '1px solid rgba(255,255,255,0.16)',
             padding: '30px 34px',
             boxShadow: '0 30px 80px rgba(0,0,0,0.55), 0 0 90px rgba(110,140,255,0.18)',
           }}
