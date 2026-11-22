@@ -21,6 +21,7 @@ for (const cat of data.categories) {
     vues.set(s.glose, cat.id)
     if (![1, 2, 3].includes(s.p)) erreurs.push(`priorité invalide : ${s.glose}`)
     if (!Array.isArray(s.fr) || s.fr.length === 0) erreurs.push(`mots français manquants : ${s.glose}`)
+    if (s.ref && !/^https:\/\/[^\s']+$/.test(s.ref)) erreurs.push(`lien invalide : ${s.glose}`)
     for (const m of s.fr) {
       const cle = m.toLowerCase()
       motsVus.set(cle, [...(motsVus.get(cle) ?? []), s.glose])
@@ -41,19 +42,20 @@ const q = (v) => (v == null ? 'null' : `'${String(v).replaceAll("'", "''")}'`)
 const tableau = (arr) => `array[${arr.map(q).join(', ')}]::text[]`
 
 const valeurs = lignes
-  .map((s) => `  (${q(s.glose)}, ${tableau(s.fr)}, ${q(s.categorie)}, '${s.type}', ${s.p}, ${q(s.notes)})`)
+  .map((s) => `  (${q(s.glose)}, ${tableau(s.fr)}, ${q(s.categorie)}, '${s.type}', ${s.p}, ${q(s.notes)}, ${q(s.ref)})`)
   .join(',\n')
 
 const sql = `-- GÉNÉRÉ par scripts/generer-seed.mjs depuis data/signes-depart.json — ne pas éditer à la main.
--- ${lignes.length} signes. Exécuter après les migrations. Relançable (upsert sur glose).
-insert into public.signes (glose, mots_fr, categorie, type, priorite, notes) values
+-- ${lignes.length} signes. Exécuter après les migrations (0001, 0002…). Relançable (upsert sur glose).
+insert into public.signes (glose, mots_fr, categorie, type, priorite, notes, reference_url) values
 ${valeurs}
 on conflict (glose) do update set
   mots_fr = excluded.mots_fr,
   categorie = excluded.categorie,
   type = excluded.type,
   priorite = excluded.priorite,
-  notes = excluded.notes;
+  notes = excluded.notes,
+  reference_url = excluded.reference_url;
 `
 writeFileSync(join(racine, 'supabase', 'seed.sql'), sql)
 
@@ -71,4 +73,5 @@ export function nomCategorie(id: string): string {
 writeFileSync(join(racine, 'lib', 'categories.ts'), categoriesTs)
 
 const parP = [1, 2, 3].map((p) => `p${p}=${lignes.filter((s) => s.p === p).length}`).join(' ')
-console.log(`seed.sql : ${lignes.length} signes (${parP}), ${data.categories.length} catégories`)
+const avecLien = lignes.filter((s) => s.ref).length
+console.log(`seed.sql : ${lignes.length} signes (${parP}), ${avecLien} avec lien de référence, ${data.categories.length} catégories`)

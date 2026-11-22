@@ -7,7 +7,8 @@ La constitution du projet (principes, architecture, conventions) est dans [`CLAU
 
 1. **Supabase** — créer un projet (région Canada si possible), puis dans *SQL Editor* exécuter dans l'ordre :
    1. `supabase/migrations/0001_bibliotheque_signes.sql`
-   2. `supabase/seed.sql` (670 signes : alphabet, chiffres, ~630 signes courants)
+   2. `supabase/migrations/0002_reference_dictionnaire.sql`
+   3. `supabase/seed.sql` (803 signes : alphabet, chiffres et nombres, ~740 signes courants, 477 liens vers « Mon dictionnaire LSQ »)
 2. **Supabase Auth** — *URL Configuration* : Site URL = URL Vercel de production ; Redirect URLs :
    l'URL de production et celle des previews (`https://*-<compte>.vercel.app/**`).
    *Email Templates → Magic Link* : ajouter `{{ .Token }}` au message (code à 6 chiffres).

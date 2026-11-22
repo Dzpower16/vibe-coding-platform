@@ -36,6 +36,7 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
 |---|---|---|
 | **1a** | Constitution (ce fichier), squelette Next.js, schéma Supabase, liste de départ (~500 signes + alphabet + chiffres) | ✅ |
 | **1b** | Page de tournage `/tournage` : consentement écrit, webcam, enregistrement vidéo + positions mains/visage/corps, envoi Supabase | ✅ |
+| 1b+ | Liens « Mon dictionnaire LSQ » par signe (migration `0002`), liste portée à 803 signes (nombres 11–1000, temps habituels…) | ✅ |
 | 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin`) | à faire |
 | 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | à faire |
 | 1e | Mode conversation sur téléphone `/conversation` (écran partagé face à face) | à faire |
@@ -135,7 +136,8 @@ proxy.ts                rafraîchissement de session Supabase + protection des r
 - **`signes`** — catalogue des concepts à filmer.
   `id`, `glose` (unique, MAJUSCULES : `MAISON`, `LETTRE-A`, `CHIFFRE-3`), `mots_fr text[]`
   (formes françaises qui mènent à ce signe : `{maison, domicile}`), `categorie`,
-  `type` (`signe` | `lettre` | `chiffre`), `priorite` (1 = le plus courant), `notes`.
+  `type` (`signe` | `lettre` | `chiffre`), `priorite` (1 = le plus courant), `notes`,
+  `reference_url` (lien vers la page du mot dans un dictionnaire LSQ externe, voir §6bis).
 - **`signeurs`** — profil de chaque contributeur·rice (`id` = `auth.users.id`) :
   `nom_affiche`, `identite` (sourd·e, malentendant·e, CODA, interprète…), `region`,
   `main_dominante` (`droite` | `gauche`), `role` (`contributeur` | `validateur` | `admin`).
@@ -177,6 +179,22 @@ JSON compressé gzip :
   inversée ; seul l'aperçu à l'écran l'est). `main_g` / `main_d` = `leftHandLandmarks` /
   `rightHandLandmarks` tels que fournis par MediaPipe. `t` = ms depuis le début de la vidéo.
 - Arrondi à 4 décimales. Toute évolution du format incrémente `version`.
+
+### 6bis. Sources externes (dictionnaires LSQ)
+- **« Mon dictionnaire LSQ »** (https://lsq-fr.ca), porté par l'AQEPA, l'UQAR et Multi Groupe
+  Conseil. Ses mentions légales : tout le contenu (vidéos LSQ, textes, traductions des
+  définitions) appartient à l'AQEPA ; les définitions empruntées (USITO, TLFi, GDT) exigent
+  l'autorisation de leurs titulaires.
+- **Ce qu'on en fait :** un **lien** par signe (`reference_url`) pour vérifier le sens du mot, et
+  la comparaison de sa liste de mots-vedettes avec la nôtre pour repérer des concepts manquants
+  (nos entrées restent rédigées par nous). Les liens sont des suggestions automatiques (comparaison
+  des formes françaises) : à corriger quand ils pointent vers le mauvais sens.
+- **Ce qu'on n'en fait pas :** copier ses vidéos, ses définitions ou ses traductions, ou les
+  montrer dans le direct. Ses signeur·euse·s n'ont pas consenti à Entre-Mains (§1.3, §1.4).
+- **Piste :** un partenariat avec l'AQEPA (info@aqepa.org) — liste de mots, contacts dans la
+  communauté sourde, éventuellement leurs vidéos avec licence et consentement des signeur·euse·s.
+  Utiliser des vidéos externes exigerait de modifier cette constitution et le schéma (source,
+  licence, consentement) : décision à prendre explicitement, pas par défaut.
 
 ---
 

@@ -404,6 +404,20 @@ export function Studio({
           <h2 className="break-words text-3xl font-bold sm:text-4xl">{signe.glose}</h2>
           <p className="text-lg text-doux">{signe.mots_fr.join(', ')}</p>
           {signe.notes && <p className="text-sm italic text-doux">Sens : {signe.notes}</p>}
+          {signe.reference_url && (
+            <p className="mt-1 text-sm">
+              <a
+                href={signe.reference_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-11 items-center gap-1 font-medium text-accent underline"
+              >
+                📖 Vérifier le sens dans Mon dictionnaire LSQ
+                <span className="sr-only"> (nouvel onglet)</span>
+              </a>
+              <span className="block text-doux">Signez comme vous le faites : votre variante est bienvenue.</span>
+            </p>
+          )}
           {nbPrises > 0 && <p className="mt-1 text-sm text-ok">✓ Vous avez déjà {nbPrises} prise{nbPrises > 1 ? 's' : ''} de ce signe.</p>}
         </div>
         <button onClick={onFermer} className="min-h-11 shrink-0 rounded-lg px-3 text-doux underline lg:hidden">

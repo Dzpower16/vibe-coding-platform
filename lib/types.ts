@@ -11,6 +11,8 @@ export interface Signe {
   type: TypeSigne
   priorite: 1 | 2 | 3
   notes: string | null
+  /** Lien vers la page du mot dans un dictionnaire LSQ externe (sens seulement). */
+  reference_url: string | null
 }
 
 export interface Signeur {
