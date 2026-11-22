@@ -1,64 +1,53 @@
-import { Chat } from './chat'
-import { FileExplorer } from './file-explorer'
-import { Header } from './header'
-import { Horizontal, Vertical } from '@/components/layout/panels'
-import { Logs } from './logs'
-import { Preview } from './preview'
-import { TabContent, TabItem } from '@/components/tabs'
-import { Welcome } from '@/components/modals/welcome'
-import { cookies } from 'next/headers'
-import { getHorizontal, getVertical } from '@/components/layout/sizing'
-import { hideBanner } from '@/app/actions'
+import Link from 'next/link'
 
-export default async function Page() {
-  const store = await cookies()
-  const banner = store.get('banner-hidden')?.value !== 'true'
-  const horizontalSizes = getHorizontal(store)
-  const verticalSizes = getVertical(store)
+const sections = [
+  {
+    href: '/direct',
+    titre: 'Direct',
+    texte: 'Une personne parle français : les signes LSQ filmés s’enchaînent à l’écran.',
+    etat: 'Bientôt',
+  },
+  {
+    href: '/conversation',
+    titre: 'Conversation',
+    texte: 'Sur un téléphone posé entre deux personnes, face à face.',
+    etat: 'Bientôt',
+  },
+  {
+    href: '/tournage',
+    titre: 'Bibliothèque de signes',
+    texte: 'Personnes sourdes : filmez les signes qui alimentent l’application.',
+    etat: 'Ouvert',
+  },
+]
+
+export default function Accueil() {
   return (
-    <>
-      <Welcome defaultOpen={banner} onDismissAction={hideBanner} />
-      <div className="flex flex-col h-screen max-h-screen overflow-hidden p-2 space-x-2">
-        <Header className="flex items-center w-full" />
-        <ul className="flex space-x-5 font-mono text-sm tracking-tight px-1 py-2 md:hidden">
-          <TabItem tabId="chat">Chat</TabItem>
-          <TabItem tabId="preview">Preview</TabItem>
-          <TabItem tabId="file-explorer">File Explorer</TabItem>
-          <TabItem tabId="logs">Logs</TabItem>
-        </ul>
-
-        {/* Mobile layout tabs taking the whole space*/}
-        <div className="flex flex-1 w-full overflow-hidden pt-2 md:hidden">
-          <TabContent tabId="chat" className="flex-1">
-            <Chat className="flex-1 overflow-hidden" />
-          </TabContent>
-          <TabContent tabId="preview" className="flex-1">
-            <Preview className="flex-1 overflow-hidden" />
-          </TabContent>
-          <TabContent tabId="file-explorer" className="flex-1">
-            <FileExplorer className="flex-1 overflow-hidden" />
-          </TabContent>
-          <TabContent tabId="logs" className="flex-1">
-            <Logs className="flex-1 overflow-hidden" />
-          </TabContent>
-        </div>
-
-        {/* Desktop layout with horizontal and vertical panels */}
-        <div className="hidden flex-1 w-full min-h-0 overflow-hidden pt-2 md:flex">
-          <Horizontal
-            defaultLayout={horizontalSizes ?? [50, 50]}
-            left={<Chat className="flex-1 overflow-hidden" />}
-            right={
-              <Vertical
-                defaultLayout={verticalSizes ?? [33.33, 33.33, 33.33]}
-                top={<Preview className="flex-1 overflow-hidden" />}
-                middle={<FileExplorer className="flex-1 overflow-hidden" />}
-                bottom={<Logs className="flex-1 overflow-hidden" />}
-              />
-            }
-          />
-        </div>
-      </div>
-    </>
+    <div className="space-y-8">
+      <section className="space-y-3">
+        <h1 className="text-3xl font-bold sm:text-4xl">Français ↔ LSQ, entre nos mains</h1>
+        <p className="max-w-2xl text-lg text-doux">
+          Entre-Mains montre en direct des signes de la langue des signes québécoise filmés par des
+          personnes sourdes. Aucun signe n’est inventé : un mot sans signe filmé est épelé.
+        </p>
+        <p className="max-w-2xl text-sm text-doux">
+          Outil d’aide à la communication — ne remplace pas un·e interprète professionnel·le.
+        </p>
+      </section>
+      <ul className="grid gap-4 sm:grid-cols-3">
+        {sections.map((s) => (
+          <li key={s.href}>
+            <Link
+              href={s.href}
+              className="flex h-full flex-col gap-2 rounded-2xl border border-ligne bg-carte p-5 shadow-sm transition hover:border-accent"
+            >
+              <span className="text-xs font-semibold uppercase tracking-wide text-doux">{s.etat}</span>
+              <span className="text-xl font-bold">{s.titre}</span>
+              <span className="text-doux">{s.texte}</span>
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   )
 }

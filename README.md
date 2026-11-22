@@ -1,49 +1,27 @@
-# Vibe Coding Platform
+# Entre-Mains
 
-An end-to-end coding platform where users enter text prompts and an AI agent generates full-stack applications in a sandboxed environment with live preview, file explorer, and command logs.
+Application temps réel **français ↔ langue des signes québécoise (LSQ)**.
+La constitution du projet (principes, architecture, conventions) est dans [`CLAUDE.md`](./CLAUDE.md).
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?demo-description=A+full-stack+coding+platform+built+with+Vercel%27s+AI+Cloud%2C+AI+SDK%2C+and+Next.js.&demo-image=https%3A%2F%2Fassets.vercel.com%2Fimage%2Fupload%2Fv1754588832%2FOSSvibecodingplatform%2Fscreenshot.png&demo-title=Vibe+Coding+Platform&demo-url=https%3A%2F%2Fvercel.fyi%2Fvibes&project-name=Vibe+Coding+Platform&repository-name=vibe-coding-platform&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fapps%2Fvibe-coding-platform&from=vibe-coding-platform-app)
+## Mise en route (Vercel + Supabase, sans local)
 
-## Features
+1. **Supabase** — créer un projet (région Canada si possible), puis dans *SQL Editor* exécuter dans l'ordre :
+   1. `supabase/migrations/0001_bibliotheque_signes.sql`
+   2. `supabase/seed.sql` (670 signes : alphabet, chiffres, ~630 signes courants)
+2. **Supabase Auth** — *URL Configuration* : Site URL = URL Vercel de production ; Redirect URLs :
+   l'URL de production et celle des previews (`https://*-<compte>.vercel.app/**`).
+   *Email Templates → Magic Link* : ajouter `{{ .Token }}` au message (code à 6 chiffres).
+3. **Vercel** — importer le dépôt, ajouter les variables de `.env.example`
+   (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`), déployer.
+4. Ouvrir `/tournage`, se connecter, remplir profil + consentement, filmer.
 
-- Multi-model support via AI Gateway (Claude, GPT, Grok)
-- Secure code execution with Vercel Sandbox
-- Real-time live preview of generated apps
-- File explorer for browsing project files
-- Command logs and error monitoring
-- One-click deploy to Vercel
+Pour donner le rôle de validateur·rice :
+`update public.signeurs set role = 'validateur' where id = '<uuid>';`
 
-## Tech Stack
+## Scripts
 
-- [Next.js](https://nextjs.org) with Turbopack
-- [AI SDK](https://ai-sdk.dev) v6
-- [Vercel AI Gateway](https://vercel.com/docs/ai-gateway)
-- [Vercel Sandbox](https://vercel.com/docs/vercel-sandbox)
-- [Tailwind CSS](https://tailwindcss.com)
-- [shadcn/ui](https://ui.shadcn.com)
-
-## Getting Started
-
-### Run Locally
-
-```bash
-pnpm install
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000).
-
-## Supported Models
-
-- Claude Opus 4.6
-- Claude Sonnet 4.6
-- GPT-5.3 Codex
-- Grok 4.1 Reasoning
-
-## Deploy
-
-Click the deploy button above or run:
-
-```bash
-vc deploy
-```
+| Commande | Rôle |
+|---|---|
+| `pnpm build` | build de production (ce que lance Vercel) |
+| `pnpm type-check` / `pnpm lint` | vérifications avant de pousser |
+| `pnpm seed:sql` | régénère `supabase/seed.sql` et `lib/categories.ts` depuis `data/signes-depart.json` |

@@ -1,35 +1,21 @@
 import type { NextConfig } from 'next'
-import { withBotId } from 'botid/next/config'
 
 const nextConfig: NextConfig = {
-  webpack(config) {
-    config.module.rules.push({
-      test: /\.md/,
-      type: 'asset/source',
-    })
-    return config
-  },
-  turbopack: {
-    rules: {
-      '*.md': {
-        loaders: ['raw-loader'],
-        as: '*.js',
-      },
-    },
-  },
-  images: {
-    remotePatterns: [
+  async headers() {
+    return [
       {
-        protocol: 'https',
-        hostname: 'vercel.com',
-        port: '',
-        pathname: '/api/www/avatar/**',
+        // Caméra et micro autorisés uniquement sur notre propre origine.
+        source: '/:path*',
+        headers: [
+          { key: 'Permissions-Policy', value: 'camera=(self), microphone=(self)' },
+        ],
       },
-    ],
-    dangerouslyAllowSVG: true,
-    contentDispositionType: 'attachment',
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+      {
+        source: '/mediapipe/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+    ]
   },
 }
 
-export default withBotId(nextConfig)
+export default nextConfig
