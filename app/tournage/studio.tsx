@@ -403,6 +403,7 @@ export function Studio({
           </p>
           <h2 className="break-words text-3xl font-bold sm:text-4xl">{signe.glose}</h2>
           <p className="text-lg text-doux">{signe.mots_fr.join(', ')}</p>
+          {signe.definition && <p className="mt-1 max-w-prose">{signe.definition}</p>}
           {signe.notes && <p className="text-sm italic text-doux">Sens : {signe.notes}</p>}
           {signe.reference_url && (
             <p className="mt-1 text-sm">

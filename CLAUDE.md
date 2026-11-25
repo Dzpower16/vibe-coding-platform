@@ -140,7 +140,8 @@ proxy.ts                rafraîchissement de session Supabase + protection des r
   `id`, `glose` (unique, MAJUSCULES : `MAISON`, `LETTRE-A`, `CHIFFRE-3`), `mots_fr text[]`
   (formes françaises qui mènent à ce signe : `{maison, domicile}`), `categorie`,
   `type` (`signe` | `lettre` | `chiffre`), `priorite` (1 = le plus courant), `notes`,
-  `reference_url` (lien vers la page du mot dans un dictionnaire LSQ externe, voir §6bis).
+  `definition` (phrase courte qui précise le sens, texte original Entre-Mains — jamais copiée
+  d'un dictionnaire), `reference_url` (lien vers la page du mot dans un dictionnaire LSQ externe, voir §6bis).
 - **`signeurs`** — profil de chaque contributeur·rice (`id` = `auth.users.id`) :
   `nom_affiche`, `identite` (sourd·e, malentendant·e, CODA, interprète…), `region`,
   `main_dominante` (`droite` | `gauche`), `role` (`contributeur` | `validateur` | `admin`).

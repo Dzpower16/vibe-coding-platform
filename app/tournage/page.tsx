@@ -14,7 +14,7 @@ export default async function PageTournage() {
   const [{ data: signes, error }, { data: prises }] = await Promise.all([
     supabase
       .from('signes')
-      .select('id, glose, mots_fr, categorie, type, priorite, notes, reference_url')
+      .select('id, glose, mots_fr, categorie, type, priorite, notes, definition, reference_url')
       .order('priorite')
       .order('glose')
       .limit(2000)

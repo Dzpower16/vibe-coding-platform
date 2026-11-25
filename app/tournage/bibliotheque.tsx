@@ -40,7 +40,8 @@ export function Bibliotheque({
         (!categorie || s.categorie === categorie) &&
         (!priorite || s.priorite === priorite) &&
         (!aFilmer || !mesPrises[s.id]) &&
-        (!q || normaliser(s.glose).includes(q) || s.mots_fr.some((m) => normaliser(m).includes(q))),
+        (!q || normaliser(s.glose).includes(q) || s.mots_fr.some((m) => normaliser(m).includes(q)) ||
+          (!!s.definition && normaliser(s.definition).includes(q))),
     )
   }, [signes, categorie, priorite, aFilmer, recherche, mesPrises])
 

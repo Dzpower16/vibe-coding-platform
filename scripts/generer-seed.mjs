@@ -22,6 +22,8 @@ for (const cat of data.categories) {
     if (![1, 2, 3].includes(s.p)) erreurs.push(`priorité invalide : ${s.glose}`)
     if (!Array.isArray(s.fr) || s.fr.length === 0) erreurs.push(`mots français manquants : ${s.glose}`)
     if (s.ref && !/^https:\/\/[^\s']+$/.test(s.ref)) erreurs.push(`lien invalide : ${s.glose}`)
+    if (!s.def) erreurs.push(`définition manquante : ${s.glose}`)
+    else if (s.def.length > 200) erreurs.push(`définition trop longue : ${s.glose}`)
     for (const m of s.fr) {
       const cle = m.toLowerCase()
       motsVus.set(cle, [...(motsVus.get(cle) ?? []), s.glose])
@@ -42,12 +44,12 @@ const q = (v) => (v == null ? 'null' : `'${String(v).replaceAll("'", "''")}'`)
 const tableau = (arr) => `array[${arr.map(q).join(', ')}]::text[]`
 
 const valeurs = lignes
-  .map((s) => `  (${q(s.glose)}, ${tableau(s.fr)}, ${q(s.categorie)}, '${s.type}', ${s.p}, ${q(s.notes)}, ${q(s.ref)})`)
+  .map((s) => `  (${q(s.glose)}, ${tableau(s.fr)}, ${q(s.categorie)}, '${s.type}', ${s.p}, ${q(s.notes)}, ${q(s.def)}, ${q(s.ref)})`)
   .join(',\n')
 
 const sql = `-- GÉNÉRÉ par scripts/generer-seed.mjs depuis data/signes-depart.json — ne pas éditer à la main.
--- ${lignes.length} signes. Exécuter après les migrations (0001, 0002…). Relançable (upsert sur glose).
-insert into public.signes (glose, mots_fr, categorie, type, priorite, notes, reference_url) values
+-- ${lignes.length} signes. Exécuter après les migrations (0001 à 0004). Relançable (upsert sur glose).
+insert into public.signes (glose, mots_fr, categorie, type, priorite, notes, definition, reference_url) values
 ${valeurs}
 on conflict (glose) do update set
   mots_fr = excluded.mots_fr,
@@ -55,6 +57,7 @@ on conflict (glose) do update set
   type = excluded.type,
   priorite = excluded.priorite,
   notes = excluded.notes,
+  definition = excluded.definition,
   reference_url = excluded.reference_url;
 `
 writeFileSync(join(racine, 'supabase', 'seed.sql'), sql)
