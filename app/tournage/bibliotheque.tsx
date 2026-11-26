@@ -209,8 +209,15 @@ export function Bibliotheque({
                     <span className="flex w-full items-start justify-between gap-1">
                       <span className="min-w-0 break-words text-lg font-bold leading-tight first-letter:uppercase">{mot}</span>
                       {prises && (
-                        <span className="pastille shrink-0 bg-ok-doux text-ok" title="Mes prises">
-                          ✓ {prises.total}
+                        <span className="flex shrink-0 gap-1">
+                          {!!prises.refusees && (
+                            <span className="pastille bg-alerte-doux text-alerte" title="Prise refusée : à refaire">
+                              ⛔ {prises.refusees}
+                            </span>
+                          )}
+                          <span className="pastille bg-ok-doux text-ok" title="Mes prises">
+                            ✓ {prises.total}
+                          </span>
                         </span>
                       )}
                     </span>
@@ -242,6 +249,7 @@ export function Bibliotheque({
             consentementId={consentementId}
             mainDominante={mainDominante}
             nbPrises={mesPrises[selection.id]?.total ?? 0}
+            motifRefus={mesPrises[selection.id]?.refusees ? mesPrises[selection.id]?.motifRefus ?? 'sans précision' : null}
             onEnvoye={() => priseEnvoyee(selection)}
             onSuivant={() => suivant(selection)}
             onFermer={() => setSelection(null)}

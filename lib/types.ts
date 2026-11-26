@@ -40,7 +40,7 @@ export interface Consentement {
 
 /** Résumé de mes prises par signe, pour la bibliothèque. */
 export interface MesPrises {
-  [signeId: number]: { total: number; valides: number }
+  [signeId: number]: { total: number; valides: number; refusees?: number; motifRefus?: string | null }
 }
 
 export const IDENTITES: { valeur: Identite; libelle: string }[] = [
@@ -71,4 +71,27 @@ export interface SourceExterne {
   date_accord: string
   revoque_le: string | null
   created_at: string
+}
+
+/** Une prise à valider, avec ce qu'il faut pour juger (CLAUDE.md §1.1, étape 1c). */
+export interface PriseAValider {
+  id: string
+  video_url: string | null
+  mime: string
+  duree_ms: number
+  debut_ms: number | null
+  fin_ms: number | null
+  main_dominante: MainDominante | null
+  variante: string | null
+  commentaire: string | null
+  origine: 'tournage' | 'externe'
+  signeur_externe: string | null
+  created_at: string
+  statut: StatutEnregistrement
+  motif_rejet: string | null
+  valide_le: string | null
+  signe: Pick<Signe, 'id' | 'glose' | 'mots_fr' | 'definition' | 'categorie' | 'reference_url' | 'notes'>
+  signeur: { nom_affiche: string; identite: Identite; region: string | null } | null
+  /** Nombre de prises déjà validées pour ce signe. */
+  deja_valides: number
 }

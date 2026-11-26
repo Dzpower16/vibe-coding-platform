@@ -19,16 +19,34 @@ export default async function PageTournage() {
       .order('glose')
       .limit(2000)
       .returns<Signe[]>(),
-    supabase.from('enregistrements').select('signe_id, statut').eq('signeur_id', user.id),
+    supabase
+      .from('enregistrements')
+      .select('signe_id, statut, motif_rejet, valide_le')
+      .eq('signeur_id', user.id)
+      .order('valide_le', { ascending: true, nullsFirst: true }),
   ])
 
   if (error) throw new Error(`Lecture des signes impossible : ${error.message}`)
+
+  // Validateur·rice : nombre de prises des autres qui attendent une décision.
+  const estValidateur = signeur.role === 'validateur' || signeur.role === 'admin'
+  const { count: aValider } = estValidateur
+    ? await supabase
+        .from('enregistrements')
+        .select('id', { count: 'exact', head: true })
+        .eq('statut', 'en_attente')
+        .neq('signeur_id', user.id)
+    : { count: 0 }
 
   const mesPrises: MesPrises = {}
   for (const p of prises ?? []) {
     const m = (mesPrises[p.signe_id] ??= { total: 0, valides: 0 })
     m.total++
     if (p.statut === 'valide') m.valides++
+    if (p.statut === 'rejete') {
+      m.refusees = (m.refusees ?? 0) + 1
+      m.motifRefus = p.motif_rejet // le plus récent (tri par date de décision)
+    }
   }
 
   return (
@@ -38,8 +56,13 @@ export default async function PageTournage() {
           <h1 className="titre text-3xl sm:text-4xl">Bibliothèque de signes</h1>
           <p className="text-doux">Bonjour {signeur.nom_affiche} 👋 Choisissez un signe et filmez-le comme vous le signez naturellement.</p>
         </div>
-        <div className="flex items-center gap-2">
-          <Link href="/tournage/consentement" className="inline-flex min-h-11 items-center rounded-lg border border-ligne bg-carte px-3">
+        <div className="flex flex-wrap items-center gap-2">
+          {estValidateur && (
+            <Link href="/admin/validation" className="bouton bouton-primaire min-h-11 px-4 text-base">
+              ✅ Valider des prises{aValider ? ` (${aValider})` : ''}
+            </Link>
+          )}
+          <Link href="/tournage/consentement" className="bouton bouton-secondaire min-h-11 px-4 text-base">
             Profil et consentement
           </Link>
           <form action="/auth/deconnexion" method="post">

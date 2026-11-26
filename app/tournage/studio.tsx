@@ -56,6 +56,7 @@ export function Studio({
   consentementId,
   mainDominante,
   nbPrises,
+  motifRefus = null,
   onEnvoye,
   onSuivant,
   onFermer,
@@ -65,6 +66,8 @@ export function Studio({
   consentementId: string
   mainDominante: MainDominante
   nbPrises: number
+  /** Motif du dernier refus d'une de mes prises de ce signe, s'il y en a un. */
+  motifRefus?: string | null
   onEnvoye: () => void
   onSuivant: () => void
   onFermer: () => void
@@ -429,6 +432,11 @@ export function Studio({
             </p>
           )}
           {nbPrises > 0 && <p className="mt-1 text-sm text-ok">✓ Vous avez déjà {nbPrises} prise{nbPrises > 1 ? 's' : ''} de ce signe.</p>}
+          {motifRefus && (
+            <p role="status" className="mt-2 rounded-xl bg-alerte-doux p-3 text-sm text-alerte">
+              <strong>⛔ Une de vos prises a été refusée.</strong> Motif : {motifRefus}. Vous pouvez la refaire ci-dessous.
+            </p>
+          )}
         </div>
         <button onClick={onFermer} className="bouton bouton-secondaire min-h-11 shrink-0 px-3 text-base lg:hidden">
           ← Liste

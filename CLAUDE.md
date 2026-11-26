@@ -39,7 +39,7 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
 | 1b+ | Liens « Mon dictionnaire LSQ » par signe (migration `0002`), liste portée à 803 signes (nombres 11–1000, temps habituels…) | ✅ |
 | 2a | Prototype `/parler` : la caméra reconnaît des signes isolés (exemples filmés) et le téléphone dit le mot à voix haute | ✅ prototype |
 | 1f | Vidéos externes avec accord écrit : registre des accords `/admin/sources`, import et découpage `/admin/import` (migration `0005`) | ✅ |
-| 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin`) | à faire |
+| 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin/validation`, migration `0006`) | ✅ |
 | 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | à faire |
 | 1e | Mode conversation sur téléphone `/conversation` (écran partagé face à face) | à faire |
 | 2 | LSQ → français : caméra, reconnaissance de l'alphabet puis de signes isolés, entraînée sur les positions enregistrées | plus tard |
@@ -162,6 +162,10 @@ proxy.ts                rafraîchissement de session Supabase + protection des r
   `personnes_filmees`, `url_origine`, `portee_application` / `portee_reconnaissance` /
   `portee_commercial`, `credit_public`, `mineurs` + `accord_parental` (obligatoire si mineurs),
   `preuve_path` (bucket privé `preuves-accords`) ou `preuve_note`, `date_accord`, `revoque_le`.
+- **Validation (migration `0006`)** — rôle `validateur` ou `admin` (attribué par SQL). La base
+  interdit de valider ses propres prises (y compris un import qu'on a déposé), inscrit elle-même
+  `valide_par` / `valide_le` (déclencheur), et refuse un rejet sans `motif_rejet`. Le motif est montré
+  à la personne qui a filmé, dans la bibliothèque. Une décision peut être annulée (retour `en_attente`).
 - **Vue `lexique`** — signes ayant au moins un enregistrement `valide` dont le consentement (ou,
   pour un import, l'accord avec `portee_application`) n'est pas révoqué. **C'est la seule source de vocabulaire que Claude a le droit d'utiliser.**
 

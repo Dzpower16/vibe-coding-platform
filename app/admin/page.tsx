@@ -19,10 +19,10 @@ const sections = [
     etat: 'Ouvert',
   },
   {
-    href: '/admin',
+    href: '/admin/validation',
     titre: 'Validation',
     texte: 'Des personnes sourdes vérifient chaque prise avant qu’elle soit utilisée.',
-    etat: 'À venir',
+    etat: 'Ouvert',
   },
 ]
 
