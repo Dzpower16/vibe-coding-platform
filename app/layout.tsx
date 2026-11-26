@@ -46,6 +46,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               Entre-Mains
             </Link>
             <NavigationHaut />
+            <Link
+              href="/guide"
+              className="inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-[15px] font-medium text-doux transition hover:bg-carte hover:text-encre sm:ml-auto"
+            >
+              <span aria-hidden className="grid size-6 place-items-center rounded-full border-2 border-current text-xs font-bold">?</span>
+              Guide
+            </Link>
           </nav>
         </header>
 
@@ -55,7 +62,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <footer className="hidden border-t border-ligne sm:block">
           <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-doux">
-            <p className="font-serif text-base font-bold text-encre">Entre-Mains</p>
+            <p className="flex items-center gap-4">
+              <span className="font-serif text-base font-bold text-encre">Entre-Mains</span>
+              <Link href="/guide" className="font-medium text-accent hover:underline">
+                Guide d’utilisation
+              </Link>
+            </p>
             <p className="max-w-xl">
               Une aide à la communication. Elle ne remplace pas un·e interprète professionnel·le (santé, justice,
               urgence).

@@ -139,6 +139,11 @@ export default function Accueil() {
           <h2 id="titre-etapes" className="titre mt-4 text-3xl sm:text-4xl md:text-5xl">
             Trois gestes, et le téléphone parle.
           </h2>
+          <p className="mt-4">
+            <Link href="/guide" className="font-semibold text-accent hover:underline">
+              Voir le guide complet →
+            </Link>
+          </p>
         </div>
         <ol className="mt-12 grid gap-5 sm:grid-cols-3">
           {etapes.map((e, i) => (
