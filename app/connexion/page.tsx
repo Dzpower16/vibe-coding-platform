@@ -10,7 +10,7 @@ export default async function Connexion({ searchParams }: { searchParams: Promis
     <div className="mx-auto max-w-md space-y-5 sm:pt-6">
       <div className="space-y-2 text-center">
         <p aria-hidden className="text-5xl">🤲</p>
-        <h1 className="text-3xl font-black">Connexion</h1>
+        <h1 className="titre text-4xl">Connexion</h1>
         <p className="text-doux">
           Entrez votre courriel : vous recevrez un lien et un code à 6 chiffres. <strong className="text-encre">Pas de mot de passe.</strong>
         </p>

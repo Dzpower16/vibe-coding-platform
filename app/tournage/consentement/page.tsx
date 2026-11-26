@@ -9,7 +9,7 @@ export default async function PageConsentement() {
   return (
     <div className="mx-auto max-w-3xl space-y-6">
       <header className="space-y-2">
-        <h1 className="text-2xl font-bold">Votre profil et votre consentement</h1>
+        <h1 className="titre text-3xl sm:text-4xl">Votre profil et votre consentement</h1>
         <p className="text-doux">À remplir une seule fois avant de filmer. Vous pouvez revenir ici à tout moment.</p>
       </header>
       <FormulaireConsentement

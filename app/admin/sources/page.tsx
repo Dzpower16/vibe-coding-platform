@@ -19,7 +19,7 @@ export default async function PageSources() {
   return (
     <div className="space-y-6">
       <header className="space-y-1">
-        <h1 className="text-2xl font-bold">Accords écrits</h1>
+        <h1 className="titre text-3xl sm:text-4xl">Accords écrits</h1>
         <p className="max-w-3xl text-doux">
           Une vidéo filmée hors d’Entre-Mains n’entre dans la bibliothèque que si son titulaire <strong>et</strong> les
           personnes filmées ont donné leur accord par écrit. Enregistrez ici chaque accord et sa preuve.

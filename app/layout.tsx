@@ -1,7 +1,12 @@
 import type { Metadata, Viewport } from 'next'
+import { Inter, Playfair_Display } from 'next/font/google'
 import Link from 'next/link'
 import { NavigationBas, NavigationHaut } from '@/components/navigation'
 import './globals.css'
+
+// Polices copiées dans le site au build (aucun appel à Google côté visiteur).
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
+const playfair = Playfair_Display({ subsets: ['latin'], variable: '--font-playfair', display: 'swap', weight: ['600', '700', '800'] })
 
 export const metadata: Metadata = {
   title: { default: 'Entre-Mains — français ↔ LSQ', template: '%s · Entre-Mains' },
@@ -16,13 +21,13 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#ffffff',
+  themeColor: '#fafaf8',
   viewportFit: 'cover',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr-CA">
+    <html lang="fr-CA" className={`${inter.variable} ${playfair.variable}`}>
       <body className="flex min-h-dvh flex-col">
         <a
           href="#contenu"
@@ -30,12 +35,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         >
           Aller au contenu
         </a>
-        <header className="sticky top-0 z-30 border-b border-ligne bg-carte/95 pt-[env(safe-area-inset-top)] backdrop-blur">
+        <header className="sticky top-0 z-30 border-b border-ligne/70 bg-fond/85 pt-[env(safe-area-inset-top)] backdrop-blur-md">
           <nav
             aria-label="Navigation principale"
             className="mx-auto flex min-h-14 max-w-6xl items-center justify-between gap-4 px-4 sm:justify-start sm:gap-6"
           >
-            <Link href="/" className="flex min-h-11 items-center gap-2 text-xl font-bold">
+            <Link href="/" className="flex min-h-11 items-center gap-2.5 font-serif text-[1.35rem] font-bold tracking-tight">
               {/* eslint-disable-next-line @next/next/no-img-element -- icône SVG locale, taille fixe */}
               <img src="/icon.svg" alt="" width={32} height={32} className="size-8 rounded-lg" />
               Entre-Mains
@@ -48,10 +53,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        <footer className="hidden border-t border-ligne bg-carte sm:block">
-          <div className="mx-auto max-w-6xl px-4 py-5 text-sm text-doux">
-            Entre-Mains est une aide à la communication. Elle ne remplace pas un·e interprète professionnel·le
-            (santé, justice, urgence).
+        <footer className="hidden border-t border-ligne sm:block">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4 px-4 py-8 text-sm text-doux">
+            <p className="font-serif text-base font-bold text-encre">Entre-Mains</p>
+            <p className="max-w-xl">
+              Une aide à la communication. Elle ne remplace pas un·e interprète professionnel·le (santé, justice,
+              urgence).
+            </p>
           </div>
         </footer>
 

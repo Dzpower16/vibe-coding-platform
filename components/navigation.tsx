@@ -27,14 +27,14 @@ export function NavigationHaut() {
               href={l.href}
               aria-current={actif ? 'page' : undefined}
               prefetch={false}
-              className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 font-medium transition ${
-                actif ? 'bg-accent text-white' : 'hover:bg-fond'
+              className={`inline-flex min-h-11 items-center gap-1.5 rounded-xl px-3 text-[15px] font-medium transition ${
+                actif ? 'bg-accent-doux text-accent' : 'text-doux hover:bg-carte hover:text-encre'
               }`}
             >
               <span aria-hidden>{l.icone}</span>
               {l.libelle}
               {l.bientot && (
-                <span className={`pastille ${actif ? 'bg-white/20 text-white' : 'bg-ligne text-doux'}`}>Bientôt</span>
+                <span className="pastille bg-ligne text-[0.65rem] text-doux">Bientôt</span>
               )}
             </Link>
           </li>
@@ -50,7 +50,7 @@ export function NavigationBas() {
   return (
     <nav
       aria-label="Navigation principale"
-      className="fixed inset-x-0 bottom-0 z-40 border-t border-ligne bg-carte/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden"
+      className="fixed inset-x-0 bottom-0 z-40 border-t border-ligne/70 bg-fond/90 pb-[env(safe-area-inset-bottom)] backdrop-blur-md sm:hidden"
     >
       <ul className="grid grid-cols-4">
         {liens.map((l) => {

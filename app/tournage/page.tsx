@@ -35,7 +35,7 @@ export default async function PageTournage() {
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold">Bibliothèque de signes</h1>
+          <h1 className="titre text-3xl sm:text-4xl">Bibliothèque de signes</h1>
           <p className="text-doux">Bonjour {signeur.nom_affiche} 👋 Choisissez un signe et filmez-le comme vous le signez naturellement.</p>
         </div>
         <div className="flex items-center gap-2">

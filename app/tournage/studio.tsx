@@ -405,7 +405,7 @@ export function Studio({
               {'★'.repeat(4 - signe.priorite)}
             </span>
           </p>
-          <h2 className="break-words text-4xl font-black leading-tight first-letter:uppercase sm:text-5xl">
+          <h2 className="titre break-words text-4xl leading-tight first-letter:uppercase sm:text-5xl">
             {signe.mots_fr[0] ?? signe.glose}
           </h2>
           <p className="flex flex-wrap items-center gap-2">

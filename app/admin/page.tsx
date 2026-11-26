@@ -31,7 +31,7 @@ export default async function Admin() {
   if (!estAdmin) return <AccesRefuse aProfil={!!signeur} />
   return (
     <div className="space-y-6">
-      <h1 className="text-2xl font-bold">Administration</h1>
+      <h1 className="titre text-3xl sm:text-4xl">Administration</h1>
       <ul className="grid gap-4 sm:grid-cols-3">
         {sections.map((s) => (
           <li key={s.titre}>

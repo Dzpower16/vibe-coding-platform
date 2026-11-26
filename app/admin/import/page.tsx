@@ -31,7 +31,7 @@ export default async function PageImport() {
   return (
     <div className="space-y-4">
       <header className="space-y-1">
-        <h1 className="text-2xl font-bold">Importer des vidéos autorisées</h1>
+        <h1 className="titre text-3xl sm:text-4xl">Importer des vidéos autorisées</h1>
         <p className="max-w-3xl text-doux">
           Déposez une vidéo dont l’accord écrit est enregistré, marquez le début et la fin de chaque signe : chaque
           segment devient une prise séparée, avec ses mouvements de mains. Les prises importées passent par la
