@@ -39,7 +39,7 @@ Pour donner le rôle de validateur·rice :
 
 Workflow **« LSQ — Mains, visage et signes Logic »** (`smiles-workspace-wudvp/lsq-mains-visage-et-signes-logic`) :
 une entrée `image`, aucun paramètre, une sortie `predictions` (région des mains, visage, signes connus du
-modèle `lsq-mains-visage-et-signes/3`).
+modèle `lsq-mains-visage-et-signes/4`, classes `main_active` et `visage`).
 
 - **Clé** : `ROBOFLOW_API_KEY` = la clé **privée** (app.roboflow.com → Settings → API Keys ; une clé
   « publishable » `rf_…` est refusée par l'inférence serverless). Dans Vercel, côté serveur, jamais `NEXT_PUBLIC_`.

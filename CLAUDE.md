@@ -283,8 +283,8 @@ l'écran le dit (mode `epellation`). Il impose :
 ## 8ter. Roboflow (pilote, serveur uniquement)
 
 - **Workflow :** « LSQ — Mains, visage et signes Logic » (`smiles-workspace-wudvp/lsq-mains-visage-et-signes-logic`).
-  Définition réelle : entrée `image`, **aucun paramètre**, une étape qui appelle le workflow
-  `lsq-mains-visage-et-signes` (modèle `lsq-mains-visage-et-signes/3`), une sortie `predictions`
+  Définition réelle : entrée `image`, **aucun paramètre**, une étape modèle `lsq-mains-visage-et-signes/4`
+  (classes `main_active`, `visage` ; confiance 0,4), une sortie `predictions`
   (`{ image: {width, height}, predictions: [{class, confidence, x, y, width, height, …}] }`).
 - **Client :** `lib/roboflow/workflow.ts`, fonctions `detecterMainsVisageEtSignes(image)` et
   `detecterMainsVisageEtSignesLot(images)` (8 images par requête) : `fetch` + `zod` (pas de SDK ajouté),
@@ -298,7 +298,8 @@ l'écran le dit (mode `epellation`). Il impose :
   le consentement ou l'accord écrit coche « reconnaissance » (outils admin, pré-annotation). **Jamais** sur
   la caméra de `/parler` (promesse affichée : l'image reste sur le téléphone) ni sur une page publique sans
   modifier d'abord cette constitution. Un résultat Roboflow ne valide jamais un signe : la validation reste
-  humaine (§1.1). Vidéo en direct (webcam, flux) = autre mécanisme (WebRTC) : à décider explicitement.
+  humaine (§1.1). Le workflow ne doit **pas** contenir d'étape « dataset upload » (active learning) :
+  elle copierait chaque image envoyée dans le projet Roboflow. Vidéo en direct (webcam, flux) = autre mécanisme (WebRTC) : à décider explicitement.
 
 ---
 
