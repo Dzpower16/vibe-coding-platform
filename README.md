@@ -42,10 +42,14 @@ modèle `lsq-mains-visage-et-signes/3`).
 
 - **Clé** : `ROBOFLOW_API_KEY` = la clé **privée** (app.roboflow.com → Settings → API Keys ; une clé
   « publishable » `rf_…` est refusée par l'inférence serverless). Dans Vercel, côté serveur, jamais `NEXT_PUBLIC_`.
-- **Code** : `lib/roboflow/workflow.ts` → `detecterMainsVisageEtSignes(image)` (URL `https://` ou base64),
-  délai de 20 s, 2 nouvelles tentatives (réseau, 429, 5xx), erreurs typées `ErreurRoboflow`
-  (`configuration`, `entree`, `reseau`, `http`, `reponse`). Résultat indexé par les noms de sortie du workflow.
-- **Test** : `ROBOFLOW_API_KEY=… pnpm smoke:roboflow` (mire générée par défaut, ou un chemin d'image).
+- **Code** : `lib/roboflow/workflow.ts` → `detecterMainsVisageEtSignes(image)` (URL `https://` ou base64)
+  et `detecterMainsVisageEtSignesLot(images)` (8 images par requête, 2 requêtes en parallèle, résultats dans l'ordre).
+  Options : `confianceMin` (0–1), `cache: false`, `delaiMs`, `dossierImages`. Résultat indexé par les noms de sortie.
+- **Optimisations** : cache en mémoire (15 min, 256 images, clé = empreinte SHA-256 ; seules les détections sont gardées,
+  jamais l'image), appels simultanés sur la même image fusionnés, doublons d'un lot envoyés une fois.
+  Délai de 30 s par requête, 2 nouvelles tentatives (réseau, 429, 5xx) avec attente aléatoire, `Retry-After` respecté
+  (plafond 10 s). Erreurs typées `ErreurRoboflow` (`configuration`, `entree`, `reseau`, `http`, `reponse`).
+- **Test** : `ROBOFLOW_API_KEY=… pnpm smoke:roboflow` (mire générée par défaut, ou un chemin d'image) : vérifie aussi le cache, un lot et le seuil.
   Dans un environnement cloud dont le proxy injecte la clé : `NODE_USE_ENV_PROXY=1 ROBOFLOW_API_KEY=proxy-injected pnpm smoke:roboflow`.
 - **Vie privée** : les images partent chez Roboflow (hors Canada). Seulement des images dont le consentement
   ou l'accord couvre la reconnaissance — jamais la caméra de « Signer → voix » (voir `CLAUDE.md` §8ter).

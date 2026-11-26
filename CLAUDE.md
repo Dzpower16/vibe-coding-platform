@@ -282,9 +282,11 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
   Définition réelle : entrée `image`, **aucun paramètre**, une étape qui appelle le workflow
   `lsq-mains-visage-et-signes` (modèle `lsq-mains-visage-et-signes/3`), une sortie `predictions`
   (`{ image: {width, height}, predictions: [{class, confidence, x, y, width, height, …}] }`).
-- **Client :** `lib/roboflow/workflow.ts`, fonction `detecterMainsVisageEtSignes(image)` : `fetch` + `zod`
-  (pas de SDK ajouté), `Authorization: Bearer` avec `ROBOFLOW_API_KEY`, délai 20 s, 2 reprises avec
-  attente (réseau, 429, 5xx), erreurs typées `ErreurRoboflow`. Les sorties sont lues **par leur forme**,
+- **Client :** `lib/roboflow/workflow.ts`, fonctions `detecterMainsVisageEtSignes(image)` et
+  `detecterMainsVisageEtSignesLot(images)` (8 images par requête) : `fetch` + `zod` (pas de SDK ajouté),
+  `Authorization: Bearer` avec `ROBOFLOW_API_KEY`, délai 30 s, 2 reprises avec attente aléatoire (réseau, 429,
+  5xx ; `Retry-After` respecté), cache mémoire des détections (15 min, jamais l'image), appels identiques
+  fusionnés, option `confianceMin`, erreurs typées `ErreurRoboflow`. Les sorties sont lues **par leur forme**,
   pas par un nom codé en dur ; seuls classe, confiance et boîte sont gardés (pas de `points`) ; une sortie
   image base64 est écrite sur disque si `dossierImages` est fourni, sinon abandonnée — jamais loguée.
 - **Test de fumée :** `pnpm smoke:roboflow [image]` (mire sans personne par défaut).
