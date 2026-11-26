@@ -18,8 +18,8 @@ interface Ligne {
 
 /**
  * Exemples de signes pour la reconnaissance (CLAUDE.md §8bis).
- * Seulement : consentement non révoqué ET portée « reconnaissance » cochée,
- * et prise validée OU prise de la personne connectée (calibrage personnel).
+ * Seulement : consentement (tournage) ou accord écrit (import externe) non révoqué ET portée
+ * « reconnaissance » cochée, et prise validée OU prise de la personne connectée (calibrage personnel).
  * On renvoie des empreintes (mains + poignets), jamais la vidéo ni le visage.
  */
 export async function GET() {
@@ -39,18 +39,34 @@ export async function GET() {
     )
   }
 
-  const { data, error } = await admin
-    .from('enregistrements')
-    .select('id, positions_path, signes!inner(glose, mots_fr), consentements!inner(portee_reconnaissance, revoque_le)')
-    .not('positions_path', 'is', null)
-    .eq('consentements.portee_reconnaissance', true)
-    .is('consentements.revoque_le', null)
-    .or(`statut.eq.valide,signeur_id.eq.${user.id}`)
-    .order('created_at', { ascending: false })
-    .limit(MAX_EXEMPLES)
-    .returns<Ligne[]>()
+  const [tournage, externes] = await Promise.all([
+    admin
+      .from('enregistrements')
+      .select('id, positions_path, signes!inner(glose, mots_fr), consentements!inner(portee_reconnaissance, revoque_le)')
+      .eq('origine', 'tournage')
+      .not('positions_path', 'is', null)
+      .eq('consentements.portee_reconnaissance', true)
+      .is('consentements.revoque_le', null)
+      .or(`statut.eq.valide,signeur_id.eq.${user.id}`)
+      .order('created_at', { ascending: false })
+      .limit(MAX_EXEMPLES)
+      .returns<Ligne[]>(),
+    admin
+      .from('enregistrements')
+      .select('id, positions_path, signes!inner(glose, mots_fr), sources_externes!inner(portee_reconnaissance, revoque_le)')
+      .eq('origine', 'externe')
+      .not('positions_path', 'is', null)
+      .eq('sources_externes.portee_reconnaissance', true)
+      .is('sources_externes.revoque_le', null)
+      .or(`statut.eq.valide,signeur_id.eq.${user.id}`)
+      .order('created_at', { ascending: false })
+      .limit(MAX_EXEMPLES)
+      .returns<Ligne[]>(),
+  ])
 
+  const error = tournage.error ?? externes.error
   if (error) return NextResponse.json({ erreur: error.message }, { status: 500 })
+  const data = [...(tournage.data ?? []), ...(externes.data ?? [])].slice(0, MAX_EXEMPLES)
 
   const modeles: ModeleSigne[] = []
   const lignes = data ?? []

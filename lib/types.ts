@@ -50,3 +50,25 @@ export const IDENTITES: { valeur: Identite; libelle: string }[] = [
   { valeur: 'interprete', libelle: 'Interprète LSQ' },
   { valeur: 'autre', libelle: 'Autre' },
 ]
+
+/** Accord écrit pour une vidéo filmée hors de /tournage (CLAUDE.md §6ter). */
+export interface SourceExterne {
+  id: string
+  titulaire: string
+  contact: string | null
+  personnes_filmees: string
+  url_origine: string | null
+  description: string | null
+  portee_application: boolean
+  portee_reconnaissance: boolean
+  portee_commercial: boolean
+  credit_public: boolean
+  credit_nom: string | null
+  mineurs: boolean
+  accord_parental: boolean
+  preuve_path: string | null
+  preuve_note: string | null
+  date_accord: string
+  revoque_le: string | null
+  created_at: string
+}

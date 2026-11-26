@@ -16,11 +16,11 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
    pas une interprétation certifiée. L'interface le dit clairement et ne remplace jamais un·e
    interprète professionnel·le pour un contexte médical, juridique ou critique.
 3. **On n'invente jamais un signe.** Le direct n'utilise **que** des signes filmés par des personnes
-   sourdes et validés. Un mot sans signe validé est **épelé** (dactylologie LSQ) avec les vidéos de
+   sourdes et validés (tournés dans `/tournage`, ou importés avec un accord écrit, voir §6ter). Un mot sans signe validé est **épelé** (dactylologie LSQ) avec les vidéos de
    l'alphabet, ou signalé comme absent. Pas de signe généré, pas d'avatar inventé, pas de « signe
    probable ».
 4. **Consentement écrit, éclairé, révocable.** Chaque vidéo est rattachée à un consentement signé
-   (texte versionné conservé tel quel). La révocation retire immédiatement les vidéos du lexique.
+   (texte versionné conservé tel quel) ou, pour une vidéo importée, à un accord écrit enregistré. La révocation retire immédiatement les vidéos du lexique.
    Les vidéos montrent des visages : ce sont des données personnelles sensibles (Loi 25, Québec).
 5. **Visuel d'abord.** Les utilisateur·rice·s principaux·ales sont sourd·e·s : aucune information ne
    passe uniquement par le son ; textes courts, grands boutons, états visibles (couleurs + icônes +
@@ -38,6 +38,7 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
 | **1b** | Page de tournage `/tournage` : consentement écrit, webcam, enregistrement vidéo + positions mains/visage/corps, envoi Supabase | ✅ |
 | 1b+ | Liens « Mon dictionnaire LSQ » par signe (migration `0002`), liste portée à 803 signes (nombres 11–1000, temps habituels…) | ✅ |
 | 2a | Prototype `/parler` : la caméra reconnaît des signes isolés (exemples filmés) et le téléphone dit le mot à voix haute | ✅ prototype |
+| 1f | Vidéos externes avec accord écrit : registre des accords `/admin/sources`, import et découpage `/admin/import` (migration `0005`) | ✅ |
 | 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin`) | à faire |
 | 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | à faire |
 | 1e | Mode conversation sur téléphone `/conversation` (écran partagé face à face) | à faire |
@@ -116,7 +117,7 @@ app/
   parler/               (2a) caméra → signe reconnu → voix (prototype)
   direct/               (1d) micro → gloses → vidéos
   conversation/         (1e) mode téléphone face à face
-  admin/                (1c) validation des vidéos
+  admin/                accords écrits (sources/), import de vidéos (import/), validation (1c)
   api/                  route handlers (Gladia, Claude…)
 components/             composants UI partagés
 lib/
@@ -151,9 +152,15 @@ proxy.ts                rafraîchissement de session Supabase + protection des r
   `video_path`, `positions_path`, `mime`, `duree_ms`, `largeur`, `hauteur`, `fps`,
   `debut_ms` / `fin_ms` (rognage suggéré : du premier au dernier instant où une main est visible),
   `main_dominante`, `variante` (régionale, facultatif), `commentaire`,
-  `statut` (`en_attente` | `valide` | `rejete`), `valide_par`, `valide_le`.
-- **Vue `lexique`** — signes ayant au moins un enregistrement `valide` dont le consentement n'est
-  pas révoqué. **C'est la seule source de vocabulaire que Claude a le droit d'utiliser.**
+  `statut` (`en_attente` | `valide` | `rejete`), `valide_par`, `valide_le`,
+  `origine` (`tournage` | `externe`) ; pour `externe` : `source_externe_id`, `signeur_externe`,
+  `source_debut_ms` / `source_fin_ms` (segment dans le fichier d'origine), `consentement_id` nul.
+- **`sources_externes`** — un accord écrit par titulaire (admins seulement, RLS) : `titulaire`,
+  `personnes_filmees`, `url_origine`, `portee_application` / `portee_reconnaissance` /
+  `portee_commercial`, `credit_public`, `mineurs` + `accord_parental` (obligatoire si mineurs),
+  `preuve_path` (bucket privé `preuves-accords`) ou `preuve_note`, `date_accord`, `revoque_le`.
+- **Vue `lexique`** — signes ayant au moins un enregistrement `valide` dont le consentement (ou,
+  pour un import, l'accord avec `portee_application`) n'est pas révoqué. **C'est la seule source de vocabulaire que Claude a le droit d'utiliser.**
 
 Plusieurs enregistrements par signe sont encouragés (variantes, plusieurs signeur·euse·s) : c'est
 aussi ce dont la reconnaissance (étape 2) aura besoin.
@@ -200,6 +207,19 @@ JSON compressé gzip :
   Utiliser des vidéos externes exigerait de modifier cette constitution et le schéma (source,
   licence, consentement) : décision à prendre explicitement, pas par défaut.
 
+### 6ter. Vidéos externes avec accord écrit
+- Une vidéo filmée hors de `/tournage` (ex. créateur·rice LSQ) n'entre dans la bibliothèque que si
+  un **accord écrit** du titulaire **et des personnes filmées** est enregistré dans `sources_externes`,
+  avec sa preuve. Mineur·e·s de moins de 14 ans : accord parental écrit obligatoire.
+- Les fichiers viennent **du titulaire** (fichier original, ou téléchargé par lui depuis YouTube
+  Studio). On ne télécharge jamais depuis YouTube ou un site avec des outils non autorisés, même
+  avec un accord.
+- Chaque segment importé devient un `enregistrement` `origine = 'externe'`, passe par la même
+  **validation** que les prises filmées, et sort du lexique et de la reconnaissance dès que l'accord
+  est retiré. L'usage pour l'IA exige `portee_reconnaissance` ; l'affichage, `portee_application` ;
+  la vente, `portee_commercial`.
+- Rôle **admin** requis (`signeurs.role = 'admin'`, attribué par SQL, jamais par l'interface).
+
 ---
 
 ## 7. Gloses LSQ : conventions
@@ -231,8 +251,8 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
 
 ## 8bis. Reconnaissance LSQ → voix (`/parler`, prototype)
 
-- **Données :** seulement les prises dont le consentement est actif **et** a la portée
-  « reconnaissance » cochée ; prises validées, plus les prises de la personne connectée
+- **Données :** seulement les prises dont le consentement (ou l'accord écrit, pour un import) est
+  actif **et** a la portée « reconnaissance » cochée ; prises validées, plus les prises de la personne connectée
   (calibrage personnel). La route `/api/reconnaissance/modeles` ne renvoie que des empreintes
   (poignets + forme des mains), jamais la vidéo ni le visage. Elle exige `SUPABASE_SECRET_KEY`.
 - **Méthode :** `lib/reconnaissance/caracteristiques.ts` — positions normalisées par rapport aux
@@ -287,6 +307,7 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
 ## 11. Ce qu'on ne fait pas
 
 - Pas de synthèse/génération de signes, pas de traduction « devinée » d'un mot non filmé.
+- Pas de vidéo externe sans accord écrit enregistré (§6ter) ; pas de téléchargement YouTube par outil non autorisé.
 - Pas de vidéos publiques sans URL signée ; pas de clé secrète côté client.
 - Pas de dépendance ajoutée sans raison claire ; versions épinglées.
 - Pas de collecte de données non nécessaires (pas d'IP, pas de pistage publicitaire).
