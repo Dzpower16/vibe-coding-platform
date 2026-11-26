@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic'
 import { useDeferredValue, useEffect, useMemo, useState } from 'react'
 import { prechargerIA } from '@/lib/mediapipe/holistic'
-import { CATEGORIES, nomCategorie } from '@/lib/categories'
+import { CATEGORIES } from '@/lib/categories'
 import type { MainDominante, MesPrises, Signe } from '@/lib/types'
 
 // MediaPipe ne s'exécute que dans le navigateur.
@@ -35,6 +35,15 @@ export function Bibliotheque({
   const [selection, setSelection] = useState<Signe | null>(null)
   // La saisie reste fluide : le filtrage des ~800 signes suit avec un léger différé.
   const rechercheDifferee = useDeferredValue(recherche)
+  // On affiche les signes par paquets : une page de 800 cartes est trop longue sur téléphone.
+  const PAQUET = 60
+  const [limite, setLimite] = useState(PAQUET)
+  const [cleFiltres, setCleFiltres] = useState('')
+  const cle = `${categorie}|${priorite}|${aFilmer}|${rechercheDifferee}`
+  if (cle !== cleFiltres) {
+    setCleFiltres(cle)
+    setLimite(PAQUET)
+  }
 
   // Texte de recherche normalisé une seule fois par signe (pas à chaque frappe).
   const index = useMemo(
@@ -76,83 +85,153 @@ export function Bibliotheque({
     }))
   }
 
-  const champ = 'min-h-11 rounded-lg border border-ligne bg-carte px-3'
+  function choisir(s: Signe) {
+    setSelection(s)
+    // Sur téléphone, le studio remplace la liste : on remonte en haut de l'écran.
+    if (window.matchMedia('(max-width: 1023px)').matches) window.scrollTo({ top: 0 })
+  }
+
+  const puce = (actif: boolean) =>
+    `shrink-0 min-h-11 rounded-full border-2 px-4 text-sm font-semibold transition ${
+      actif ? 'border-accent bg-accent text-white' : 'border-ligne bg-carte text-encre hover:border-accent/50'
+    }`
+  const pourcent = Math.round((nbFilmes / signes.length) * 100)
 
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-      <section aria-label="Liste des signes" className={`space-y-3 ${selection ? 'hidden lg:block' : ''}`}>
-        <div className="space-y-1">
-          <div className="flex justify-between text-sm">
-            <span>
-              <strong>{nbFilmes}</strong> / {signes.length} signes filmés
-            </span>
-            <span className="text-doux">{Math.round((nbFilmes / signes.length) * 100)} %</span>
+      <section aria-label="Liste des signes" className={`min-w-0 space-y-4 ${selection ? 'hidden lg:block' : ''}`}>
+        <div className="carte space-y-2 p-4">
+          <div className="flex items-baseline justify-between gap-2">
+            <p>
+              <span className="text-2xl font-black">{nbFilmes}</span>
+              <span className="text-doux"> / {signes.length} signes filmés</span>
+            </p>
+            <span className="pastille bg-ok-doux text-ok">{pourcent} %</span>
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-ligne" aria-hidden>
-            <div className="h-full bg-ok" style={{ width: `${(nbFilmes / signes.length) * 100}%` }} />
+          <div
+            className="h-2.5 overflow-hidden rounded-full bg-ligne"
+            role="progressbar"
+            aria-label="Signes filmés"
+            aria-valuemin={0}
+            aria-valuemax={signes.length}
+            aria-valuenow={nbFilmes}
+          >
+            <div className="h-full rounded-full bg-ok transition-[width]" style={{ width: `${Math.max(nbFilmes ? 1.5 : 0, (nbFilmes / signes.length) * 100)}%` }} />
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-2">
+        <div className="space-y-3">
           <input
             type="search"
-            placeholder="🔎 Chercher un mot"
+            placeholder="🔎 Chercher un mot (ex. maison, merci…)"
             aria-label="Chercher un mot"
             value={recherche}
             onChange={(e) => setRecherche(e.target.value)}
-            className={`${champ} col-span-2`}
+            className="champ"
           />
-          <select aria-label="Catégorie" value={categorie} onChange={(e) => setCategorie(e.target.value)} className={champ}>
-            <option value="">Toutes les catégories</option>
+
+          <div role="group" aria-label="Catégorie" className="defilement-discret -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:flex-wrap lg:px-0">
+            <button type="button" aria-pressed={!categorie} onClick={() => setCategorie('')} className={puce(!categorie)}>
+              Toutes
+            </button>
             {CATEGORIES.map((c) => (
-              <option key={c.id} value={c.id}>
+              <button
+                key={c.id}
+                type="button"
+                aria-pressed={categorie === c.id}
+                onClick={() => setCategorie(categorie === c.id ? '' : c.id)}
+                className={puce(categorie === c.id)}
+              >
                 {c.nom}
-              </option>
+              </button>
             ))}
-          </select>
-          <select aria-label="Priorité" value={priorite} onChange={(e) => setPriorite(Number(e.target.value))} className={champ}>
-            <option value={0}>Toutes priorités</option>
-            <option value={1}>★★★ Essentiels</option>
-            <option value={2}>★★ Courants</option>
-            <option value={3}>★ Utiles</option>
-          </select>
-          <label className="col-span-2 flex min-h-11 items-center gap-2">
-            <input type="checkbox" className="size-5" checked={aFilmer} onChange={(e) => setAFilmer(e.target.checked)} />
+          </div>
+
+          <div>
+            <div role="group" aria-label="Priorité" className="defilement-discret -mx-4 flex gap-2 overflow-x-auto px-4 lg:mx-0 lg:flex-wrap lg:px-0">
+              {(
+                [
+                  [0, 'Tous'],
+                  [1, '★★★ Essentiels'],
+                  [2, '★★ Courants'],
+                  [3, '★ Utiles'],
+                ] as const
+              ).map(([v, libelle]) => (
+                <button key={v} type="button" aria-pressed={priorite === v} onClick={() => setPriorite(v)} className={puce(priorite === v)}>
+                  {libelle}
+                </button>
+              ))}
+            </div>
+          </div>
+          <label className="flex min-h-11 cursor-pointer items-center gap-3 font-medium">
+            <input type="checkbox" className="size-6 accent-accent" checked={aFilmer} onChange={(e) => setAFilmer(e.target.checked)} />
             Seulement ceux que je n’ai pas encore filmés
           </label>
         </div>
 
-        <p className="text-sm text-doux" aria-live="polite">
+        <p className="text-sm font-medium text-doux" aria-live="polite">
           {filtres.length} signe{filtres.length > 1 ? 's' : ''}
         </p>
-        <ul className="grid max-h-[65dvh] grid-cols-2 gap-2 overflow-y-auto pr-1 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
-          {filtres.map((s) => {
-            const prises = mesPrises[s.id]
-            const actif = selection?.id === s.id
-            return (
-              <li key={s.id} className="[contain-intrinsic-size:auto_6rem] [content-visibility:auto]">
-                <button
-                  onClick={() => setSelection(s)}
-                  aria-current={actif}
-                  className={`flex h-full w-full flex-col items-start gap-1 rounded-xl border-2 bg-carte p-3 text-left transition ${
-                    actif ? 'border-accent' : 'border-ligne hover:border-accent/50'
-                  }`}
-                >
-                  <span className="flex w-full items-center justify-between gap-1">
-                    <span className="truncate font-bold">{s.glose}</span>
-                    {prises && (
-                      <span className="shrink-0 rounded-full bg-ok/15 px-2 text-xs font-semibold text-ok" title="Mes prises">
-                        ✓ {prises.total}
+
+        {filtres.length === 0 ? (
+          <div className="carte space-y-3 p-6 text-center">
+            <p aria-hidden className="text-4xl">{aFilmer && !recherche ? '🎉' : '🔎'}</p>
+            <p className="font-semibold">
+              {aFilmer && !recherche ? 'Vous avez filmé tous les signes de ce filtre. Merci !' : 'Aucun signe ne correspond.'}
+            </p>
+            <button
+              type="button"
+              onClick={() => {
+                setRecherche('')
+                setCategorie('')
+                setPriorite(0)
+              }}
+              className="bouton bouton-secondaire"
+            >
+              Effacer les filtres
+            </button>
+          </div>
+        ) : (
+          <ul className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:max-h-[70dvh] lg:grid-cols-2 lg:overflow-y-auto lg:pr-1 xl:grid-cols-3">
+            {filtres.slice(0, limite).map((s) => {
+              const prises = mesPrises[s.id]
+              const actif = selection?.id === s.id
+              const mot = s.mots_fr[0] ?? s.glose
+              return (
+                <li key={s.id} className="[contain-intrinsic-size:auto_7rem] [content-visibility:auto]">
+                  <button
+                    onClick={() => choisir(s)}
+                    aria-current={actif}
+                    className={`flex h-full w-full flex-col items-start gap-1.5 rounded-2xl border-2 bg-carte p-3 text-left transition ${
+                      actif ? 'border-accent shadow-md' : 'border-ligne hover:border-accent/50'
+                    }`}
+                  >
+                    <span className="flex w-full items-start justify-between gap-1">
+                      <span className="min-w-0 break-words text-lg font-bold leading-tight first-letter:uppercase">{mot}</span>
+                      {prises && (
+                        <span className="pastille shrink-0 bg-ok-doux text-ok" title="Mes prises">
+                          ✓ {prises.total}
+                        </span>
+                      )}
+                    </span>
+                    {s.mots_fr.length > 1 && <span className="line-clamp-1 text-sm text-doux">{s.mots_fr.slice(1).join(', ')}</span>}
+                    <span className="mt-auto flex w-full flex-wrap items-center justify-between gap-1 pt-1">
+                      <span className="glose">{s.glose}</span>
+                      <span className="text-xs text-attention" aria-label={`priorité ${4 - s.priorite} sur 3`}>
+                        {'★'.repeat(4 - s.priorite)}
                       </span>
-                    )}
-                  </span>
-                  <span className="line-clamp-2 text-sm text-doux">{s.mots_fr.join(', ')}</span>
-                  <span className="text-xs text-doux">{nomCategorie(s.categorie)}</span>
-                </button>
-              </li>
-            )
-          })}
-        </ul>
+                    </span>
+                  </button>
+                </li>
+              )
+            })}
+          </ul>
+        )}
+        {filtres.length > limite && (
+          <button type="button" onClick={() => setLimite((l) => l + PAQUET)} className="bouton bouton-secondaire w-full">
+            Voir plus de signes ({filtres.length - limite} restants)
+          </button>
+        )}
       </section>
 
       <section aria-label="Studio de tournage" className={selection ? '' : 'hidden lg:block'}>
@@ -168,8 +247,10 @@ export function Bibliotheque({
             onFermer={() => setSelection(null)}
           />
         ) : (
-          <div className="flex h-full min-h-64 items-center justify-center rounded-2xl border-2 border-dashed border-ligne p-6 text-center text-doux">
-            👈 Choisissez un signe dans la liste pour ouvrir le studio.
+          <div className="flex h-full min-h-64 flex-col items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-ligne p-6 text-center text-doux">
+            <span aria-hidden className="text-5xl">🎬</span>
+            <p className="text-lg font-semibold text-encre">Choisissez un signe à gauche</p>
+            <p>Le studio s’ouvre ici, avec la caméra et le compte à rebours.</p>
           </div>
         )}
       </section>

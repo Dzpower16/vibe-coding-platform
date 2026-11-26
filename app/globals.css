@@ -2,6 +2,7 @@
 
 @theme {
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   --color-encre: #0f172a;
   --color-doux: #475569;
   --color-fond: #f8f7f4;
@@ -9,14 +10,19 @@
   --color-ligne: #e2e8f0;
   --color-accent: #1d4ed8;
   --color-accent-fort: #1e3a8a;
+  --color-accent-doux: #e0e9ff;
   --color-ok: #15803d;
+  --color-ok-doux: #dcfce7;
   --color-attention: #b45309;
+  --color-attention-doux: #fef3c7;
   --color-alerte: #b91c1c;
+  --color-alerte-doux: #fee2e2;
 }
 
 html {
   background: var(--color-fond);
   color: var(--color-encre);
+  -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -29,7 +35,64 @@ body {
   outline-offset: 2px;
 }
 
+/* ---------------------------------------------------------------------------
+   Composants partagés : mêmes boutons, cartes et champs partout.
+   Cibles tactiles ≥ 48 px, états désactivés lisibles (pas de simple transparence).
+   --------------------------------------------------------------------------- */
+@layer components {
+  .bouton {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-lg font-semibold transition select-none;
+  }
+  .bouton:disabled,
+  .bouton[aria-disabled='true'] {
+    @apply cursor-not-allowed border-transparent bg-ligne text-doux shadow-none;
+  }
+  .bouton-primaire {
+    @apply bg-accent text-white shadow-sm hover:bg-accent-fort;
+  }
+  .bouton-secondaire {
+    @apply border-2 border-encre/15 bg-carte text-encre hover:border-accent hover:text-accent;
+  }
+  .bouton-succes {
+    @apply bg-ok text-white shadow-sm hover:brightness-110;
+  }
+  .bouton-grand {
+    @apply min-h-14 px-6 text-xl font-bold;
+  }
+  .carte {
+    @apply rounded-2xl border border-ligne bg-carte;
+  }
+  .champ {
+    @apply min-h-12 w-full rounded-xl border-2 border-ligne bg-carte px-3 text-lg transition placeholder:text-doux/70 focus:border-accent focus:outline-none;
+  }
+  .pastille {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-bold uppercase tracking-wide;
+  }
+  .glose {
+    @apply inline-block rounded-md bg-fond px-1.5 py-0.5 font-mono text-xs font-semibold tracking-tight text-doux;
+  }
+}
+
 /* Aperçu caméra en miroir (la vidéo enregistrée, elle, ne l'est pas). */
 .miroir {
   transform: scaleX(-1);
+}
+
+/* Barre de défilement horizontale discrète (filtres en pastilles). */
+.defilement-discret {
+  scrollbar-width: none;
+}
+.defilement-discret::-webkit-scrollbar {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

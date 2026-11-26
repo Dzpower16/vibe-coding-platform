@@ -45,12 +45,11 @@ export function FormulaireConnexion({ suite }: { suite: string }) {
     }
   }
 
-  const champ = 'w-full min-h-12 rounded-lg border border-ligne bg-carte px-3 text-lg'
-  const bouton =
-    'w-full min-h-12 rounded-lg bg-accent px-4 text-lg font-semibold text-white hover:bg-accent-fort disabled:opacity-60'
+  const champ = 'champ'
+  const bouton = 'bouton bouton-primaire bouton-grand w-full'
 
   return (
-    <div className="space-y-4 rounded-2xl border border-ligne bg-carte p-5">
+    <div className="carte space-y-4 p-5 shadow-sm">
       {etape === 'courriel' ? (
         <form onSubmit={envoyerLien} className="space-y-3">
           <label className="block space-y-1">
@@ -65,12 +64,12 @@ export function FormulaireConnexion({ suite }: { suite: string }) {
             />
           </label>
           <button disabled={occupe} className={bouton}>
-            {occupe ? 'Envoi…' : 'Recevoir le lien'}
+            {occupe ? 'Envoi…' : '✉️ Recevoir le lien'}
           </button>
         </form>
       ) : (
         <form onSubmit={verifierCode} className="space-y-3">
-          <p role="status" className="rounded-lg bg-ok/10 p-3 text-ok">
+          <p role="status" className="rounded-xl bg-ok-doux p-3 text-ok">
             ✉️ Courriel envoyé à <strong>{courriel}</strong>. Cliquez sur le lien, ou entrez le code ici.
           </p>
           <label className="block space-y-1">
@@ -88,7 +87,7 @@ export function FormulaireConnexion({ suite }: { suite: string }) {
           <button disabled={occupe} className={bouton}>
             {occupe ? 'Vérification…' : 'Se connecter'}
           </button>
-          <button type="button" onClick={() => setEtape('courriel')} className="w-full min-h-11 text-accent underline">
+          <button type="button" onClick={() => setEtape('courriel')} className="min-h-11 w-full font-medium text-accent underline">
             Changer de courriel
           </button>
         </form>

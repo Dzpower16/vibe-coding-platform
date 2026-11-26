@@ -250,7 +250,7 @@ export function Parleur() {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
       <section className="space-y-3">
-        <div className="relative min-h-64 overflow-hidden rounded-2xl bg-black">
+        <div className={`relative overflow-hidden rounded-2xl bg-black ${phase === 'chargement' ? 'min-h-64' : ''}`}>
           <video ref={videoRef} muted playsInline className="miroir block h-auto w-full" />
           <canvas ref={canvasRef} className="miroir pointer-events-none absolute inset-0 h-full w-full" />
           {phase === 'chargement' && <ChargementIA />}
@@ -272,26 +272,27 @@ export function Parleur() {
         )}
 
         {(phase === 'pret' || phase === 'ecoute') && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex gap-2">
             {phase === 'pret' ? (
               <button
                 onClick={commencer}
                 disabled={aucunExemple}
-                className="min-h-14 flex-1 rounded-xl bg-ok px-6 text-xl font-bold text-white disabled:opacity-50"
+                className="bouton bouton-succes bouton-grand flex-1 whitespace-nowrap px-4"
               >
                 ▶ Commencer
               </button>
             ) : (
-              <button onClick={pause} className="min-h-14 flex-1 rounded-xl bg-encre px-6 text-xl font-bold text-white">
+              <button onClick={pause} className="bouton bouton-grand flex-1 whitespace-nowrap bg-encre px-4 text-white">
                 ⏸ Pause
               </button>
             )}
             <button
               onClick={() => setVoix((v) => !v)}
               aria-pressed={voix}
-              className="min-h-14 rounded-xl border-2 border-encre px-4 text-lg font-semibold"
+              className="bouton bouton-secondaire bouton-grand whitespace-nowrap px-4"
             >
-              {voix ? '🔊 Voix activée' : '🔇 Voix coupée'}
+              <span aria-hidden>{voix ? '🔊' : '🔇'}</span> {voix ? 'Voix' : 'Muet'}
+              <span className="sr-only">{voix ? ' activée' : ' coupée'}</span>
             </button>
           </div>
         )}
@@ -332,16 +333,18 @@ export function Parleur() {
         )}
 
         {aucunExemple && !erreur && (
-          <div className="space-y-2 rounded-2xl bg-attention/10 p-4 text-attention">
-            <p className="font-semibold">Aucun exemple de signe pour l’instant.</p>
-            <p>
-              Filmez quelques signes dans la{' '}
-              <Link href="/tournage" className="underline">
-                bibliothèque
-              </Link>{' '}
-              (5 prises par signe), en cochant dans le consentement la case qui autorise la reconnaissance. Vos propres
-              prises servent tout de suite ; celles des autres, après validation.
+          <div className="space-y-3 rounded-2xl border-2 border-attention/30 bg-attention-doux p-5 text-encre">
+            <p className="flex items-center gap-2 text-lg font-bold">
+              <span aria-hidden>🌱</span> L’application n’a encore appris aucun signe
             </p>
+            <p className="text-doux">
+              Elle apprend à partir de vrais exemples. Filmez quelques signes (environ 5 prises par signe), en cochant
+              dans le consentement la case « reconnaissance ». Vos propres prises servent tout de suite ; celles des
+              autres, après validation.
+            </p>
+            <Link href="/tournage" className="bouton bouton-primaire w-full sm:w-auto">
+              🎬 Filmer des exemples
+            </Link>
           </div>
         )}
         {erreur && phase !== 'erreur' && (

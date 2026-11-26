@@ -12,9 +12,7 @@ import {
 } from '@/lib/consentement'
 import { IDENTITES, type Consentement, type Identite, type MainDominante, type Signeur } from '@/lib/types'
 
-const champ = 'w-full min-h-12 rounded-lg border border-ligne bg-carte px-3 text-lg'
-const bouton =
-  'min-h-12 rounded-lg bg-accent px-5 text-lg font-semibold text-white hover:bg-accent-fort disabled:opacity-60'
+const champ = 'champ'
 
 export function FormulaireConsentement({
   userId,
@@ -107,13 +105,18 @@ export function FormulaireConsentement({
     }
   }
 
-  const peutEnvoyer =
-    nom.trim().length > 0 &&
-    (!doitSigner || (portees.portee_application && age && signature.trim().length >= 2))
+  // Ce qu'il manque encore, affiché à côté du bouton (au lieu d'un bouton grisé muet).
+  const manquants = [
+    !nom.trim() && 'votre nom affiché',
+    doitSigner && !portees.portee_application && 'la case « vidéos montrées dans l’application »',
+    doitSigner && !age && 'la case « 14 ans ou plus »',
+    doitSigner && signature.trim().length < 2 && 'votre signature',
+  ].filter((m): m is string => !!m)
+  const peutEnvoyer = manquants.length === 0
 
   return (
     <form onSubmit={enregistrer} className="space-y-6">
-      <fieldset className="space-y-4 rounded-2xl border border-ligne bg-carte p-5">
+      <fieldset className="carte space-y-4 p-5">
         <legend className="px-1 text-lg font-bold">1. Votre profil</legend>
         <label className="block space-y-1">
           <span className="font-medium">Nom affiché</span>
@@ -149,8 +152,8 @@ export function FormulaireConsentement({
                 type="button"
                 aria-pressed={main === m}
                 onClick={() => setMain(m)}
-                className={`min-h-12 flex-1 rounded-lg border-2 text-lg font-semibold ${
-                  main === m ? 'border-accent bg-accent/10 text-accent' : 'border-ligne bg-carte'
+                className={`min-h-12 flex-1 rounded-xl border-2 text-lg font-semibold transition ${
+                  main === m ? 'border-accent bg-accent-doux text-accent' : 'border-ligne bg-carte hover:border-accent/50'
                 }`}
               >
                 {m === 'droite' ? 'Droite ✋' : '🤚 Gauche'}
@@ -160,7 +163,7 @@ export function FormulaireConsentement({
         </div>
       </fieldset>
 
-      <fieldset className="space-y-4 rounded-2xl border border-ligne bg-carte p-5">
+      <fieldset className="carte space-y-4 p-5">
         <legend className="px-1 text-lg font-bold">2. Consentement écrit</legend>
 
         {consentement && consentementAJour ? (
@@ -212,7 +215,7 @@ export function FormulaireConsentement({
                 <label key={p.cle} className="flex min-h-11 items-start gap-3">
                   <input
                     type="checkbox"
-                    className="mt-1 size-6 shrink-0"
+                    className="mt-0.5 size-6 shrink-0 accent-accent"
                     checked={portees[p.cle]}
                     onChange={(e) => setPortees((v) => ({ ...v, [p.cle]: e.target.checked }))}
                   />
@@ -227,7 +230,7 @@ export function FormulaireConsentement({
                 </label>
               ))}
               <label className="flex min-h-11 items-start gap-3">
-                <input type="checkbox" className="mt-1 size-6 shrink-0" checked={age} onChange={(e) => setAge(e.target.checked)} />
+                <input type="checkbox" className="mt-0.5 size-6 shrink-0 accent-accent" checked={age} onChange={(e) => setAge(e.target.checked)} />
                 <span>
                   J’ai 14 ans ou plus. <strong className="text-sm">(nécessaire)</strong>
                 </span>
@@ -255,9 +258,16 @@ export function FormulaireConsentement({
         </p>
       )}
 
-      <button disabled={!peutEnvoyer || occupe} className={bouton}>
-        {occupe ? 'Enregistrement…' : doitSigner ? 'Signer et commencer à filmer' : 'Enregistrer et filmer'}
-      </button>
+      <div className="space-y-2">
+        {manquants.length > 0 && (
+          <p className="text-sm text-doux" aria-live="polite">
+            <span aria-hidden>📝 </span>Il manque : {manquants.join(', ')}.
+          </p>
+        )}
+        <button disabled={!peutEnvoyer || occupe} className="bouton bouton-primaire bouton-grand w-full">
+          {occupe ? 'Enregistrement…' : doitSigner ? '✍️ Signer et commencer à filmer' : 'Enregistrer et filmer'}
+        </button>
+      </div>
     </form>
   )
 }

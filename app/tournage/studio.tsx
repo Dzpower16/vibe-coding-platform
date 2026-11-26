@@ -396,14 +396,22 @@ export function Studio({
   const enDirect = phase !== 'revue' && phase !== 'envoi'
 
   return (
-    <div className="space-y-4 rounded-2xl border border-ligne bg-carte p-4">
+    <div className="carte space-y-4 p-4 sm:p-5">
       <header className="flex items-start justify-between gap-3">
         <div className="min-w-0">
-          <p className="text-xs font-semibold uppercase tracking-wide text-doux">
-            {nomCategorie(signe.categorie)} · {'★'.repeat(4 - signe.priorite)}
+          <p className="flex flex-wrap items-center gap-2 text-xs font-semibold uppercase tracking-wide text-doux">
+            {nomCategorie(signe.categorie)}
+            <span className="text-attention" aria-label={`priorité ${4 - signe.priorite} sur 3`}>
+              {'★'.repeat(4 - signe.priorite)}
+            </span>
           </p>
-          <h2 className="break-words text-3xl font-bold sm:text-4xl">{signe.glose}</h2>
-          <p className="text-lg text-doux">{signe.mots_fr.join(', ')}</p>
+          <h2 className="break-words text-4xl font-black leading-tight first-letter:uppercase sm:text-5xl">
+            {signe.mots_fr[0] ?? signe.glose}
+          </h2>
+          <p className="flex flex-wrap items-center gap-2">
+            <span className="glose">{signe.glose}</span>
+            {signe.mots_fr.length > 1 && <span className="text-doux">aussi : {signe.mots_fr.slice(1).join(', ')}</span>}
+          </p>
           {signe.definition && <p className="mt-1 max-w-prose">{signe.definition}</p>}
           {signe.notes && <p className="text-sm italic text-doux">Sens : {signe.notes}</p>}
           {signe.reference_url && (
@@ -422,14 +430,14 @@ export function Studio({
           )}
           {nbPrises > 0 && <p className="mt-1 text-sm text-ok">✓ Vous avez déjà {nbPrises} prise{nbPrises > 1 ? 's' : ''} de ce signe.</p>}
         </div>
-        <button onClick={onFermer} className="min-h-11 shrink-0 rounded-lg px-3 text-doux underline lg:hidden">
+        <button onClick={onFermer} className="bouton bouton-secondaire min-h-11 shrink-0 px-3 text-base lg:hidden">
           ← Liste
         </button>
       </header>
 
       {/* Aperçu caméra (miroir) — gardé monté pour conserver la caméra */}
       <div className={enDirect ? 'space-y-2' : 'hidden'}>
-        <div className="relative min-h-64 overflow-hidden rounded-xl bg-black">
+        <div className={`relative overflow-hidden rounded-2xl bg-black ${phase === 'chargement' ? 'min-h-64' : ''}`}>
           <video ref={videoRef} muted playsInline className="miroir block h-auto w-full" />
           <canvas ref={canvasRef} className="miroir pointer-events-none absolute inset-0 h-full w-full" />
 
