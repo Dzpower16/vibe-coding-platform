@@ -34,6 +34,7 @@ export interface Consentement {
   portee_reconnaissance: boolean
   portee_avatar: boolean
   portee_credit_public: boolean
+  portee_promotion: boolean
   signe_le: string
   revoque_le: string | null
 }

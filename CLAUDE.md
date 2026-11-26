@@ -299,9 +299,13 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
 - Texte du consentement : `lib/consentement.ts`, constante `CONSENTEMENT_VERSION`. Changer le texte
   = nouvelle version ; les personnes déjà inscrites doivent re-signer pour continuer à filmer.
 - Portées séparées (cases distinctes, aucune précochée) : (1) utilisation des vidéos dans
-  l'application pour traduire — obligatoire pour filmer ; (2) utilisation des positions pour
-  entraîner la reconnaissance (étape 2) ; (3) utilisation pour un avatar 3D (étape 3) ;
-  (4) crédit public du nom.
+  l'application pour traduire, **y compris dans sa version payante (abonnement)** — obligatoire pour
+  filmer ; (2) utilisation des positions pour entraîner la reconnaissance (étape 2) ; (3) utilisation
+  pour un avatar 3D (étape 3) ; (4) apparition dans des publicités ou vidéos de présentation
+  (`portee_promotion`, migration `0007`) ; (5) crédit public du nom.
+- Version `2026-11-v2` : le texte dit clairement que le projet est commercial, que la participation
+  est bénévole sauf entente écrite séparée, et qu'aucune donnée n'est vendue à des tiers.
+  **À faire relire par un·e juriste** avant l'ouverture publique.
 - 14 ans et plus seulement (en deçà, consentement parental requis — non géré pour l'instant).
 - Révocation en un clic depuis `/tournage/consentement` : les vidéos sortent du lexique
   immédiatement ; la suppression physique des fichiers est faite sur demande (à automatiser).

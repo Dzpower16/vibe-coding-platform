@@ -20,7 +20,7 @@ export async function contexteTournage() {
       .maybeSingle<Signeur>(),
     supabase
       .from('consentements')
-      .select('id, version, nom_signature, portee_application, portee_reconnaissance, portee_avatar, portee_credit_public, signe_le, revoque_le')
+      .select('id, version, nom_signature, portee_application, portee_reconnaissance, portee_avatar, portee_credit_public, portee_promotion, signe_le, revoque_le')
       .eq('signeur_id', user.id)
       .is('revoque_le', null)
       .order('signe_le', { ascending: false })

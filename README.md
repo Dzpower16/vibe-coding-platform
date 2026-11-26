@@ -12,7 +12,8 @@ La constitution du projet (principes, architecture, conventions) est dans [`CLAU
    4. `supabase/migrations/0004_definitions.sql`
    5. `supabase/migrations/0005_sources_externes.sql`
    6. `supabase/migrations/0006_validation.sql`
-   7. `supabase/seed.sql` (803 signes : alphabet, chiffres et nombres, ~740 signes courants, 477 liens vers « Mon dictionnaire LSQ »)
+   7. `supabase/migrations/0007_consentement_commercial.sql`
+   8. `supabase/seed.sql` (803 signes : alphabet, chiffres et nombres, ~740 signes courants, 477 liens vers « Mon dictionnaire LSQ »)
 2. **Supabase Auth** — *URL Configuration* : Site URL = URL Vercel de production ; Redirect URLs :
    l'URL de production et celle des previews (`https://*-<compte>.vercel.app/**`).
    *Email Templates → Magic Link* : ajouter `{{ .Token }}` au message (code à 6 chiffres).

@@ -3,7 +3,7 @@
  * Toute modification du texte = nouvelle CONSENTEMENT_VERSION ; les personnes déjà inscrites
  * devront re-signer avant de filmer à nouveau.
  */
-export const CONSENTEMENT_VERSION = '2026-11-v1'
+export const CONSENTEMENT_VERSION = '2026-11-v2'
 
 export const CONSENTEMENT_SECTIONS: { titre: string; paragraphes: string[] }[] = [
   {
@@ -11,6 +11,14 @@ export const CONSENTEMENT_SECTIONS: { titre: string; paragraphes: string[] }[] =
     paragraphes: [
       "Entre-Mains est une application qui aide la communication entre personnes qui parlent français et personnes qui signent en langue des signes québécoise (LSQ). Elle montre, en direct, des vidéos de signes filmées par des personnes sourdes.",
       "Elle ne remplace pas un·e interprète professionnel·le.",
+    ],
+  },
+  {
+    titre: 'Un projet commercial',
+    paragraphes: [
+      "Entre-Mains est un projet commercial : l'application peut être offerte avec un abonnement payant. Vos vidéos font partie de ce que les personnes abonnées utilisent.",
+      "Votre participation est bénévole : vous ne recevez pas de paiement, sauf entente écrite séparée avec Entre-Mains.",
+      "Nous ne vendons pas vos vidéos, vos positions ni vos données à d'autres entreprises.",
     ],
   },
   {
@@ -24,7 +32,7 @@ export const CONSENTEMENT_SECTIONS: { titre: string; paragraphes: string[] }[] =
     titre: 'Où vont vos données',
     paragraphes: [
       "Les vidéos et les positions sont stockées dans une base de données privée (Supabase). Elles ne sont jamais publiques : l'application les affiche seulement à travers des liens temporaires.",
-      "Votre adresse courriel sert seulement à vous connecter. Nous ne vendons et ne partageons pas vos données.",
+      "Votre adresse courriel sert seulement à vous connecter. Nous ne la partageons avec personne.",
       "Une personne validatrice (sourde ou signante) peut regarder vos vidéos pour vérifier leur qualité avant qu'elles soient utilisées.",
     ],
   },
@@ -46,7 +54,7 @@ export const PORTEES = [
     cle: 'portee_application',
     obligatoire: true,
     libelle:
-      "J'accepte que mes vidéos de signes soient montrées dans l'application Entre-Mains pour traduire du français vers la LSQ.",
+      "J'accepte que mes vidéos de signes soient montrées dans l'application Entre-Mains, y compris dans sa version payante (abonnement), pour traduire du français vers la LSQ.",
   },
   {
     cle: 'portee_reconnaissance',
@@ -58,6 +66,12 @@ export const PORTEES = [
     cle: 'portee_avatar',
     obligatoire: false,
     libelle: "J'accepte que mes positions servent à animer un avatar 3D qui signe.",
+  },
+  {
+    cle: 'portee_promotion',
+    obligatoire: false,
+    libelle:
+      "J'accepte que mes vidéos apparaissent dans des publicités ou des vidéos de présentation d'Entre-Mains (site web, réseaux sociaux).",
   },
   {
     cle: 'portee_credit_public',

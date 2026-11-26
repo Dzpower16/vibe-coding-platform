@@ -40,6 +40,7 @@ export function FormulaireConsentement({
     portee_reconnaissance: false,
     portee_avatar: false,
     portee_credit_public: false,
+    portee_promotion: false,
   })
   const [age, setAge] = useState(false)
   const [signature, setSignature] = useState('')
