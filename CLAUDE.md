@@ -40,7 +40,7 @@ En cas de doute, ce document l'emporte sur les habitudes et les suppositions.
 | 2a | Prototype `/parler` : la caméra reconnaît des signes isolés (exemples filmés) et le téléphone dit le mot à voix haute | ✅ prototype |
 | 1f | Vidéos externes avec accord écrit : registre des accords `/admin/sources`, import et découpage `/admin/import` (migration `0005`) | ✅ |
 | 1c | Validation des vidéos par des validateur·rice·s sourd·e·s (`/admin/validation`, migration `0006`) | ✅ |
-| 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | à faire |
+| 1d | Direct `/direct` : micro → Gladia (texte FR) → Claude (gloses LSQ, lexique filmé uniquement) → lecture enchaînée + épellation | ✅ prototype (à vérifier sur le preview) |
 | 1e | Mode conversation sur téléphone `/conversation` (écran partagé face à face) | à faire |
 | 2 | LSQ → français : caméra, reconnaissance de l'alphabet puis de signes isolés, entraînée sur les positions enregistrées | plus tard |
 | 3 | Avatar 3D animé à partir des positions enregistrées | plus tard |
@@ -128,6 +128,8 @@ lib/
   supabase/             clients Supabase
   mediapipe/            chargement du HolisticLandmarker, compactage des positions
   reconnaissance/       empreintes de signes + comparaison DTW (code pur, partagé serveur/navigateur)
+  lsq/                  direct : gloses (revalidation, épellation — code pur), prompt, appel Claude, lexique + vidéos
+  audio/                micro → PCM 16 kHz, lecture des messages Gladia (code pur)
   roboflow/             client du workflow Roboflow (serveur uniquement, pilote §8ter)
   consentement.ts       texte du consentement versionné (source de vérité)
   types.ts              types du domaine
@@ -244,7 +246,9 @@ JSON compressé gzip :
 
 ## 8. Règles pour Claude (remise en ordre français → gloses)
 
-Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
+Le prompt système vit dans `lib/lsq/prompt.ts`, l'appel dans `lib/lsq/claude.ts`, la revalidation dans
+`lib/lsq/gloses.ts` (`planifierLecture`). Sans signe validé, ou si l'appel échoue, les mots sont épelés et
+l'écran le dit (mode `epellation`). Il impose :
 1. N'utiliser **que** les gloses du lexique fourni dans la requête (liste issue de la vue `lexique`).
    Tout autre mot → `DACTYLO:MOT` (noms propres, mots sans signe) ou omission s'il s'agit d'un mot
    grammatical sans équivalent signé (articles, copule « être », certaines prépositions).
