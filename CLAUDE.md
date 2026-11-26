@@ -71,6 +71,7 @@ Les positions (landmarks) sont enregistrées **dès l'étape 1** parce que les �
 | `GLADIA_API_KEY` | serveur | transcription temps réel (étape 1d) |
 | `ANTHROPIC_API_KEY` | serveur | remise en ordre LSQ (étape 1d) |
 | `CLAUDE_MODEL` | serveur | facultatif, défaut `claude-opus-5-5` |
+| `ROBOFLOW_API_KEY` | serveur | clé **privée** Roboflow, workflow pilote (§8ter) — une clé « publishable » est refusée |
 
 Les clés secrètes ne sont **jamais** préfixées `NEXT_PUBLIC_`, jamais commitées, jamais loguées.
 `.env.example` liste les noms, sans valeurs.
@@ -127,6 +128,7 @@ lib/
   supabase/             clients Supabase
   mediapipe/            chargement du HolisticLandmarker, compactage des positions
   reconnaissance/       empreintes de signes + comparaison DTW (code pur, partagé serveur/navigateur)
+  roboflow/             client du workflow Roboflow (serveur uniquement, pilote §8ter)
   consentement.ts       texte du consentement versionné (source de vérité)
   types.ts              types du domaine
 data/signes-depart.json liste de départ (source de vérité, éditée à la main)
@@ -273,6 +275,24 @@ Le prompt système vit dans `lib/lsq/prompt.ts` (étape 1d). Il impose :
   interprétation ; l'interface le dit.
 - **Suite :** plus d'exemples et de signeur·euse·s, puis un vrai modèle entraîné (partenariat
   UQAR envisagé) quand les données le permettront.
+
+## 8ter. Roboflow (pilote, serveur uniquement)
+
+- **Workflow :** « LSQ — Mains, visage et signes Logic » (`smiles-workspace-wudvp/lsq-mains-visage-et-signes-logic`).
+  Définition réelle : entrée `image`, **aucun paramètre**, une étape qui appelle le workflow
+  `lsq-mains-visage-et-signes` (modèle `lsq-mains-visage-et-signes/3`), une sortie `predictions`
+  (`{ image: {width, height}, predictions: [{class, confidence, x, y, width, height, …}] }`).
+- **Client :** `lib/roboflow/workflow.ts`, fonction `detecterMainsVisageEtSignes(image)` : `fetch` + `zod`
+  (pas de SDK ajouté), `Authorization: Bearer` avec `ROBOFLOW_API_KEY`, délai 20 s, 2 reprises avec
+  attente (réseau, 429, 5xx), erreurs typées `ErreurRoboflow`. Les sorties sont lues **par leur forme**,
+  pas par un nom codé en dur ; seuls classe, confiance et boîte sont gardés (pas de `points`) ; une sortie
+  image base64 est écrite sur disque si `dossierImages` est fourni, sinon abandonnée — jamais loguée.
+- **Test de fumée :** `pnpm smoke:roboflow [image]` (mire sans personne par défaut).
+- **Règles :** les images partent sur les serveurs de Roboflow (hors Canada). Usage limité aux images dont
+  le consentement ou l'accord écrit coche « reconnaissance » (outils admin, pré-annotation). **Jamais** sur
+  la caméra de `/parler` (promesse affichée : l'image reste sur le téléphone) ni sur une page publique sans
+  modifier d'abord cette constitution. Un résultat Roboflow ne valide jamais un signe : la validation reste
+  humaine (§1.1). Vidéo en direct (webcam, flux) = autre mécanisme (WebRTC) : à décider explicitement.
 
 ---
 

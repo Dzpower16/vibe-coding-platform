@@ -32,3 +32,20 @@ Pour donner le rôle de validateur·rice :
 | `pnpm build` | build de production (ce que lance Vercel) |
 | `pnpm type-check` / `pnpm lint` | vérifications avant de pousser |
 | `pnpm seed:sql` | régénère `supabase/seed.sql` et `lib/categories.ts` depuis `data/signes-depart.json` |
+| `pnpm smoke:roboflow [image]` | test de fumée du workflow Roboflow (exige `ROBOFLOW_API_KEY`) |
+
+## Roboflow (pilote, serveur uniquement)
+
+Workflow **« LSQ — Mains, visage et signes Logic »** (`smiles-workspace-wudvp/lsq-mains-visage-et-signes-logic`) :
+une entrée `image`, aucun paramètre, une sortie `predictions` (région des mains, visage, signes connus du
+modèle `lsq-mains-visage-et-signes/3`).
+
+- **Clé** : `ROBOFLOW_API_KEY` = la clé **privée** (app.roboflow.com → Settings → API Keys ; une clé
+  « publishable » `rf_…` est refusée par l'inférence serverless). Dans Vercel, côté serveur, jamais `NEXT_PUBLIC_`.
+- **Code** : `lib/roboflow/workflow.ts` → `detecterMainsVisageEtSignes(image)` (URL `https://` ou base64),
+  délai de 20 s, 2 nouvelles tentatives (réseau, 429, 5xx), erreurs typées `ErreurRoboflow`
+  (`configuration`, `entree`, `reseau`, `http`, `reponse`). Résultat indexé par les noms de sortie du workflow.
+- **Test** : `ROBOFLOW_API_KEY=… pnpm smoke:roboflow` (mire générée par défaut, ou un chemin d'image).
+  Dans un environnement cloud dont le proxy injecte la clé : `NODE_USE_ENV_PROXY=1 ROBOFLOW_API_KEY=proxy-injected pnpm smoke:roboflow`.
+- **Vie privée** : les images partent chez Roboflow (hors Canada). Seulement des images dont le consentement
+  ou l'accord couvre la reconnaissance — jamais la caméra de « Signer → voix » (voir `CLAUDE.md` §8ter).
