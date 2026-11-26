@@ -95,7 +95,10 @@ Les clés secrètes ne sont **jamais** préfixées `NEXT_PUBLIC_`, jamais commit
 - **MediaPipe Tasks Vision** (`@mediapipe/tasks-vision`, `HolisticLandmarker`) dans le navigateur
   pour les positions corps (33) + mains (2 × 21) + visage (478). Le WASM est copié depuis
   `node_modules` vers `public/mediapipe/wasm` au `postinstall` (même version garantie, pas de CDN
-  tiers) ; le modèle `.task` est chargé depuis `storage.googleapis.com/mediapipe-models`.
+  tiers) ; le modèle `.task` (≈ 13,7 Mo) est chargé depuis `storage.googleapis.com/mediapipe-models`
+  puis **gardé dans le Cache Storage du navigateur** (`lib/mediapipe/holistic.ts`, cache
+  `entre-mains-ia-v1` : changer de modèle = changer de nom). Progression visible à l'écran
+  (`components/chargement-ia.tsx`) et préchargement en arrière-plan depuis la liste des signes.
 - **Gladia** (API live v2) pour la transcription française en continu : le serveur crée la session
   (`POST https://api.gladia.io/v2/live` avec la clé), le navigateur ne reçoit que l'URL WebSocket
   temporaire et y envoie l'audio PCM 16 kHz.

@@ -5,6 +5,7 @@ import type { HolisticLandmarker } from '@mediapipe/tasks-vision'
 import { supabaseNavigateur } from '@/lib/supabase/client'
 import { chargerHolistic } from '@/lib/mediapipe/holistic'
 import { dessinerSquelette } from '@/lib/mediapipe/dessin'
+import { ChargementIA } from '@/components/chargement-ia'
 import {
   MODELE_POSITIONS,
   compacterFrame,
@@ -428,15 +429,11 @@ export function Studio({
 
       {/* Aperçu caméra (miroir) — gardé monté pour conserver la caméra */}
       <div className={enDirect ? 'space-y-2' : 'hidden'}>
-        <div className="relative overflow-hidden rounded-xl bg-black">
+        <div className="relative min-h-64 overflow-hidden rounded-xl bg-black">
           <video ref={videoRef} muted playsInline className="miroir block h-auto w-full" />
           <canvas ref={canvasRef} className="miroir pointer-events-none absolute inset-0 h-full w-full" />
 
-          {phase === 'chargement' && (
-            <div className="absolute inset-0 flex min-h-48 items-center justify-center bg-black/70 p-4 text-center text-white">
-              <p role="status">Ouverture de la caméra et chargement de la détection des mains…</p>
-            </div>
-          )}
+          {phase === 'chargement' && <ChargementIA />}
           {phase === 'compte' && (
             <div className="absolute inset-0 flex items-center justify-center bg-black/30" role="status" aria-live="assertive">
               <span className="text-[10rem] font-black leading-none text-white drop-shadow-lg">{compte}</span>

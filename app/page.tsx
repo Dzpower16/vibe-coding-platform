@@ -45,6 +45,7 @@ export default function Accueil() {
           <li key={s.href}>
             <Link
               href={s.href}
+              prefetch={false}
               className="flex h-full flex-col gap-2 rounded-2xl border border-ligne bg-carte p-5 shadow-sm transition hover:border-accent"
             >
               <span className="text-xs font-semibold uppercase tracking-wide text-doux">{s.etat}</span>

@@ -1,7 +1,8 @@
 'use client'
 
 import dynamic from 'next/dynamic'
-import { useMemo, useState } from 'react'
+import { useDeferredValue, useEffect, useMemo, useState } from 'react'
+import { prechargerIA } from '@/lib/mediapipe/holistic'
 import { CATEGORIES, nomCategorie } from '@/lib/categories'
 import type { MainDominante, MesPrises, Signe } from '@/lib/types'
 
@@ -32,20 +33,34 @@ export function Bibliotheque({
   const [aFilmer, setAFilmer] = useState(true)
   const [priorite, setPriorite] = useState(0)
   const [selection, setSelection] = useState<Signe | null>(null)
+  // La saisie reste fluide : le filtrage des ~800 signes suit avec un léger différé.
+  const rechercheDifferee = useDeferredValue(recherche)
+
+  // Texte de recherche normalisé une seule fois par signe (pas à chaque frappe).
+  const index = useMemo(
+    () => new Map(signes.map((s) => [s.id, normaliser([s.glose, ...s.mots_fr, s.definition ?? ''].join(' '))])),
+    [signes],
+  )
+
+  // Pendant qu'on choisit un signe, le modèle de détection se télécharge en arrière-plan :
+  // le studio s'ouvre ensuite presque instantanément.
+  useEffect(() => {
+    const id = window.setTimeout(prechargerIA, 1500)
+    return () => window.clearTimeout(id)
+  }, [])
 
   const filtres = useMemo(() => {
-    const q = normaliser(recherche.trim())
+    const q = normaliser(rechercheDifferee.trim())
     return signes.filter(
       (s) =>
         (!categorie || s.categorie === categorie) &&
         (!priorite || s.priorite === priorite) &&
         (!aFilmer || !mesPrises[s.id]) &&
-        (!q || normaliser(s.glose).includes(q) || s.mots_fr.some((m) => normaliser(m).includes(q)) ||
-          (!!s.definition && normaliser(s.definition).includes(q))),
+        (!q || index.get(s.id)!.includes(q)),
     )
-  }, [signes, categorie, priorite, aFilmer, recherche, mesPrises])
+  }, [signes, index, categorie, priorite, aFilmer, rechercheDifferee, mesPrises])
 
-  const nbFilmes = signes.filter((s) => mesPrises[s.id]).length
+  const nbFilmes = useMemo(() => signes.filter((s) => mesPrises[s.id]).length, [signes, mesPrises])
 
   function suivant(apres: Signe) {
     // Prochain signe de la liste filtrée qui n'est pas encore filmé.
@@ -115,7 +130,7 @@ export function Bibliotheque({
             const prises = mesPrises[s.id]
             const actif = selection?.id === s.id
             return (
-              <li key={s.id}>
+              <li key={s.id} className="[contain-intrinsic-size:auto_6rem] [content-visibility:auto]">
                 <button
                   onClick={() => setSelection(s)}
                   aria-current={actif}

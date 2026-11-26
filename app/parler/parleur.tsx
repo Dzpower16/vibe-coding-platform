@@ -5,6 +5,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import type { HolisticLandmarker } from '@mediapipe/tasks-vision'
 import { chargerHolistic } from '@/lib/mediapipe/holistic'
 import { dessinerSquelette } from '@/lib/mediapipe/dessin'
+import { ChargementIA } from '@/components/chargement-ia'
 import { compacterFrame, type FramePositions } from '@/lib/mediapipe/positions'
 import {
   classer,
@@ -249,14 +250,10 @@ export function Parleur() {
   return (
     <div className="grid gap-4 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
       <section className="space-y-3">
-        <div className="relative overflow-hidden rounded-2xl bg-black">
+        <div className="relative min-h-64 overflow-hidden rounded-2xl bg-black">
           <video ref={videoRef} muted playsInline className="miroir block h-auto w-full" />
           <canvas ref={canvasRef} className="miroir pointer-events-none absolute inset-0 h-full w-full" />
-          {phase === 'chargement' && (
-            <div className="absolute inset-0 flex min-h-48 items-center justify-center bg-black/70 p-4 text-center text-white">
-              <p role="status">Ouverture de la caméra et chargement de la détection des mains…</p>
-            </div>
-          )}
+          {phase === 'chargement' && <ChargementIA />}
           {phase === 'ecoute' && (
             <div
               className={`absolute left-3 top-3 rounded-full px-3 py-1 font-bold text-white ${enSigne ? 'bg-alerte' : 'bg-ok'}`}
